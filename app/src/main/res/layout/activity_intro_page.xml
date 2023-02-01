@@ -52,13 +52,13 @@
       android:layout_marginBottom="16dp"
       android:background="@drawable/backgraund_button_shape"
       android:text="Войти"
-      app:layout_constraintBottom_toTopOf="@+id/button2"
+      app:layout_constraintBottom_toTopOf="@+id/sign_up"
       app:layout_constraintEnd_toEndOf="parent"
       app:layout_constraintHorizontal_bias="0.0"
       app:layout_constraintStart_toStartOf="parent" />
 
   <androidx.appcompat.widget.AppCompatButton
-      android:id="@+id/button2"
+      android:id="@+id/sign_up"
       style="@android:style/Widget.Button"
       android:layout_width="match_parent"
       android:layout_height="wrap_content"
@@ -66,7 +66,7 @@
       android:layout_marginEnd="32dp"
       android:layout_marginBottom="32dp"
       android:background="@drawable/backgraund_button_shape"
-      android:text="Зарегестрироваться"
+      android:text="Зарегистрироваться"
       app:layout_constraintBottom_toBottomOf="parent"
       app:layout_constraintEnd_toEndOf="parent"
       app:layout_constraintHorizontal_bias="0.0"
