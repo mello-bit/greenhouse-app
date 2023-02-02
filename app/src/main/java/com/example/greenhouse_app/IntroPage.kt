@@ -18,5 +18,10 @@ class IntroPage : AppCompatActivity() {
             val intent = Intent(this, SignUpPage::class.java)
             startActivity(intent)
         }
+
+        binding.login.setOnClickListener {
+            val intent = Intent(this, LoginPage::class.java)
+            startActivity(intent)
+        }
     }
 }
