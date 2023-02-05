@@ -15,7 +15,7 @@
         tools:targetApi="31">
         <activity
             android:name=".SignUpPage"
-            android:exported="false" />
+            android:exported="true" />
         <activity
             android:name=".IntroPage"
             android:exported="true">
@@ -25,7 +25,9 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".LoginPage" />
+        <activity
+            android:name=".LoginPage"
+            android:exported="true"/>
     </application>
 
 </manifest>

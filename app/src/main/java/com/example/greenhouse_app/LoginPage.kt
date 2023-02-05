@@ -12,9 +12,9 @@ class LoginPage : AppCompatActivity() {
         binding = ActivityLoginPageBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-//        binding.btnSubmit.setOnClickListener {
-//            println("Working")
-//        }
+        binding.button2.setOnClickListener {
+            println("Working")
+        }
 
     }
 }
