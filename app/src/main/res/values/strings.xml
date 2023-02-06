@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">greenhouse-app</string>
+    <string name="app_name">Теплица</string>
     <string name="first_name">First name</string>
     <string name="second_name">Second name</string>
     <string name="birth_day">Birth day</string>
