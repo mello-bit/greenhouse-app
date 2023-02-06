@@ -16,4 +16,6 @@
     <string name="remember_me">Запомнить меня</string>
     <string name="not_account">Нет аккаунта</string>
     <string name="login">Войти</string>
+    <string name="forgot_username">Забыл пароль</string>
+    <string name="app_title">My Greenhouse</string>
 </resources>

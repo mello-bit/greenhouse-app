@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/background_grey_rect"
+    android:background="@drawable/background_gray_rect"
     tools:context=".SignUpPage">
 
     <ImageView
@@ -38,7 +38,7 @@
         android:id="@+id/linearLayout"
         android:layout_width="match_parent"
         android:layout_height="570dp"
-        android:background="@drawable/background_grey_rect"
+        android:background="@drawable/background_gray_rect"
         android:orientation="vertical"
         android:paddingLeft="50dp"
         android:paddingRight="50dp"
@@ -149,7 +149,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="13dp"
-            android:background="@drawable/background_grey_rect"
+            android:background="@drawable/background_gray_rect"
             android:padding="5dp"
             android:text="@string/remember_me"
             android:textColor="#A1887F"
@@ -161,7 +161,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:layout_marginTop="40dp"
-            android:background="@drawable/backgraund_button_shape"
+            android:background="@drawable/background_button_shape"
             android:text="@string/register" />
 
 
