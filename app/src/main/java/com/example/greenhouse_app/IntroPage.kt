@@ -2,6 +2,8 @@ package com.example.greenhouse_app
 
 import android.content.Intent
 import android.os.Bundle
+import android.view.Window
+import android.view.WindowManager
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.example.greenhouse_app.databinding.ActivityIntroPageBinding
@@ -13,6 +15,8 @@ class IntroPage : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityIntroPageBinding.inflate(layoutInflater)
 
+//        requestWindowFeature(Window.FEATURE_NO_TITLE)
+        supportActionBar?.hide()
         setContentView(binding.root)
 
         binding.signUp.setOnClickListener {

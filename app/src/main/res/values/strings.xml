@@ -12,7 +12,7 @@
     <string name="password_example">1234567</string>
     <string name="register">Зарегистрироваться</string>
     <string name="back">Назад</string>
-    <string name="welcome_to_sign_up">Вход в Теплицу</string>
+    <string name="welcome_to_sign_up">Регистрация</string>
     <string name="remember_me">Запомнить меня</string>
     <string name="not_account">Нет аккаунта</string>
     <string name="login">Войти</string>
