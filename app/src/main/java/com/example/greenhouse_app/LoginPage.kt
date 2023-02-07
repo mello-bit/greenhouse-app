@@ -1,5 +1,6 @@
 package com.example.greenhouse_app
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
@@ -7,7 +8,6 @@ import com.example.greenhouse_app.databinding.ActivityLoginPageBinding
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
-import java.util.logging.Logger
 
 class LoginPage : AppCompatActivity() {
     private lateinit var binding: ActivityLoginPageBinding
@@ -43,6 +43,11 @@ class LoginPage : AppCompatActivity() {
                     Log.d("Auth", "Couldn't log in user")
                 }
             }
+        }
+
+        binding.btnRestore.setOnClickListener {
+            val intent = Intent(this, RestorePage::class.java)
+            startActivity(intent)
         }
     }
 

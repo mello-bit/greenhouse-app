@@ -22,6 +22,7 @@
         android:layout_height="wrap_content"
         android:fontFamily="monospace"
         android:text="@string/app_title"
+        android:textColor="@color/light_text_color"
         android:textSize="40sp"
         app:layout_constraintBottom_toTopOf="@+id/ivIcon2"
         app:layout_constraintEnd_toEndOf="parent"
@@ -60,5 +61,58 @@
         app:layout_constraintTop_toTopOf="@+id/glDivizor"
         app:layout_constraintVertical_bias="0.0">
 
+        <TextView
+            android:id="@+id/tvLabel"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingBottom="10pt"
+            android:text="@string/restore_title"
+            android:textColor="#A1887F"
+            android:textSize="25sp" />
+
+        <TextView
+            android:id="@+id/tvEmail2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/email"
+            android:textColor="#A1887F"
+            android:textSize="25sp"
+            android:textStyle="bold|italic"
+            android:translationZ="1dp"
+            android:visibility="visible" />
+
+        <EditText
+            android:id="@+id/etEmailField2"
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:layout_marginTop="10dp"
+            android:background="@drawable/background_for_text"
+            android:hint="@string/email_example"
+            android:importantForAutofill="no"
+            android:inputType="textEmailAddress"
+            android:paddingStart="4dp"
+            android:paddingEnd="4dp"
+            android:textColor="#A1887F"
+            android:textColorHint="#D6C9C4"
+            android:textSize="16sp"
+            android:textStyle="italic" />
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/btnSendEmail"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="3pt"
+            android:background="@drawable/background_button_shape"
+            android:text="@string/restore_btn_name"
+            android:textColor="#FFFFFF" />
+
+        <TextView
+            android:id="@+id/tvRestoreDescription"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fontFamily="serif-monospace"
+            android:paddingTop="10pt"
+            android:text="@string/restore_description"
+            android:textSize="20sp" />
     </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>
