@@ -19,18 +19,32 @@
         app:srcCompat="@drawable/background_page"
         android:contentDescription="TODO" />
 
+    <TextView
+        android:id="@+id/textView"
+        android:layout_width="368dp"
+        android:layout_height="85dp"
+        android:gravity="center"
+        android:text="@string/welcome_to_sign_up"
+        android:textColor="#D3C0C0"
+        android:textSize="48sp"
+        app:layout_constraintBottom_toTopOf="@+id/linearLayout"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/imageView5"
+        app:layout_constraintVertical_bias="0.095"
+        tools:ignore="TextSizeCheck" />
+
     <LinearLayout
         android:id="@+id/linearLayout"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
+        android:layout_height="570dp"
         android:background="@drawable/background_gray_rect"
         android:orientation="vertical"
         android:paddingHorizontal="15pt"
         android:paddingTop="10pt"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/guideline">
+        app:layout_constraintStart_toStartOf="parent">
 
         <TextView
             android:id="@+id/textViewEmail"
@@ -59,22 +73,15 @@
             android:textStyle="italic" />
 
         <TextView
-            android:id="@+id/error_email_data"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textColor="#A1887F"
-            android:visibility="gone" />
-
-        <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="20dp"
+            android:textStyle="bold|italic"
             android:rotation="0"
             android:rotationX="0"
             android:text="@string/password"
             android:textColor="#A1887F"
-            android:textSize="25sp"
-            android:textStyle="bold|italic" />
+            android:textSize="25sp" />
 
         <EditText
             android:id="@+id/password"
@@ -92,23 +99,17 @@
             android:textIsSelectable="false"
             android:textSize="16sp" />
 
-        <TextView
-            android:id="@+id/error_password_data"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textColor="#A1887F"
-            android:visibility="gone" />
 
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="20dp"
+            android:textStyle="bold|italic"
             android:rotation="0"
             android:rotationX="0"
             android:text="@string/repeat_password"
             android:textColor="#A1887F"
-            android:textSize="25sp"
-            android:textStyle="bold|italic" />
+            android:textSize="25sp" />
 
         <EditText
             android:id="@+id/repeated_password"
@@ -126,13 +127,6 @@
             android:textIsSelectable="false"
             android:textSize="16sp" />
 
-        <TextView
-            android:id="@+id/error_repeat_password_data"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textColor="#A1887F"
-            android:visibility="gone" />
-
         <CheckBox
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -148,19 +142,12 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
+            android:padding="15dp"
             android:layout_marginTop="40dp"
             android:background="@drawable/background_button_shape"
-            android:padding="15dp"
             android:text="@string/register" />
 
 
     </LinearLayout>
-
-    <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/guideline"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        app:layout_constraintGuide_percent="0.26" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -27,40 +27,31 @@ class SignUpPage : AppCompatActivity() {
             val enablePassword: Boolean
             val enableRepPassword: Boolean
 
-            if (!textEmail.contains('@') ||
+            enableEmail = if (!textEmail.contains('@') ||
                 !textEmail.contains('.') ||
                 textEmail.lastIndexOf('.') < textEmail.indexOf('@')
             ) {
                 binding.email.setBackgroundResource(R.drawable.background_error)
-                binding.errorEmailData.visibility = View.VISIBLE
-                binding.errorEmailData.text = "Введена некорректная почта"
-                enableEmail = false
+                false
             } else {
                 binding.email.setBackgroundResource(R.drawable.background_for_text)
-                binding.errorEmailData.visibility = View.GONE
-                enableEmail = true
+                true
             }
-            if (password.length < 8 || !check_pas(password.toString())) {
+            enablePassword = if (password.length < 8) {
                 binding.password.setBackgroundResource(R.drawable.background_error)
-                binding.errorPasswordData.visibility = View.VISIBLE
-                binding.errorPasswordData.text = "Пароль некорректен"
-                enablePassword = false
+                false
             } else {
                 binding.password.setBackgroundResource(R.drawable.background_for_text)
-                binding.errorPasswordData.visibility = View.GONE
-                enablePassword = true
+                true
             }
-            if (repeatPassword.toString() != password.toString() || repeatPassword.length < 8 ||
+            enableRepPassword = if (repeatPassword.toString() != password.toString() || repeatPassword.length < 8 ||
                 !check_pas(repeatPassword.toString())
             ) {
                 binding.repeatedPassword.setBackgroundResource(R.drawable.background_error)
-                binding.errorRepeatPasswordData.visibility = View.VISIBLE
-                binding.errorRepeatPasswordData.text = "Пароль некорректен"
-                enableRepPassword = false
+                false
             } else {
                 binding.repeatedPassword.setBackgroundResource(R.drawable.background_for_text)
-                binding.errorRepeatPasswordData.visibility = View.GONE
-                enableRepPassword = true
+                true
             }
 
             if (enableEmail && enablePassword && enableRepPassword) {
@@ -72,8 +63,9 @@ class SignUpPage : AppCompatActivity() {
                         val t = Toast.makeText(this, "It's ok", Toast.LENGTH_SHORT)
                         t.show()
                     } else {
+                        val response = R.string.response
                         val t = Toast.makeText(
-                            this, "Sorry. We have some troubles",
+                            this, response,
                             Toast.LENGTH_SHORT
                         )
                         t.show()
