@@ -66,6 +66,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:paddingBottom="10pt"
+            android:textAlignment="center"
             android:text="@string/restore_title"
             android:textColor="#A1887F"
             android:textSize="25sp" />
@@ -103,7 +104,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="3pt"
             android:background="@drawable/background_button_shape"
-            android:text="@string/restore_btn_name"
+            android:text="@string/login"
             android:textColor="#FFFFFF" />
 
         <TextView
@@ -111,8 +112,9 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:fontFamily="serif-monospace"
+            android:textAlignment="center"
             android:paddingTop="10pt"
-            android:text="@string/restore_description"
-            android:textSize="20sp" />
+            android:textSize="20sp"
+            android:text="@string/restore_description"/>
     </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

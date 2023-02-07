@@ -18,4 +18,7 @@
     <string name="login">Войти</string>
     <string name="forgot_username">Забыл пароль</string>
     <string name="app_title">My Greenhouse</string>
+    <string name="response">Такая почта уже есть в базе или она некорректна</string>
+    <string name="restore_title">Войти в свой аккаунт</string>
+    <string name="restore_description">Пройдите по ссылке в письме для восстановления пароля</string>
 </resources>

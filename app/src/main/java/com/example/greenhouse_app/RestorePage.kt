@@ -16,9 +16,11 @@ class RestorePage : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityRestorePageBinding.inflate(layoutInflater)
         auth = Firebase.auth
+
+        supportActionBar?.hide()
         setContentView(binding.root)
 
-        binding.btnSubmit.setOnClickListener {
+        binding.btnSendEmail.setOnClickListener {
             val email = binding.etEmailField2.text.toString()
             println("Pass1")
             if (email.isNotEmpty()) {

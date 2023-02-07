@@ -1,5 +1,6 @@
 package com.example.greenhouse_app
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
@@ -14,6 +15,7 @@ class SignUpPage : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivitySignUpPageBinding.inflate(layoutInflater)
+        supportActionBar?.hide()
         setContentView(binding.root)
 
         firebaseAuth = FirebaseAuth.getInstance()
@@ -23,11 +25,8 @@ class SignUpPage : AppCompatActivity() {
             val textEmail = binding.email.text
             val password = binding.password.text
             val repeatPassword = binding.repeatedPassword.text
-            val enableEmail: Boolean
-            val enablePassword: Boolean
-            val enableRepPassword: Boolean
 
-            enableEmail = if (!textEmail.contains('@') ||
+            val enableEmail: Boolean = if (!textEmail.contains('@') ||
                 !textEmail.contains('.') ||
                 textEmail.lastIndexOf('.') < textEmail.indexOf('@')
             ) {
@@ -37,14 +36,14 @@ class SignUpPage : AppCompatActivity() {
                 binding.email.setBackgroundResource(R.drawable.background_for_text)
                 true
             }
-            enablePassword = if (password.length < 8) {
+            val enablePassword: Boolean = if (password.length < 8) {
                 binding.password.setBackgroundResource(R.drawable.background_error)
                 false
             } else {
                 binding.password.setBackgroundResource(R.drawable.background_for_text)
                 true
             }
-            enableRepPassword = if (repeatPassword.toString() != password.toString() || repeatPassword.length < 8 ||
+            val enableRepPassword: Boolean = if (repeatPassword.toString() != password.toString() || repeatPassword.length < 8 ||
                 !check_pas(repeatPassword.toString())
             ) {
                 binding.repeatedPassword.setBackgroundResource(R.drawable.background_error)
@@ -62,6 +61,8 @@ class SignUpPage : AppCompatActivity() {
                     if (it.isSuccessful) {
                         val t = Toast.makeText(this, "It's ok", Toast.LENGTH_SHORT)
                         t.show()
+                        val intent = Intent(this, MainActivity::class.java)
+                        startActivity(intent)
                     } else {
                         val response = R.string.response
                         val t = Toast.makeText(

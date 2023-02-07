@@ -17,6 +17,8 @@ class LoginPage : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityLoginPageBinding.inflate(layoutInflater)
         firebaseAuth = Firebase.auth
+
+        supportActionBar?.hide()
         setContentView(binding.root)
 
         binding.btnSignUp.setOnClickListener {
