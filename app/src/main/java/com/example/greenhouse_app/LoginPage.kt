@@ -4,6 +4,7 @@ import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import android.widget.Toast
 import com.example.greenhouse_app.databinding.ActivityLoginPageBinding
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
@@ -41,8 +42,14 @@ class LoginPage : AppCompatActivity() {
             firebaseAuth.signInWithEmailAndPassword(email, password).addOnCompleteListener {task ->
                 if (task.isSuccessful) {
                     Log.d("Auth", "User logged in successfully")
+                    val intent = Intent(this, MainActivity::class.java)
+                    val t = Toast.makeText(this, "Вход выполнен", Toast.LENGTH_SHORT)
+                    t.show()
+                    startActivity(intent)
                 } else {
                     Log.d("Auth", "Couldn't log in user")
+                    val t = Toast.makeText(this, "Не удалось выполнить вход", Toast.LENGTH_SHORT)
+                    t.show()
                 }
             }
         }
