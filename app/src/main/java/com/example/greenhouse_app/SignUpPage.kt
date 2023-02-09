@@ -3,7 +3,6 @@ package com.example.greenhouse_app
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.view.View
 import android.widget.Toast
 import com.example.greenhouse_app.databinding.ActivitySignUpPageBinding
 import com.google.firebase.auth.FirebaseAuth
@@ -38,20 +37,23 @@ class SignUpPage : AppCompatActivity() {
             }
             val enablePassword: Boolean = if (password.length < 8) {
                 binding.password.setBackgroundResource(R.drawable.background_error)
+                Toast.makeText(this, "Длина пароля меньше 8 символов!", Toast.LENGTH_SHORT).show()
                 false
             } else {
                 binding.password.setBackgroundResource(R.drawable.background_for_text)
                 true
             }
-            val enableRepPassword: Boolean = if (repeatPassword.toString() != password.toString() || repeatPassword.length < 8 ||
-                !check_pas(repeatPassword.toString())
-            ) {
-                binding.repeatedPassword.setBackgroundResource(R.drawable.background_error)
-                false
-            } else {
-                binding.repeatedPassword.setBackgroundResource(R.drawable.background_for_text)
-                true
-            }
+            val enableRepPassword: Boolean =
+                if (repeatPassword.toString() != password.toString() || repeatPassword.length < 8 ||
+                    !check_pas(repeatPassword.toString())
+                ) {
+                    binding.repeatedPassword.setBackgroundResource(R.drawable.background_error)
+                    false
+                } else {
+                    binding.repeatedPassword.setBackgroundResource(R.drawable.background_for_text)
+                    Toast.makeText(this, "Пароль не совпадает!", Toast.LENGTH_SHORT).show()
+                    true
+                }
 
             if (enableEmail && enablePassword && enableRepPassword) {
                 firebaseAuth.createUserWithEmailAndPassword(
@@ -59,7 +61,7 @@ class SignUpPage : AppCompatActivity() {
                     password.toString()
                 ).addOnCompleteListener {
                     if (it.isSuccessful) {
-                        val t = Toast.makeText(this, "It's ok", Toast.LENGTH_SHORT)
+                        val t = Toast.makeText(this, "Все хорошо", Toast.LENGTH_SHORT)
                         t.show()
                         val intent = Intent(this, MainActivity::class.java)
                         startActivity(intent)
@@ -75,7 +77,7 @@ class SignUpPage : AppCompatActivity() {
             } else {
                 Toast.makeText(
                     this,
-                    "You have incorrect data",
+                    "У вас некорректный данные",
                     Toast.LENGTH_SHORT
                 ).show()
             }

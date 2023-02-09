@@ -34,7 +34,7 @@ class LoginPage : AppCompatActivity() {
                 return@setOnClickListener
             }
 
-            if (password.length <= 8) {
+            if (password.length < 8) {
                 Log.d("Auth", "Password format is bad")
                 return@setOnClickListener
             }

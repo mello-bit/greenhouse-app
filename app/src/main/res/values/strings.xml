@@ -8,6 +8,7 @@
     <string name="email">Почта</string>
     <string name="email_example">example@gmail.com</string>
     <string name="password">Пароль</string>
+    <string name="password_context">(не меньше восьми символов)</string>
     <string name="repeat_password">Повторите пароль</string>
     <string name="password_example">1234567</string>
     <string name="register">Зарегистрироваться</string>
@@ -21,4 +22,8 @@
     <string name="response">Такая почта уже есть в базе или она некорректна</string>
     <string name="restore_title">Войти в свой аккаунт</string>
     <string name="restore_description">Пройдите по ссылке в письме для восстановления пароля</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="boundary_temperature">Граничная температура: </string>
+    <string name="temperature_boundary_value">21</string>
 </resources>
