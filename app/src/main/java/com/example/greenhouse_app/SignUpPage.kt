@@ -44,14 +44,12 @@ class SignUpPage : AppCompatActivity() {
                 true
             }
             val enableRepPassword: Boolean =
-                if (repeatPassword.toString() != password.toString() || repeatPassword.length < 8 ||
-                    !check_pas(repeatPassword.toString())
-                ) {
+                if (repeatPassword.toString() != password.toString()) {
                     binding.repeatedPassword.setBackgroundResource(R.drawable.background_error)
+                    Toast.makeText(this, "Пароль не совпадает!", Toast.LENGTH_SHORT).show()
                     false
                 } else {
                     binding.repeatedPassword.setBackgroundResource(R.drawable.background_for_text)
-                    Toast.makeText(this, "Пароль не совпадает!", Toast.LENGTH_SHORT).show()
                     true
                 }
 

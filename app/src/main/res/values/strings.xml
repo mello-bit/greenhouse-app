@@ -25,5 +25,7 @@
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="boundary_temperature">Граничная температура: </string>
+    <string name="boundary_humidity">Граничная влажность воздуха: </string>
     <string name="temperature_boundary_value">21</string>
+    <string name="humidity_boundary_value">30</string>
 </resources>

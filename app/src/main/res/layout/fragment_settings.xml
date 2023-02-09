@@ -7,42 +7,90 @@
     tools:context=".fragments.SettingsFragment"
     android:background="@drawable/background">
 
-
     <LinearLayout
-        android:id="@+id/llboundary_temperature"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginEnd="16dp"
-        android:orientation="horizontal"
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        android:layout_marginTop="40pt"
+        android:orientation="vertical"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.054">
+        app:layout_constraintTop_toTopOf="parent">
 
-        <TextView
-            android:layout_width="wrap_content"
+        <LinearLayout
+            android:id="@+id/llboundary_temperature"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/boundary_temperature"
-            android:textSize="20sp"
-            android:textStyle="bold|italic"
-            android:textColor="#FFFFFF"
-            android:layout_marginStart="5pt"/>
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="16dp"
+            android:orientation="horizontal"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.054">
 
-        <EditText
-            android:id="@+id/boundary_temp_value"
-            android:layout_width="wrap_content"
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="13pt"
+                android:text="@string/boundary_temperature"
+                android:textColor="#FFFFFF"
+                android:textSize="20sp"
+                android:textStyle="bold|italic" />
+
+            <EditText
+                android:id="@+id/boundary_temp_value"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="20pt"
+                android:background="@drawable/background_shape_for_boundary"
+                android:paddingHorizontal="13dp"
+                android:paddingVertical="5dp"
+                android:text="@string/temperature_boundary_value"
+                android:textColor="#242325"
+                android:textSize="17sp"
+                android:textStyle="bold" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginStart="20pt"
-            android:background="@drawable/background_shape_for_boundary"
-            android:paddingHorizontal="10dp"
-            android:paddingVertical="5dp"
-            android:text="@string/temperature_boundary_value"
-            android:textColor="#242325"
-            android:textSize="17sp"
-            android:textStyle="bold" />
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="20pt"
+            android:layout_marginEnd="16dp"
+            android:orientation="horizontal"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.054">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="3pt"
+                android:text="@string/boundary_humidity"
+                android:textColor="#FFFFFF"
+                android:textSize="20sp"
+                android:textStyle="bold|italic" />
+
+            <EditText
+                android:id="@+id/boundary_hum_value"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="4pt"
+                android:background="@drawable/background_shape_for_boundary"
+                android:paddingHorizontal="13dp"
+                android:paddingVertical="5dp"
+                android:text="@string/humidity_boundary_value"
+                android:textColor="#242325"
+                android:textSize="17sp"
+                android:textStyle="bold" />
+        </LinearLayout>
 
     </LinearLayout>
+
+
 </androidx.constraintlayout.widget.ConstraintLayout>
