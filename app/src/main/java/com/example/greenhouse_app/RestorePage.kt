@@ -3,6 +3,7 @@ package com.example.greenhouse_app
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import android.widget.Toast
 import com.example.greenhouse_app.databinding.ActivityRestorePageBinding
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
@@ -22,18 +23,16 @@ class RestorePage : AppCompatActivity() {
 
         binding.btnSendEmail.setOnClickListener {
             val email = binding.etEmailField2.text.toString()
-            println("Pass1")
             if (email.isNotEmpty()) {
-                println("Pass2")
                 auth.sendPasswordResetEmail(email)
                     .addOnCompleteListener{task ->
-                        println("Pass3")
                         if (task.isSuccessful) {
                             Log.d("Auth", "User email sent!~")
                         } else {
-                            Log.d("Auth", "Unresolved error occurred!")
+                            Log.d("Auth", "Restore exception raised: ${task.exception}")
                         }
                     }
+                Toast.makeText(this, "Если учётная запись с такой почтой существует, то мы отправили на неё письмо", Toast.LENGTH_SHORT).show()
             }
         }
     }
