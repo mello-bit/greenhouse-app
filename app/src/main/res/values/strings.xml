@@ -28,4 +28,5 @@
     <string name="boundary_humidity">Граничная влажность воздуха: </string>
     <string name="temperature_boundary_value">21</string>
     <string name="humidity_boundary_value">30</string>
+    <string name="save_changes">Сохранить изменения</string>
 </resources>

@@ -40,17 +40,20 @@
                 android:textStyle="bold|italic" />
 
             <EditText
-                android:id="@+id/boundary_temp_value"
+                android:id="@+id/boundaryTempValue"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="20pt"
+                android:imeOptions="actionDone"
                 android:background="@drawable/background_shape_for_boundary"
                 android:paddingHorizontal="13dp"
                 android:paddingVertical="5dp"
+                android:inputType="number"
                 android:text="@string/temperature_boundary_value"
                 android:textColor="#242325"
                 android:textSize="17sp"
-                android:textStyle="bold" />
+                android:textStyle="bold"
+                tools:ignore="InvalidImeActionId" />
         </LinearLayout>
 
         <LinearLayout
@@ -81,8 +84,10 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="4pt"
+                android:imeOptions="actionDone"
                 android:background="@drawable/background_shape_for_boundary"
                 android:paddingHorizontal="13dp"
+                android:inputType="number"
                 android:paddingVertical="5dp"
                 android:text="@string/humidity_boundary_value"
                 android:textColor="#242325"
@@ -91,6 +96,19 @@
         </LinearLayout>
 
     </LinearLayout>
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/save_chages"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="28dp"
+        android:text="@string/save_changes"
+        android:paddingHorizontal="20dp"
+        android:background="@drawable/background_button_shape"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintStart_toStartOf="parent" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
