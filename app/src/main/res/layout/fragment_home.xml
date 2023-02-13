@@ -4,17 +4,288 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="#6740AC"
     tools:context=".fragments.HomeFragment">
 
     <!-- TODO: Update blank fragment layout -->
+    <LinearLayout
+        android:id="@+id/llFurrow1"
+        android:layout_width="150dp"
+        android:layout_height="100dp"
+        android:background="@drawable/blue_gradient_round_corners"
+        android:orientation="vertical"
+        app:layout_constraintBottom_toTopOf="@+id/llFurrow2"
+        app:layout_constraintEnd_toStartOf="@+id/llFurrow4"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/llGreenhouseStats">
+
+        <TextView
+            android:id="@+id/tvFurrow1Status"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="2"
+            android:gravity="center"
+            android:text="15%"
+            android:textAlignment="center"
+            android:textSize="30sp" />
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/btnFurrow1"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:background="@drawable/green_status_round_button"
+            android:text="@string/watering_on"
+            android:textColor="@color/white" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/llFurrow4"
+        android:layout_width="150dp"
+        android:layout_height="100dp"
+        android:background="@drawable/blue_gradient_round_corners"
+        android:orientation="vertical"
+        app:layout_constraintBottom_toTopOf="@+id/llFurrow5"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/llFurrow1"
+        app:layout_constraintTop_toBottomOf="@+id/llGreenhouseStats">
+
+        <TextView
+            android:id="@+id/tvFurrow4Status"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="2"
+            android:gravity="center"
+            android:text="15%"
+            android:textAlignment="center"
+            android:textSize="30sp" />
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/btnFurrow4"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:background="@drawable/green_status_round_button"
+            android:text="@string/watering_on"
+            android:textColor="@color/white" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/llFurrow3"
+        android:layout_width="150dp"
+        android:layout_height="100dp"
+        android:background="@drawable/blue_gradient_round_corners"
+        android:orientation="vertical"
+        app:layout_constraintBottom_toTopOf="@+id/btnWindowStatus"
+        app:layout_constraintEnd_toStartOf="@+id/llFurrow6"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/llFurrow2">
+
+        <TextView
+            android:id="@+id/tvFurrow3Status"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="2"
+            android:gravity="center"
+            android:text="15%"
+            android:textAlignment="center"
+            android:textSize="30sp" />
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/btnFurrow3"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:background="@drawable/green_status_round_button"
+            android:text="@string/watering_on"
+            android:textColor="@color/white" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/llFurrow5"
+        android:layout_width="150dp"
+        android:layout_height="100dp"
+        android:background="@drawable/blue_gradient_round_corners"
+        android:orientation="vertical"
+        app:layout_constraintBottom_toTopOf="@+id/llFurrow6"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/llFurrow2"
+        app:layout_constraintTop_toBottomOf="@+id/llFurrow4">
+
+        <TextView
+            android:id="@+id/tvFurrow5Status"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="2"
+            android:gravity="center"
+            android:text="15%"
+            android:textAlignment="center"
+            android:textSize="30sp" />
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/btnFurrow5"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:background="@drawable/green_status_round_button"
+            android:text="@string/watering_on"
+            android:textColor="@color/white" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/llFurrow2"
+        android:layout_width="150dp"
+        android:layout_height="100dp"
+        android:background="@drawable/blue_gradient_round_corners"
+        android:orientation="vertical"
+        app:layout_constraintBottom_toTopOf="@+id/llFurrow3"
+        app:layout_constraintEnd_toStartOf="@+id/llFurrow5"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/llFurrow1">
+
+        <TextView
+            android:id="@+id/tvFurrow2Status"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="2"
+            android:gravity="center"
+            android:text="15%"
+            android:textAlignment="center"
+            android:textSize="30sp" />
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/btnFurrow2"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:background="@drawable/green_status_round_button"
+            android:text="@string/watering_on"
+            android:textColor="@color/white" />
+    </LinearLayout>
+
     <TextView
-        android:layout_width="wrap_content"
+        android:id="@+id/tvMainLabel"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:text="Home Fragment"
-        android:textSize="34sp"
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="4pt"
+        android:layout_marginEnd="16dp"
+        android:background="@drawable/blue_gradient_round_corners"
+        android:elevation="8dp"
+        android:paddingHorizontal="10pt"
+        android:paddingVertical="3pt"
+        android:text="Управление теплицей"
+        android:textAlignment="center"
+        android:textColor="@color/white"
+        android:textSize="30sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
+    <LinearLayout
+        android:id="@+id/llGreenhouseStats"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="24dp"
+        android:background="@drawable/blue_gradient_round_corners"
+        android:orientation="horizontal"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tvMainLabel">
+
+        <TextView
+            android:id="@+id/tvGreenhouseTemperature"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:maxLines="2"
+            android:text="Температура теплицы"
+            android:textAlignment="center"
+            android:textColor="@color/white"
+            android:textSize="30sp" />
+
+        <TextView
+            android:id="@+id/tvGreenhouseHumidity"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:maxLines="2"
+            android:text="Влажность теплицы"
+            android:textColor="@color/white"
+            android:textSize="30sp" />
+    </LinearLayout>
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/btnHeaterStatus"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="24dp"
+        android:layout_marginBottom="9dp"
+        android:background="@drawable/green_status_round_button"
+        android:text="@string/heater_on"
+        android:textAllCaps="false"
+        android:textColor="@color/white"
+        android:textSize="20sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/btnWindowStatus" />
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/btnWindowStatus"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="24dp"
+        android:layout_marginBottom="9dp"
+        android:background="@drawable/red_status_round_button"
+        android:hapticFeedbackEnabled="false"
+        android:text="@string/window_closed"
+        android:textAllCaps="false"
+        android:textColor="@color/white"
+        android:textSize="20sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/btnHeaterStatus"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <LinearLayout
+        android:id="@+id/llFurrow6"
+        android:layout_width="150dp"
+        android:layout_height="100dp"
+        android:background="@drawable/blue_gradient_round_corners"
+        android:orientation="vertical"
+        app:layout_constraintBottom_toTopOf="@+id/btnHeaterStatus"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/llFurrow3"
+        app:layout_constraintTop_toBottomOf="@+id/llFurrow5">
+
+        <TextView
+            android:id="@+id/tvFurrow6Status"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="2"
+            android:gravity="center"
+            android:text="15%"
+            android:textAlignment="center"
+            android:textSize="30sp" />
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/btnFurrow6"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:background="@drawable/green_status_round_button"
+            android:text="@string/watering_on"
+            android:textColor="@color/white" />
+    </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

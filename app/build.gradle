@@ -44,6 +44,7 @@ dependencies {
     implementation 'com.android.volley:volley:1.2.1'
     implementation platform('com.google.firebase:firebase-bom:31.2.0')
     implementation 'com.google.firebase:firebase-auth-ktx'
+    implementation "androidx.fragment:fragment-ktx:1.5.5"
     implementation 'com.google.firebase:firebase-firestore-ktx'
     implementation 'com.google.android.material:material:1.8.0'
 

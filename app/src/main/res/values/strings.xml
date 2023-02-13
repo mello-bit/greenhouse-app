@@ -28,5 +28,11 @@
     <string name="boundary_humidity">Граничная влажность воздуха: </string>
     <string name="temperature_boundary_value">21</string>
     <string name="humidity_boundary_value">30</string>
+    <string name="window_open">Форточка\nоткрыта</string>
+    <string name="window_closed">Форточка\nзакрыта</string>
+    <string name="heater_on">Нагрев\nвкл</string>
+    <string name="heater_off">Нагрев\nвыкл</string>
+    <string name="watering_on">Полив вкл</string>
+    <string name="watering_off">Полив выкл</string>
     <string name="save_changes">Сохранить изменения</string>
 </resources>
