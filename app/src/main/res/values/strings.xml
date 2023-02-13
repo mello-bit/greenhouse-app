@@ -26,8 +26,10 @@
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="boundary_temperature">Граничная температура: </string>
     <string name="boundary_humidity">Граничная влажность воздуха: </string>
+    <string name="boundary_soil_humidity">Граничная влажность почвы: </string>
     <string name="temperature_boundary_value">21</string>
-    <string name="humidity_boundary_value">30</string>
+    <string name="humidity_boundary_value">70</string>
+    <string name="soil_hum_boundary_value">60</string>
     <string name="window_open">Форточка\nоткрыта</string>
     <string name="window_closed">Форточка\nзакрыта</string>
     <string name="heater_on">Нагрев\nвкл</string>
@@ -35,4 +37,5 @@
     <string name="watering_on">Полив вкл</string>
     <string name="watering_off">Полив выкл</string>
     <string name="save_changes">Сохранить изменения</string>
+    <string name="extreme_control_mode">Режим экстренного управления</string>
 </resources>
