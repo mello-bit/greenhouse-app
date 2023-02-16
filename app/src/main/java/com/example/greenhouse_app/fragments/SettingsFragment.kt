@@ -1,19 +1,19 @@
 package com.example.greenhouse_app.fragments
 
-import android.content.SharedPreferences.Editor
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.view.inputmethod.EditorInfo
 import android.widget.Toast
 import com.android.volley.Request
 import com.android.volley.toolbox.StringRequest
 import com.android.volley.toolbox.Volley
 import com.example.greenhouse_app.R
 import com.example.greenhouse_app.databinding.FragmentSettingsBinding
+import com.example.greenhouse_app.utils.NetworkManager
+import org.json.JSONObject
 
 open class SettingsFragment : Fragment() {
     
@@ -21,6 +21,7 @@ open class SettingsFragment : Fragment() {
     private val urlForGetTempAndHum: String = "https://dt.miet.ru/ppo_it/api/temp_hum/"
     private val urlForPatch: String = "https://dt.miet.ru/ppo_it/api/fork_drive/"
 
+    private lateinit var networkManager: NetworkManager
     private lateinit var binding: FragmentSettingsBinding
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -29,7 +30,10 @@ open class SettingsFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        networkManager = NetworkManager(context)
         binding = FragmentSettingsBinding.inflate(layoutInflater)
+
         binding.saveChages.setOnClickListener {
             Log.d("Deb", "Ok")
             val bt = binding.boundaryTempValue.text
@@ -37,39 +41,9 @@ open class SettingsFragment : Fragment() {
 
             Toast.makeText(requireContext(), "$bt, $ht", Toast.LENGTH_SHORT).show()
         }
-        getSoilHum(1)
-        getTempAndHum(3)
+        networkManager.getSoilHum(1)
+        networkManager.getTempAndHum(3)
     }
 
-    private fun getSoilHum(id: Int) {
-        val queue = Volley.newRequestQueue(context)
-        val request = StringRequest(
-            Request.Method.GET,
-            urlForGetSoilHum + "$id",
-            {response ->
-                Log.d("MyLog", "Result: $response")
-            },
-            {error ->
-                Log.d("Er", "$error")
-            }
-        )
-        queue.add(request)
-        Log.d("MyLog", "Ok")
-    }
 
-    private fun getTempAndHum(id: Int) {
-        val queue = Volley.newRequestQueue(context)
-        val request = StringRequest(
-            Request.Method.GET,
-            urlForGetTempAndHum + "$id",
-            {response ->
-                Log.d("MyLog", "Result: $response")
-            },
-            {error ->
-                Log.d("Er", "$error")
-            }
-        )
-        queue.add(request)
-        Log.d("MyLog", "Ok")
-    }
 }
