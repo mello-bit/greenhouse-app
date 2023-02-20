@@ -13,7 +13,7 @@ class NetworkManager(private val context: Context?) {
     private val urlForGetTempAndHum: String = "https://dt.miet.ru/ppo_it/api/temp_hum/"
     private val urlForPatch: String = "https://dt.miet.ru/ppo_it/api/fork_drive/"
 
-    fun getSoilHum(id: Int) {
+    suspend fun getSoilHum(id: Int) {
         if (context != null) {
             val queue = Volley.newRequestQueue(context)
             val request = StringRequest(
@@ -32,7 +32,7 @@ class NetworkManager(private val context: Context?) {
         }
     }
 
-    fun getTempAndHum(id: Int) {
+    suspend fun getTempAndHum(id: Int) {
         val queue = Volley.newRequestQueue(context)
         val request = StringRequest(
             Request.Method.GET,
@@ -53,7 +53,7 @@ class NetworkManager(private val context: Context?) {
      * @param id of sensor
      * @return Will return a map
      */
-    fun getGreenhouseSensorData(jsonString: String): Map<String, Number> {
+    private fun getGreenhouseSensorData(jsonString: String): Map<String, Number> {
         val json = JSONObject(jsonString)
 
         return mapOf(
@@ -67,7 +67,7 @@ class NetworkManager(private val context: Context?) {
      * @param id of sensor
      * @return Will return a map
      */
-    fun getFurrowHumidity(jsonString: String): Map<String, Number> {
+    private fun getFurrowHumidity(jsonString: String): Map<String, Number> {
         val json = JSONObject(jsonString)
 
         return mapOf(

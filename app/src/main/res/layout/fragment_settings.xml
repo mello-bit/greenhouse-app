@@ -124,6 +124,7 @@
                 android:textStyle="bold|italic" />
 
             <EditText
+                android:id="@+id/boundarySoilHum"
                 android:layout_width="wrap_content"
                 android:layout_height="48dp"
                 android:background="@drawable/background_shape_for_boundary"
@@ -140,7 +141,7 @@
     </LinearLayout>
 
     <androidx.appcompat.widget.AppCompatButton
-        android:id="@+id/save_chages"
+        android:id="@+id/saveChanges"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="27dp"
