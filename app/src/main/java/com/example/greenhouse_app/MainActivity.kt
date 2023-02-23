@@ -18,7 +18,6 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         supportActionBar?.hide()
         setContentView(binding.root)
-
         val homeFragment = HomeFragment()
         val settingsFragment = SettingsFragment()
         val notificationFragment = NotificationFragment()

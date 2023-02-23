@@ -7,32 +7,33 @@ import com.android.volley.toolbox.StringRequest
 import com.android.volley.toolbox.Volley
 import org.json.JSONObject
 
-class NetworkManager(private val context: Context?) {
+class AppNetworkManager(private val context: Context?) {
 
     private val urlForGetSoilHum: String = "https://dt.miet.ru/ppo_it/api/hum/"
     private val urlForGetTempAndHum: String = "https://dt.miet.ru/ppo_it/api/temp_hum/"
     private val urlForPatch: String = "https://dt.miet.ru/ppo_it/api/fork_drive/"
 
-    suspend fun getSoilHum(id: Int) {
+    fun getSoilHum() {
         if (context != null) {
             val queue = Volley.newRequestQueue(context)
-            val request = StringRequest(
-                Request.Method.GET,
-                urlForGetSoilHum + "$id",
-                { response ->
-                    Log.d("MyLog", "${getFurrowHumidity(response)}")
-                    Log.d("MyLog", "Result: $response")
-                },
-                { error ->
-                    Log.e(null, "$error")
-                }
-            )
-            queue.add(request)
-            Log.d("MyLog", "Ok")
+            for (id in 1..6) {
+                val request = StringRequest(
+                    Request.Method.GET,
+                    urlForGetSoilHum + "$id",
+                    { response ->
+                        Log.d("MyLog", "${getFurrowHumidity(response)}")
+                    },
+                    { error ->
+                        Log.e(null, "$error")
+                    }
+                )
+                queue.add(request)
+//            Log.d("MyLog", "Ok")
+            }
         }
     }
 
-    suspend fun getTempAndHum(id: Int) {
+    fun getTempAndHum(id: Int) {
         val queue = Volley.newRequestQueue(context)
         val request = StringRequest(
             Request.Method.GET,

@@ -1,22 +1,21 @@
 package com.example.greenhouse_app.fragments
 
-import android.content.Context
-import android.content.SharedPreferences
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
-import com.example.greenhouse_app.R
+import androidx.core.app.NotificationCompat
 import com.example.greenhouse_app.databinding.FragmentNotificationBinding
-import com.example.greenhouse_app.databinding.FragmentSettingsBinding
+import com.example.greenhouse_app.utils.AppNotificationManager
 import com.example.greenhouse_app.utils.AppSettingsManager
 
 
 class NotificationFragment : Fragment() {
-    private lateinit var sharedPreferences: SharedPreferences
+
     private lateinit var binding: FragmentNotificationBinding
+    private lateinit var builder: NotificationCompat
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -37,21 +36,10 @@ class NotificationFragment : Fragment() {
                 "$tempValue $humValue $soilValue",
                 Toast.LENGTH_SHORT
             ).show()
+
+            AppNotificationManager.showNotification()
         }
 
         return binding.root
-    }
-
-
-    fun saveData(key: String, value: String) {
-        val editor = sharedPreferences.edit()
-
-        editor.putString(key, value)
-
-        editor.apply()
-    }
-
-    fun loadData(key: String): String? {
-        return sharedPreferences.getString(key, "")
     }
 }
