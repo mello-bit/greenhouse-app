@@ -5,6 +5,9 @@ import android.util.Log
 import com.android.volley.Request
 import com.android.volley.toolbox.StringRequest
 import com.android.volley.toolbox.Volley
+import com.example.greenhouse_app.dataClasses.ListForData
+import com.example.greenhouse_app.dataClasses.SoilHum
+import com.example.greenhouse_app.dataClasses.TempAndHum
 import org.json.JSONObject
 
 class AppNetworkManager(private val context: Context?) {
@@ -14,40 +17,53 @@ class AppNetworkManager(private val context: Context?) {
     private val urlForPatch: String = "https://dt.miet.ru/ppo_it/api/fork_drive/"
 
     fun getSoilHum() {
-        if (context != null) {
-            val queue = Volley.newRequestQueue(context)
-            for (id in 1..6) {
-                val request = StringRequest(
-                    Request.Method.GET,
-                    urlForGetSoilHum + "$id",
-                    { response ->
-                        Log.d("MyLog", "${getFurrowHumidity(response)}")
-                    },
-                    { error ->
-                        Log.e(null, "$error")
-                    }
-                )
-                queue.add(request)
+        val queue = Volley.newRequestQueue(context)
+        for (id in 1..6) {
+            val request = StringRequest(
+                Request.Method.GET,
+                urlForGetSoilHum + "$id",
+                { response ->
+                    val mapJson = getFurrowHumidity(response)
+                    val soilHum = SoilHum(
+                        mapJson["id"]!!.toByte(),
+                        mapJson["humidity"]!!
+                    )
+                    if (ListForData.SoilHumList.size == 6) ListForData.SoilHumList.clear()
+                    ListForData.SoilHumList.add(soilHum)
+                },
+                { error ->
+                    Log.e(null, "$error")
+                }
+            )
+            queue.add(request)
 //            Log.d("MyLog", "Ok")
-            }
         }
+
     }
 
-    fun getTempAndHum(id: Int) {
+    fun getTempAndHum() {
         val queue = Volley.newRequestQueue(context)
-        val request = StringRequest(
-            Request.Method.GET,
-            urlForGetTempAndHum + "$id",
-            { response ->
-                Log.d("MtLog", "${getGreenhouseSensorData(response)}")
-                Log.d("MyLog", "Result: $response")
-            },
-            { error ->
-                Log.e(null, "$error")
-            }
-        )
-        queue.add(request)
-        Log.d("MyLog", "Ok")
+        for (id in 1..4) {
+            val request = StringRequest(
+                Request.Method.GET,
+                urlForGetTempAndHum + "$id",
+                { response ->
+                    val mapJson = getGreenhouseSensorData(response)
+                    val tempAndHum = TempAndHum(
+                        mapJson["id"]!!.toByte(),
+                        mapJson["temp"]!!,
+                        mapJson["hum"]!!
+                    )
+                    if (ListForData.TempAndHumList.size == 4) ListForData.TempAndHumList.clear()
+                    ListForData.TempAndHumList.add(tempAndHum)
+                },
+                { error ->
+                    Log.d("MyLog", "$error")
+                }
+            )
+            queue.add(request)
+
+        }
     }
 
     /**

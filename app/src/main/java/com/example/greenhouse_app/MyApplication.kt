@@ -14,7 +14,13 @@ class MyApplication : Application() {
         Log.d("TempTag", "Started application")
         AppSettingsManager.initContext(applicationContext)
         AppNotificationManager.initContext(applicationContext)
-        Log.d("TempTag", "${AppSettingsManager.checkThatDataExists("tempValue")}")
+
+        if (AppSettingsManager.checkThatDataExists("tempValue") &&
+                AppSettingsManager.checkThatDataExists("humValue")&&
+                AppSettingsManager.checkThatDataExists("soilValue")) {
+            AppSettingsManager.isAllDataExists = true
+        }
+
         super.onCreate()
         createNotificationChannel()
         // Initialize the Greenhouse instance

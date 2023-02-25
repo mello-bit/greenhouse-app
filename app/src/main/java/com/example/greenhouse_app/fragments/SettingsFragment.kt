@@ -7,6 +7,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import com.example.greenhouse_app.dataClasses.ListForData
 import com.example.greenhouse_app.databinding.FragmentSettingsBinding
 import com.example.greenhouse_app.utils.AppSettingsManager
 import com.example.greenhouse_app.utils.AppNetworkManager
@@ -22,7 +23,13 @@ open class SettingsFragment : Fragment() {
         binding = FragmentSettingsBinding.inflate(inflater, container, false)
 
         networkManager = AppNetworkManager(context)
-        binding = FragmentSettingsBinding.inflate(layoutInflater)
+
+        if (AppSettingsManager.isAllDataExists) {
+            binding.boundaryTempValue.setText(AppSettingsManager.loadData("tempValue"))
+            binding.boundaryHumValue.setText(AppSettingsManager.loadData("humValue"))
+            binding.boundarySoilHum.setText(AppSettingsManager.loadData("soilValue"))
+        }
+
         binding.saveChanges.setOnClickListener {
             Toast.makeText(requireContext(), "Btn was clicked", Toast.LENGTH_SHORT).show()
             Log.d("TempTag", "saveChanges was clicked")
@@ -40,9 +47,12 @@ open class SettingsFragment : Fragment() {
                 value = binding.boundarySoilHum.text.toString()
             )
         }
-        Log.d("MyLog", "Started collecting SoilHum data")
+
         networkManager.getSoilHum()
-        Log.d("MyLog", "Finished collecting SoilHum data")
+
+//        networkManager.getTempAndHum()
+        Log.d("MyLog", ListForData.SoilHumList.toString())
+
         return binding.root
     }
 
