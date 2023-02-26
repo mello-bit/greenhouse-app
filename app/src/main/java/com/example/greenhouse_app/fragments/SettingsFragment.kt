@@ -7,7 +7,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
-import com.example.greenhouse_app.dataClasses.ListForData
 import com.example.greenhouse_app.databinding.FragmentSettingsBinding
 import com.example.greenhouse_app.utils.AppSettingsManager
 import com.example.greenhouse_app.utils.AppNetworkManager
@@ -47,11 +46,6 @@ open class SettingsFragment : Fragment() {
                 value = binding.boundarySoilHum.text.toString()
             )
         }
-
-        networkManager.getSoilHum()
-
-//        networkManager.getTempAndHum()
-        Log.d("MyLog", ListForData.SoilHumList.toString())
 
         return binding.root
     }

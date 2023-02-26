@@ -15,9 +15,11 @@ class AppNetworkManager(private val context: Context?) {
     private val urlForGetSoilHum: String = "https://dt.miet.ru/ppo_it/api/hum/"
     private val urlForGetTempAndHum: String = "https://dt.miet.ru/ppo_it/api/temp_hum/"
     private val urlForPatch: String = "https://dt.miet.ru/ppo_it/api/fork_drive/"
+    val queue = Volley.newRequestQueue(context)
+    var canPrint: Boolean = false
 
     fun getSoilHum() {
-        val queue = Volley.newRequestQueue(context)
+        queue.start()
         for (id in 1..6) {
             val request = StringRequest(
                 Request.Method.GET,
@@ -30,13 +32,14 @@ class AppNetworkManager(private val context: Context?) {
                     )
                     if (ListForData.SoilHumList.size == 6) ListForData.SoilHumList.clear()
                     ListForData.SoilHumList.add(soilHum)
+
+                    canPrint = ListForData.SoilHumList.size == 6
                 },
                 { error ->
                     Log.e(null, "$error")
                 }
             )
             queue.add(request)
-//            Log.d("MyLog", "Ok")
         }
 
     }

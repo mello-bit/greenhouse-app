@@ -5,13 +5,22 @@ import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.content.Context
 import android.os.Build
+import android.os.Handler
+import android.os.Looper
 import android.util.Log
+import com.example.greenhouse_app.dataClasses.ListForData
+import com.example.greenhouse_app.utils.AppNetworkManager
 import com.example.greenhouse_app.utils.AppSettingsManager
 import com.example.greenhouse_app.utils.AppNotificationManager
 
 class MyApplication : Application() {
+
+    private lateinit var networkManager: AppNetworkManager
+    private lateinit var handler: Handler
+
     override fun onCreate() {
         Log.d("TempTag", "Started application")
+
         AppSettingsManager.initContext(applicationContext)
         AppNotificationManager.initContext(applicationContext)
 
@@ -23,10 +32,26 @@ class MyApplication : Application() {
 
         super.onCreate()
         createNotificationChannel()
+        networkManager = AppNetworkManager(applicationContext)
+        handler = Handler(Looper.getMainLooper())
         // Initialize the Greenhouse instance
 //        Greenhouse.initialize(this)
 //        val ap = AppSettingsManager()
 //        ap.initContext(con)
+
+        networkManager.getSoilHum()
+//        networkManager.getTempAndHum()
+        handler.post(object : Runnable {
+            override fun run() {
+                handler.postDelayed(this, 200)
+                if (networkManager.canPrint) {
+                    handler.postDelayed(this, 100)
+                    Log.d("MyLog", ListForData.SoilHumList.toString())
+                    ListForData.SoilHumList.clear()
+                    networkManager.canPrint = false
+                }
+            }
+        })
     }
 
     override fun onTerminate() {
