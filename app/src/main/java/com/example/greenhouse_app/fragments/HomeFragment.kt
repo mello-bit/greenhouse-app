@@ -13,16 +13,36 @@ import com.example.greenhouse_app.R
 import com.example.greenhouse_app.databinding.FragmentHomeBinding
 
 
+inline fun <reified T : View> View.findViewWhichIs(): T? {
+    val queue = ArrayDeque<View>()
+    queue.add(this)
+    while (queue.isNotEmpty()) {
+        val view = queue.removeFirst()
+        if (view is T) {
+            return view
+        }
+        if (view is ViewGroup) {
+            for (i in 0 until view.childCount) {
+                queue.add(view.getChildAt(i))
+            }
+        }
+    }
+    return null
+}
+
+
 class HomeFragment : Fragment() {
     private lateinit var greenStatus: Drawable.ConstantState
     private lateinit var redStatus: Drawable.ConstantState
+    private lateinit var greenStatusBg: Drawable.ConstantState
+    private lateinit var redStatusBg: Drawable.ConstantState
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         greenStatus = ResourcesCompat.getDrawable(resources, R.drawable.green_status_round_button, null)!!.constantState!!
+        greenStatusBg = ResourcesCompat.getDrawable(resources, R.drawable.furrow_hydration_on, null)!!.constantState!!
         redStatus = ResourcesCompat.getDrawable(resources, R.drawable.red_status_round_button, null)!!.constantState!!
-
-
+        redStatusBg = ResourcesCompat.getDrawable(resources, R.drawable.furrow_hydration_off, null)!!.constantState!!
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -30,12 +50,26 @@ class HomeFragment : Fragment() {
         val binding = FragmentHomeBinding.inflate(inflater, container, false)
 
         binding.btnWindowStatus.setOnClickListener{
-            changeBackgroundStatus(it)
+            changeButtonStateBg(it)
             switchText(it as AppCompatButton, resources.getString(R.string.window_closed), resources.getString(R.string.window_open))
         }
         binding.btnHeaterStatus.setOnClickListener{
-            changeBackgroundStatus(it)
+            changeButtonStateBg(it)
             switchText(it as AppCompatButton, resources.getString(R.string.heater_off), resources.getString(R.string.heater_on))
+        }
+
+        val furrowButtons = setOf(
+            binding.llFurrow1, binding.llFurrow2,
+            binding.llFurrow3, binding.llFurrow4,
+            binding.llFurrow5, binding.llFurrow6
+        )
+
+        furrowButtons.forEach {layout ->
+            layout.setOnClickListener {
+                val button = it.findViewWhichIs<AppCompatButton>()
+                changeButtonStateBg(button as View)
+                changeFurrowStateBg(layout as View)
+            }
         }
 
         return binding.root
@@ -47,11 +81,18 @@ class HomeFragment : Fragment() {
             text2 -> btn.text = text1
         }
     }
-    private fun changeBackgroundStatus(btn: View) {
+    private fun changeButtonStateBg(btn: View) {
         when (btn.background.constantState) {
             greenStatus -> btn.setBackgroundResource(R.drawable.red_status_round_button)
             redStatus -> btn.setBackgroundResource(R.drawable.green_status_round_button)
             else -> Log.e("UI", "Drawable error occured")
+        }
+    }
+
+    private fun changeFurrowStateBg(ll: View) {
+        when (ll.background.constantState) {
+            greenStatusBg -> ll.setBackgroundResource(R.drawable.furrow_hydration_off)
+            redStatusBg -> ll.setBackgroundResource(R.drawable.furrow_hydration_on)
         }
     }
 
