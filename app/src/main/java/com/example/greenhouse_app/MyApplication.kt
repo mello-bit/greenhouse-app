@@ -39,19 +39,30 @@ class MyApplication : Application() {
 //        val ap = AppSettingsManager()
 //        ap.initContext(con)
 
-        networkManager.getSoilHum()
+//        networkManager.getSoilHum()
 //        networkManager.getTempAndHum()
         handler.post(object : Runnable {
             override fun run() {
-                handler.postDelayed(this, 200)
-                if (networkManager.canPrint) {
-                    handler.postDelayed(this, 100)
-                    Log.d("MyLog", ListForData.SoilHumList.toString())
+                networkManager.getSoilHum()
+                networkManager.getTempAndHum()
+//                handler.postDelayed(this, 200)
+                handler.postDelayed(this, 10 * 1000)
+                if (ListForData.SoilHumList.size == 6) {
+                    Log.d("MyLog",  "Множество почва ${ListForData.SoilHumList.toString()}")
                     ListForData.SoilHumList.clear()
-                    networkManager.canPrint = false
                 }
+
+                if (ListForData.TempAndHumList.size == 4) {
+                    Log.d("MyLog", "Множество сенсоры ${ListForData.TempAndHumList.toString()}")
+                    ListForData.TempAndHumList.clear()
+                }
+
             }
         })
+    }
+
+    private fun callSoilHumApi() {
+
     }
 
     override fun onTerminate() {

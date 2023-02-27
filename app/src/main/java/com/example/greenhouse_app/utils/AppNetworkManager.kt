@@ -15,7 +15,7 @@ class AppNetworkManager(private val context: Context?) {
     private val urlForGetSoilHum: String = "https://dt.miet.ru/ppo_it/api/hum/"
     private val urlForGetTempAndHum: String = "https://dt.miet.ru/ppo_it/api/temp_hum/"
     private val urlForPatch: String = "https://dt.miet.ru/ppo_it/api/fork_drive/"
-    val queue = Volley.newRequestQueue(context)
+    private val queue = Volley.newRequestQueue(context)
     var canPrint: Boolean = false
 
     fun getSoilHum() {
@@ -30,10 +30,8 @@ class AppNetworkManager(private val context: Context?) {
                         mapJson["id"]!!.toByte(),
                         mapJson["humidity"]!!
                     )
-                    if (ListForData.SoilHumList.size == 6) ListForData.SoilHumList.clear()
                     ListForData.SoilHumList.add(soilHum)
 
-                    canPrint = ListForData.SoilHumList.size == 6
                 },
                 { error ->
                     Log.e(null, "$error")
@@ -57,7 +55,6 @@ class AppNetworkManager(private val context: Context?) {
                         mapJson["temp"]!!,
                         mapJson["hum"]!!
                     )
-                    if (ListForData.TempAndHumList.size == 4) ListForData.TempAndHumList.clear()
                     ListForData.TempAndHumList.add(tempAndHum)
                 },
                 { error ->
