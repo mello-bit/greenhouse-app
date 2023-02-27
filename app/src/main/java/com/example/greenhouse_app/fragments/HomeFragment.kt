@@ -69,6 +69,7 @@ class HomeFragment : Fragment() {
                 val button = it.findViewWhichIs<AppCompatButton>()
                 changeButtonStateBg(button as View)
                 changeFurrowStateBg(layout as View)
+                switchText(button as AppCompatButton, resources.getString(R.string.watering_on), resources.getString(R.string.watering_off))
             }
         }
 
