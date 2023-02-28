@@ -9,7 +9,7 @@ class AppSettingsManager {
 
     companion object {
 
-        var isAllDataExists = false
+        var isAllBoundaryDataExists = false
         @SuppressLint("StaticFieldLeak")
         private lateinit var context: Context
         private lateinit var sharedPreferences: SharedPreferences

@@ -23,7 +23,7 @@ open class SettingsFragment : Fragment() {
 
         networkManager = AppNetworkManager(context)
 
-        if (AppSettingsManager.isAllDataExists) {
+        if (AppSettingsManager.isAllBoundaryDataExists) {
             binding.boundaryTempValue.setText(AppSettingsManager.loadData("tempValue"))
             binding.boundaryHumValue.setText(AppSettingsManager.loadData("humValue"))
             binding.boundarySoilHum.setText(AppSettingsManager.loadData("soilValue"))

@@ -27,7 +27,7 @@ class MyApplication : Application() {
         if (AppSettingsManager.checkThatDataExists("tempValue") &&
                 AppSettingsManager.checkThatDataExists("humValue")&&
                 AppSettingsManager.checkThatDataExists("soilValue")) {
-            AppSettingsManager.isAllDataExists = true
+            AppSettingsManager.isAllBoundaryDataExists = true
         }
 
         super.onCreate()

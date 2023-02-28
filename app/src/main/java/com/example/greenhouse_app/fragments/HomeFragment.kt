@@ -11,6 +11,7 @@ import androidx.appcompat.widget.AppCompatButton
 import androidx.core.content.res.ResourcesCompat
 import com.example.greenhouse_app.R
 import com.example.greenhouse_app.databinding.FragmentHomeBinding
+import com.example.greenhouse_app.utils.AppSettingsManager
 
 
 inline fun <reified T : View> View.findViewWhichIs(): T? {
@@ -37,6 +38,8 @@ class HomeFragment : Fragment() {
     private lateinit var greenStatusBg: Drawable.ConstantState
     private lateinit var redStatusBg: Drawable.ConstantState
 
+    private lateinit var binding: FragmentHomeBinding
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         greenStatus = ResourcesCompat.getDrawable(resources, R.drawable.green_status_round_button, null)!!.constantState!!
@@ -47,7 +50,7 @@ class HomeFragment : Fragment() {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         // Inflate the layout for this fragment
-        val binding = FragmentHomeBinding.inflate(inflater, container, false)
+        binding = FragmentHomeBinding.inflate(inflater, container, false)
 
         binding.btnWindowStatus.setOnClickListener{
             changeButtonStateBg(it)
@@ -95,6 +98,56 @@ class HomeFragment : Fragment() {
             greenStatusBg -> ll.setBackgroundResource(R.drawable.furrow_hydration_off)
             redStatusBg -> ll.setBackgroundResource(R.drawable.furrow_hydration_on)
         }
+    }
+
+    override fun onResume() {
+        super.onResume()
+
+        // reading data from shared preferences
+        val furrowValues = mutableListOf<String>()
+        val furrowButtonsValues = mutableListOf<String>()
+        val bottomButtonsStatus = listOf(
+            AppSettingsManager.loadData("btnWindowStatus"),
+            AppSettingsManager.loadData("btnHeaterStatus")
+        )
+        for (i in 1..6) {
+            val furrowValue = AppSettingsManager.loadData("tvFurrow${i}Status")
+            val furrowButtonValue = AppSettingsManager.loadData("btnFurrow$i")
+
+            if (furrowValue.toString().isNotEmpty())
+                furrowValues.add(furrowValue.toString())
+
+            if (furrowButtonValue.toString().isNotEmpty())
+                furrowButtonsValues.add(furrowButtonValue.toString())
+        }
+
+        Log.d("SaveTag", furrowValues.toString())
+        Log.d("SaveTag", furrowButtonsValues.toString())
+        Log.d("SaveTag", bottomButtonsStatus.toString())
+    }
+
+    override fun onStop() {
+        super.onStop()
+
+        val furrowValues = listOf(
+            binding.tvFurrow1Status.text, binding.tvFurrow2Status.text,
+            binding.tvFurrow3Status.text, binding.tvFurrow4Status.text,
+            binding.tvFurrow5Status.text, binding.tvFurrow6Status.text
+        )
+        val furrowButtonValues = listOf(
+            binding.btnFurrow1.text, binding.btnFurrow2.text,
+            binding.btnFurrow3.text, binding.btnFurrow4.text,
+            binding.btnFurrow5.text, binding.btnFurrow6.text
+        )
+
+        for (i in 1..6) {
+            AppSettingsManager.saveData("tvFurrow${i}Status", "$i - ${furrowValues[i - 1]}")
+            AppSettingsManager.saveData("btnFurrow$i", "$i - ${furrowButtonValues[i - 1]}")
+        }
+        AppSettingsManager.saveData("btnWindowStatus", binding.btnWindowStatus.text.toString())
+        AppSettingsManager.saveData("btnHeaterStatus", binding.btnHeaterStatus.text.toString())
+        Log.d("SaveTag", "Data has saved")
+
     }
 
     companion object {
