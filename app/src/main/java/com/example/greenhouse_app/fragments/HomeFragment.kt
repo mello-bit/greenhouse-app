@@ -1,5 +1,7 @@
 package com.example.greenhouse_app.fragments
 
+import android.content.Context
+import android.content.res.Resources
 import android.graphics.drawable.Drawable
 import android.os.Bundle
 import android.text.TextWatcher
@@ -8,6 +10,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
 import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.appcompat.widget.AppCompatButton
@@ -17,6 +20,7 @@ import com.example.greenhouse_app.R
 import com.example.greenhouse_app.databinding.FragmentHomeBinding
 import com.example.greenhouse_app.utils.AppSettingsManager
 import com.google.api.Distribution.BucketOptions.Linear
+import org.checkerframework.common.subtyping.qual.Bottom
 import javax.net.ssl.SSLEngineResult.Status
 
 
@@ -37,7 +41,7 @@ inline fun <reified T : View> View.findViewWhichIs(): T? {
     return null
 }
 
-class FurrowButton(val Id: Byte, val linearLayout: LinearLayout) {
+class FurrowButton(val Id: Byte, val linearLayout: LinearLayout, val BottomButton: Boolean = true) {
     var status: Boolean
     var button: AppCompatButton
     var textView: TextView
@@ -45,39 +49,42 @@ class FurrowButton(val Id: Byte, val linearLayout: LinearLayout) {
     fun changeStatus(status: Boolean) {
         this.status = status
 
-        val resource = if (status) R.drawable.green_status_round_button else R.drawable.red_status_round_button
+        val btn_background = if (status) R.drawable.green_status_round_button else R.drawable.red_status_round_button
+        val ll_background = if (status) R.drawable.furrow_hydration_on else R.drawable.furrow_hydration_off
         val text = if (status) R.string.watering_on else R.string.watering_off
 
-        this.textView.setBackgroundResource(resource)
+        this.linearLayout.setBackgroundResource(ll_background)
+        this.button.setBackgroundResource(btn_background)
         this.button.setText(text)
     }
 
     init {
         this.status = AppSettingsManager.loadData("Furrow${this.Id}Status").toBoolean()
-        this.button = linearLayout.findViewWhichIs<AppCompatButton>()!!
-        this.textView = linearLayout.findViewWhichIs<TextView>()!!
+        this.button = linearLayout.findViewWithTag<AppCompatButton>("btnFurrow$Id")
+        this.textView = linearLayout.findViewWithTag<TextView>("tvFurrow${Id}Status")
+
+        Log.d(null, this.button.tag.toString())
+        Log.d(null, this.textView.tag.toString())
     }
 
     init {
-        changeStatus(this.status)
+        val status = AppSettingsManager.loadData("Furrow${this.Id}Status")
+
+        if (status != null && status.isNotEmpty()) {
+            changeStatus(status.toBoolean())
+        } else {
+            Log.d(null,"THE RECEIVED STATUS IS $status")
+        }
     }
 }
 
 
 class HomeFragment : Fragment() {
-    private lateinit var greenStatus: Drawable.ConstantState
-    private lateinit var redStatus: Drawable.ConstantState
-    private lateinit var greenStatusBg: Drawable.ConstantState
-    private lateinit var redStatusBg: Drawable.ConstantState
-
     private lateinit var binding: FragmentHomeBinding
+    private var buttonClasses = mutableListOf<FurrowButton>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        greenStatus = ResourcesCompat.getDrawable(resources, R.drawable.green_status_round_button, null)!!.constantState!!
-        greenStatusBg = ResourcesCompat.getDrawable(resources, R.drawable.furrow_hydration_on, null)!!.constantState!!
-        redStatus = ResourcesCompat.getDrawable(resources, R.drawable.red_status_round_button, null)!!.constantState!!
-        redStatusBg = ResourcesCompat.getDrawable(resources, R.drawable.furrow_hydration_off, null)!!.constantState!!
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -85,12 +92,10 @@ class HomeFragment : Fragment() {
         binding = FragmentHomeBinding.inflate(inflater, container, false)
 
         binding.btnWindowStatus.setOnClickListener{
-            changeButtonStateBg(it)
-            switchText(it as AppCompatButton, resources.getString(R.string.window_closed), resources.getString(R.string.window_open))
+
         }
         binding.btnHeaterStatus.setOnClickListener{
-            changeButtonStateBg(it)
-            switchText(it as AppCompatButton, resources.getString(R.string.heater_off), resources.getString(R.string.heater_on))
+
         }
 
         val layouts = listOf<LinearLayout>(
@@ -99,15 +104,14 @@ class HomeFragment : Fragment() {
             binding.llFurrow5, binding.llFurrow6
         )
 
-        val buttonClasses = mutableListOf<FurrowButton>()
 
         for (i in 1..6) {
-            val layout = layouts[i]
+            val layout = layouts[i - 1]
             val furrowClass = FurrowButton(i.toByte(), layout)
             layout.setOnClickListener {
                 furrowClass.changeStatus(!furrowClass.status)
             }
-            buttonClasses.add(furrowClass)
+            this.buttonClasses.add(furrowClass)
         }
 
         return binding.root
@@ -143,25 +147,10 @@ class HomeFragment : Fragment() {
     override fun onStop() {
         super.onStop()
 
-        val furrowValues = listOf(
-            binding.tvFurrow1Status.text, binding.tvFurrow2Status.text,
-            binding.tvFurrow3Status.text, binding.tvFurrow4Status.text,
-            binding.tvFurrow5Status.text, binding.tvFurrow6Status.text
-        )
-        val furrowButtonValues = listOf(
-            binding.btnFurrow1.text, binding.btnFurrow2.text,
-            binding.btnFurrow3.text, binding.btnFurrow4.text,
-            binding.btnFurrow5.text, binding.btnFurrow6.text
-        )
-
-        for (i in 1..6) {
-            AppSettingsManager.saveData("tvFurrow${i}Status", "$i - ${furrowValues[i - 1]}")
-            AppSettingsManager.saveData("btnFurrow$i", "$i - ${furrowButtonValues[i - 1]}")
+        this.buttonClasses.forEach {
+            val key = "Furrow${it.Id}Status"
+            AppSettingsManager.saveData(key, it.status.toString())
         }
-        AppSettingsManager.saveData("btnWindowStatus", binding.btnWindowStatus.text.toString())
-        AppSettingsManager.saveData("btnHeaterStatus", binding.btnHeaterStatus.text.toString())
-        Log.d("SaveTag", "Data has saved")
-
     }
 
     companion object {
