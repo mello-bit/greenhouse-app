@@ -6,16 +6,23 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.example.greenhouse_app.R
+import com.example.greenhouse_app.databinding.FragmentChartsBinding
 
 
 class ChartsFragment : Fragment() {
 
+    private lateinit var binding: FragmentChartsBinding
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_charts, container, false)
+    ): View {
+
+        binding = FragmentChartsBinding.inflate(inflater, container, false)
+
+
+
+        return binding.root
     }
 
 

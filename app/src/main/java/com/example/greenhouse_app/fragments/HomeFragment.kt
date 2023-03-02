@@ -7,6 +7,8 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.LinearLayout
+import android.widget.TextView
 import androidx.appcompat.widget.AppCompatButton
 import androidx.core.content.res.ResourcesCompat
 import com.example.greenhouse_app.R
@@ -102,7 +104,6 @@ class HomeFragment : Fragment() {
 
     override fun onResume() {
         super.onResume()
-
         // reading data from shared preferences
         val furrowValues = mutableListOf<String>()
         val furrowButtonsValues = mutableListOf<String>()
@@ -113,6 +114,13 @@ class HomeFragment : Fragment() {
         for (i in 1..6) {
             val furrowValue = AppSettingsManager.loadData("tvFurrow${i}Status")
             val furrowButtonValue = AppSettingsManager.loadData("btnFurrow$i")
+
+//            val llId = resources.getIdentifier("llFurrow$i", "id", "layout")
+//            val layout = binding.root.findViewById<LinearLayout>(llId)
+//            val tvStatus = layout.findViewWhichIs<TextView>()
+//            val btnFurrow = layout.findViewWhichIs<AppCompatButton>()
+
+
 
             if (furrowValue.toString().isNotEmpty())
                 furrowValues.add(furrowValue.toString())
