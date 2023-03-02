@@ -7,9 +7,10 @@
     tools:context=".fragments.ChartsFragment">
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/rvataFromSensors"
+        android:id="@+id/rvDataFromSensors"
         android:layout_width="match_parent"
         android:layout_height="0dp"
+        tools:listitem="@layout/card_table"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"

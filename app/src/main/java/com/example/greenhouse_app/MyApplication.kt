@@ -49,11 +49,17 @@ class MyApplication : Application() {
                 handler.postDelayed(this, 10 * 1000)
                 if (ListForData.SoilHumList.size == 6) {
                     Log.d("MyLog",  "Множество почва ${ListForData.SoilHumList.toString()}")
+                    ListForData.EverySoilHumDataList.add(
+                        ListForData.SoilHumList.toMutableList()
+                    )
                     ListForData.SoilHumList.clear()
                 }
 
                 if (ListForData.TempAndHumList.size == 4) {
                     Log.d("MyLog", "Множество сенсоры ${ListForData.TempAndHumList.toString()}")
+                    ListForData.EveryTempAndHumDataList.add(
+                        ListForData.TempAndHumList.toMutableList()
+                    )
                     ListForData.TempAndHumList.clear()
                 }
 
