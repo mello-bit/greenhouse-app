@@ -2,16 +2,22 @@ package com.example.greenhouse_app.fragments
 
 import android.graphics.drawable.Drawable
 import android.os.Bundle
+import android.text.TextWatcher
 import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.LinearLayout
+import android.widget.TextView
 import androidx.appcompat.widget.AppCompatButton
+import androidx.appcompat.widget.FitWindowsLinearLayout
 import androidx.core.content.res.ResourcesCompat
 import com.example.greenhouse_app.R
 import com.example.greenhouse_app.databinding.FragmentHomeBinding
 import com.example.greenhouse_app.utils.AppSettingsManager
+import com.google.api.Distribution.BucketOptions.Linear
+import javax.net.ssl.SSLEngineResult.Status
 
 
 inline fun <reified T : View> View.findViewWhichIs(): T? {
@@ -29,6 +35,32 @@ inline fun <reified T : View> View.findViewWhichIs(): T? {
         }
     }
     return null
+}
+
+class FurrowButton(val Id: Byte, val linearLayout: LinearLayout) {
+    var status: Boolean
+    var button: AppCompatButton
+    var textView: TextView
+
+    fun changeStatus(status: Boolean) {
+        this.status = status
+
+        val resource = if (status) R.drawable.green_status_round_button else R.drawable.red_status_round_button
+        val text = if (status) R.string.watering_on else R.string.watering_off
+
+        this.textView.setBackgroundResource(resource)
+        this.button.setText(text)
+    }
+
+    init {
+        this.status = AppSettingsManager.loadData("Furrow${this.Id}Status").toBoolean()
+        this.button = linearLayout.findViewWhichIs<AppCompatButton>()!!
+        this.textView = linearLayout.findViewWhichIs<TextView>()!!
+    }
+
+    init {
+        changeStatus(this.status)
+    }
 }
 
 
@@ -61,44 +93,26 @@ class HomeFragment : Fragment() {
             switchText(it as AppCompatButton, resources.getString(R.string.heater_off), resources.getString(R.string.heater_on))
         }
 
-        val furrowButtons = setOf(
+        val layouts = listOf<LinearLayout>(
             binding.llFurrow1, binding.llFurrow2,
             binding.llFurrow3, binding.llFurrow4,
             binding.llFurrow5, binding.llFurrow6
         )
 
-        furrowButtons.forEach {layout ->
+        val buttonClasses = mutableListOf<FurrowButton>()
+
+        for (i in 1..6) {
+            val layout = layouts[i]
+            val furrowClass = FurrowButton(i.toByte(), layout)
             layout.setOnClickListener {
-                val button = it.findViewWhichIs<AppCompatButton>()
-                changeButtonStateBg(button as View)
-                changeFurrowStateBg(layout as View)
-                switchText(button as AppCompatButton, resources.getString(R.string.watering_on), resources.getString(R.string.watering_off))
+                furrowClass.changeStatus(!furrowClass.status)
             }
+            buttonClasses.add(furrowClass)
         }
 
         return binding.root
     }
 
-    private fun switchText(btn: AppCompatButton, text1: String, text2: String) {
-        when (btn.text) {
-            text1 -> btn.text = text2
-            text2 -> btn.text = text1
-        }
-    }
-    private fun changeButtonStateBg(btn: View) {
-        when (btn.background.constantState) {
-            greenStatus -> btn.setBackgroundResource(R.drawable.red_status_round_button)
-            redStatus -> btn.setBackgroundResource(R.drawable.green_status_round_button)
-            else -> Log.e("UI", "Drawable error occured")
-        }
-    }
-
-    private fun changeFurrowStateBg(ll: View) {
-        when (ll.background.constantState) {
-            greenStatusBg -> ll.setBackgroundResource(R.drawable.furrow_hydration_off)
-            redStatusBg -> ll.setBackgroundResource(R.drawable.furrow_hydration_on)
-        }
-    }
 
     override fun onResume() {
         super.onResume()
