@@ -15,6 +15,7 @@ import com.example.greenhouse_app.dataClasses.SoilHum
 import com.example.greenhouse_app.dataClasses.TempAndHum
 import com.example.greenhouse_app.databinding.FragmentHomeBinding
 import com.example.greenhouse_app.utils.AppSettingsManager
+import kotlin.math.roundToInt
 
 
 interface ApiListener {
@@ -85,19 +86,28 @@ class HomeFragment : Fragment(), ApiListener {
                 buttonClasses[soilHumidity.id]?.changeDisplayValue(soilHumidity.humidity.toByte())
             }
 
+            var generalGreenhouseHumidity = 0f
+            var generalGreenhouseTemperature = 0f
+            for (tempHumidity in response.second) {
+                generalGreenhouseHumidity += tempHumidity.hum.toFloat()
+                generalGreenhouseTemperature += tempHumidity.temp.toFloat()
+            }
+
+            binding.tvGreenhouseHumidity.text = getString(
+                R.string.percent_adder,
+                "%.1f".format(generalGreenhouseHumidity / 4)
+            )
+
+            binding.tvGreenhouseTemp.text = getString(
+                R.string.temperature_celsius,
+                "%.1f".format(generalGreenhouseTemperature / 4)
+            )
         }
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         // Inflate the layout for this fragment
         binding = FragmentHomeBinding.inflate(inflater, container, false)
-
-        binding.btnWindowStatus.setOnClickListener{
-
-        }
-        binding.btnHeaterStatus.setOnClickListener{
-
-        }
 
         val layouts = listOf<LinearLayout>(
             binding.llFurrow1, binding.llFurrow2,
@@ -123,26 +133,26 @@ class HomeFragment : Fragment(), ApiListener {
         super.onResume()
 
         // reading data from shared preferences
-        val furrowValues = mutableListOf<String>()
-        val furrowButtonsValues = mutableListOf<String>()
-        val bottomButtonsStatus = listOf(
-            AppSettingsManager.loadData("btnWindowStatus"),
-            AppSettingsManager.loadData("btnHeaterStatus")
-        )
-        for (i in 1..6) {
-            val furrowValue = AppSettingsManager.loadData("tvFurrow${i}Status")
-            val furrowButtonValue = AppSettingsManager.loadData("btnFurrow$i")
-
-            if (furrowValue.toString().isNotEmpty())
-                furrowValues.add(furrowValue.toString())
-
-            if (furrowButtonValue.toString().isNotEmpty())
-                furrowButtonsValues.add(furrowButtonValue.toString())
-        }
-
-        Log.d("SaveTag", furrowValues.toString())
-        Log.d("SaveTag", furrowButtonsValues.toString())
-        Log.d("SaveTag", bottomButtonsStatus.toString())
+//        val furrowValues = mutableListOf<String>()
+//        val furrowButtonsValues = mutableListOf<String>()
+//        val bottomButtonsStatus = listOf(
+//            AppSettingsManager.loadData("btnWindowStatus"),
+//            AppSettingsManager.loadData("btnHeaterStatus")
+//        )
+//        for (i in 1..6) {
+//            val furrowValue = AppSettingsManager.loadData("tvFurrow${i}Status")
+//            val furrowButtonValue = AppSettingsManager.loadData("btnFurrow$i")
+//
+//            if (furrowValue.toString().isNotEmpty())
+//                furrowValues.add(furrowValue.toString())
+//
+//            if (furrowButtonValue.toString().isNotEmpty())
+//                furrowButtonsValues.add(furrowButtonValue.toString())
+//        }
+//
+//        Log.d("SaveTag", furrowValues.toString())
+//        Log.d("SaveTag", furrowButtonsValues.toString())
+//        Log.d("SaveTag", bottomButtonsStatus.toString())
     }
 
     override fun onStop() {

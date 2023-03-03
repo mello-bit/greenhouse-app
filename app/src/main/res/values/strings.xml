@@ -22,7 +22,6 @@
     <string name="response">Такая почта уже есть в базе или она некорректна</string>
     <string name="restore_title">Войти в свой аккаунт</string>
     <string name="restore_description">Пройдите по ссылке в письме для восстановления пароля</string>
-    <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="boundary_temperature">Граничная температура: </string>
     <string name="boundary_humidity">Граничная влажность воздуха: </string>
@@ -32,10 +31,12 @@
     <string name="soil_hum_boundary_value">60</string>
     <string name="window_open">Форточка\nоткрыта</string>
     <string name="window_closed">Форточка\nзакрыта</string>
-    <string name="heater_on">Нагрев\nвкл</string>
-    <string name="heater_off">Нагрев\nвыкл</string>
+    <string name="humidifier_on">Увлажнение\nвкл</string>
+    <string name="humidifier_off">Увлажнение\nвыкл</string>
     <string name="watering_on">Полив вкл</string>
     <string name="watering_off">Полив выкл</string>
     <string name="save_changes">Сохранить изменения</string>
     <string name="extreme_control_mode">Режим экстренного управления</string>
+    <string name="temperature_celsius">%s°C</string>
+    <string name="percent_adder">%s%%</string>
 </resources>
