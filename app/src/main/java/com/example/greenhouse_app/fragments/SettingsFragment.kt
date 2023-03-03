@@ -23,11 +23,11 @@ open class SettingsFragment : Fragment() {
 
         networkManager = AppNetworkManager(context)
 
-        if (AppSettingsManager.isAllBoundaryDataExists) {
-            binding.boundaryTempValue.setText(AppSettingsManager.loadData("tempValue"))
-            binding.boundaryHumValue.setText(AppSettingsManager.loadData("humValue"))
-            binding.boundarySoilHum.setText(AppSettingsManager.loadData("soilValue"))
-        }
+
+        binding.boundaryTempValue.setText(AppSettingsManager.loadData("tempValue"))
+        binding.boundaryHumValue.setText(AppSettingsManager.loadData("humValue"))
+        binding.boundarySoilHum.setText(AppSettingsManager.loadData("soilValue"))
+
 
         binding.saveChanges.setOnClickListener {
             Toast.makeText(requireContext(), "Btn was clicked", Toast.LENGTH_SHORT).show()

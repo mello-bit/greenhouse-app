@@ -9,6 +9,7 @@ import android.os.Handler
 import android.os.Looper
 import android.util.Log
 import com.example.greenhouse_app.dataClasses.ListForData
+import com.example.greenhouse_app.recyclerView.DataAdapter
 import com.example.greenhouse_app.utils.AppNetworkManager
 import com.example.greenhouse_app.utils.AppSettingsManager
 import com.example.greenhouse_app.utils.AppNotificationManager
@@ -28,6 +29,10 @@ class MyApplication : Application() {
                 AppSettingsManager.checkThatDataExists("humValue")&&
                 AppSettingsManager.checkThatDataExists("soilValue")) {
             AppSettingsManager.isAllBoundaryDataExists = true
+        } else {
+            AppSettingsManager.saveData("tempValue", "21")
+            AppSettingsManager.saveData("humValue", "69.7")
+            AppSettingsManager.saveData("soilValue", "67.4")
         }
 
         super.onCreate()
@@ -45,13 +50,14 @@ class MyApplication : Application() {
             override fun run() {
                 networkManager.getSoilHum()
                 networkManager.getTempAndHum()
-//                handler.postDelayed(this, 200)
                 handler.postDelayed(this, 10 * 1000)
                 if (ListForData.SoilHumList.size == 6) {
                     Log.d("MyLog",  "Множество почва ${ListForData.SoilHumList.toString()}")
                     ListForData.EverySoilHumDataList.add(
                         ListForData.SoilHumList.toMutableList()
                     )
+                    Log.d("EveryLog", "Вся почва: " +
+                            ListForData.EverySoilHumDataList.toString())
                     ListForData.SoilHumList.clear()
                 }
 
@@ -60,9 +66,12 @@ class MyApplication : Application() {
                     ListForData.EveryTempAndHumDataList.add(
                         ListForData.TempAndHumList.toMutableList()
                     )
+                    Log.d(
+                        "EveryLog", "Вся температура и влажность: " +
+                                ListForData.EveryTempAndHumDataList.toString()
+                    )
                     ListForData.TempAndHumList.clear()
                 }
-
             }
         })
     }

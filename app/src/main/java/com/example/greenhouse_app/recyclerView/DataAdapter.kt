@@ -1,5 +1,6 @@
 package com.example.greenhouse_app.recyclerView
 
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -33,16 +34,23 @@ class DataAdapter(
     }
 
     override fun getItemCount(): Int {
-        return furrowData.size
+        return furrowData.size + tempAndHum.size
     }
 
     override fun onBindViewHolder(holder: DataViewHolder, position: Int) {
-        val currentItem = furrowData[position]
-        for (i in 0 until holder.llFurrowData.childCount) {
-            val view = holder.llFurrowData.getChildAt(i) as TextView
+//        Log.d("LogTr", position.toString())
+        if (position < furrowData.size){
+            val currentItem = furrowData[position]
 
-            view.text = currentItem[i].humidity.toString()
+            Log.d("LogTr", currentItem.toString())
+            for (i in 0 until holder.llFurrowData.childCount) {
+                val view = holder.llFurrowData.getChildAt(i) as TextView
+                view.text = currentItem[i].humidity.toString()
+            }
+            return
+
         }
+        return
     }
 
 
