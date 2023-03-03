@@ -9,6 +9,7 @@ import android.os.Handler
 import android.os.Looper
 import android.util.Log
 import com.example.greenhouse_app.dataClasses.ListForData
+import com.example.greenhouse_app.fragments.ApiListener
 import com.example.greenhouse_app.utils.AppNetworkManager
 import com.example.greenhouse_app.utils.AppSettingsManager
 import com.example.greenhouse_app.utils.AppNotificationManager
@@ -17,6 +18,11 @@ class MyApplication : Application() {
 
     private lateinit var networkManager: AppNetworkManager
     private lateinit var handler: Handler
+    private var apiListener: ApiListener? = null
+
+    fun setApiListener(listener: ApiListener) {
+        this.apiListener = listener
+    }
 
     override fun onCreate() {
         Log.d("TempTag", "Started application")
@@ -47,13 +53,12 @@ class MyApplication : Application() {
                 networkManager.getTempAndHum()
 //                handler.postDelayed(this, 200)
                 handler.postDelayed(this, 10 * 1000)
-                if (ListForData.SoilHumList.size == 6) {
-                    Log.d("MyLog",  "Множество почва ${ListForData.SoilHumList.toString()}")
-                    ListForData.SoilHumList.clear()
-                }
+                if (ListForData.SoilHumList.size == 6 && ListForData.TempAndHumList.size == 4) {
+                    apiListener?.onApiResponseReceived(Pair(ListForData.SoilHumList, ListForData.TempAndHumList))
 
-                if (ListForData.TempAndHumList.size == 4) {
+                    Log.d("MyLog",  "Множество почва ${ListForData.SoilHumList.toString()}")
                     Log.d("MyLog", "Множество сенсоры ${ListForData.TempAndHumList.toString()}")
+                    ListForData.SoilHumList.clear()
                     ListForData.TempAndHumList.clear()
                 }
 
