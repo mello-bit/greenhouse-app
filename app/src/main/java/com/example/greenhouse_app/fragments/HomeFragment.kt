@@ -15,6 +15,7 @@ import com.example.greenhouse_app.dataClasses.SoilHum
 import com.example.greenhouse_app.dataClasses.TempAndHum
 import com.example.greenhouse_app.databinding.FragmentHomeBinding
 import com.example.greenhouse_app.utils.AppSettingsManager
+import org.w3c.dom.Text
 import kotlin.math.roundToInt
 
 
@@ -22,7 +23,7 @@ interface ApiListener {
     fun onApiResponseReceived(response: Pair<MutableSet<SoilHum>, MutableSet<TempAndHum>>)
 }
 
-class FurrowButton(val Id: Byte, val linearLayout: LinearLayout, val BottomButton: Boolean = true) {
+class FurrowButton(val Id: Byte, val linearLayout: LinearLayout) {
     var status: Boolean
     var button: AppCompatButton
     var textView: TextView
@@ -65,10 +66,31 @@ class FurrowButton(val Id: Byte, val linearLayout: LinearLayout, val BottomButto
     }
 }
 
+// Names: <Window, Humidifier>
+class BottomHomeButton(val name: String, val linearLayout: LinearLayout, val textView: TextView) {
+    var status: Boolean = false
+    val turnOnText: Int = if (name == "Humidifier") R.string.humidifier_on else R.string.window_open
+    val turnOffText: Int = if (name == "Humidifier") R.string.humidifier_off else R.string.window_closed
+
+    init {
+        changeStatus(AppSettingsManager.loadData("BottomButton$name").toBoolean())
+    }
+
+    fun changeStatus(status: Boolean) {
+        this.status = status
+
+        val bgResource = if (status) R.drawable.green_status_round_button else R.drawable.red_status_round_button
+        val newText = if (status) turnOnText else turnOffText
+
+        linearLayout.setBackgroundResource(bgResource)
+        textView.setText(newText)
+    }
+}
 
 class HomeFragment : Fragment(), ApiListener {
     private lateinit var binding: FragmentHomeBinding
     private var buttonClasses = mutableMapOf<Byte, FurrowButton>()
+    private var bottomButtons = mutableMapOf<String, BottomHomeButton>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -115,6 +137,18 @@ class HomeFragment : Fragment(), ApiListener {
             binding.llFurrow5, binding.llFurrow6
         )
 
+        mapOf<String, Pair<LinearLayout, TextView>>(
+            "Window" to Pair(binding.llWindowContainer, binding.tvDisplayState1),
+            "Humidifier" to Pair(binding.llHumidifierContainer, binding.tvDisplayState2)
+        ).forEach {
+            val newInstance = BottomHomeButton(it.key, it.value.first, it.value.second)
+
+            newInstance.linearLayout.setOnClickListener {
+                newInstance.changeStatus(!newInstance.status)
+            }
+
+            this.bottomButtons[it.key] = newInstance
+        }
 
         for (i in 1..6) {
             val layout = layouts[i - 1]
@@ -160,6 +194,11 @@ class HomeFragment : Fragment(), ApiListener {
 
         this.buttonClasses.forEach {
             val key = "Furrow${it.value.Id}Status"
+            AppSettingsManager.saveData(key, it.value.status.toString())
+        }
+
+        this.bottomButtons.forEach {
+            val key = "BottomButton${it.value.name}"
             AppSettingsManager.saveData(key, it.value.status.toString())
         }
     }
