@@ -1,57 +1,75 @@
 package com.example.greenhouse_app.recyclerView
 
-import android.util.Log
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
-import android.widget.LinearLayout
+
 import android.widget.TextView
-import androidx.core.view.forEach
-import androidx.fragment.app.Fragment
-import androidx.fragment.app.findFragment
+import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
-import com.example.greenhouse_app.R
-import com.example.greenhouse_app.dataClasses.SoilHum
-import com.example.greenhouse_app.dataClasses.TempAndHum
-import com.example.greenhouse_app.fragments.findViewWhichIs
-import java.security.PrivateKey
+import com.example.greenhouse_app.dataClasses.AllData
+import com.example.greenhouse_app.databinding.CardTableBinding
 
-class DataAdapter(
-    private val furrowData: List<List<SoilHum>>,
-    private val tempAndHum: List<List<TempAndHum>>
-) : RecyclerView.Adapter<DataAdapter.DataViewHolder>() {
+class DataAdapter : RecyclerView.Adapter<DataAdapter.DataViewHolder>() {
 
-    inner class DataViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView){
-        val llFurrowData = itemView.findViewById<LinearLayout>(R.id.llFurrowData)
-        val llTempData = itemView.findViewById<LinearLayout>(R.id.llTempData)
-        val llHumData = itemView.findViewById<LinearLayout>(R.id.llHumData)
-    }
+    private var oldlist = emptyList<AllData>()
+
+    inner class DataViewHolder(val binding: CardTableBinding) : RecyclerView.ViewHolder(binding.root)
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): DataViewHolder {
-        val view = LayoutInflater.from(parent.context).inflate(R.layout.card_table, parent, false)
+        val binding = CardTableBinding.inflate(LayoutInflater
+            .from(parent.context), parent, false)
 
-        return DataViewHolder(view)
+        return DataViewHolder(binding)
     }
 
     override fun getItemCount(): Int {
-        return furrowData.size + tempAndHum.size
+        return oldlist.size
     }
 
     override fun onBindViewHolder(holder: DataViewHolder, position: Int) {
-//        Log.d("LogTr", position.toString())
-        if (position < furrowData.size){
-            val currentItem = furrowData[position]
-
-            Log.d("LogTr", currentItem.toString())
-            for (i in 0 until holder.llFurrowData.childCount) {
-                val view = holder.llFurrowData.getChildAt(i) as TextView
-                view.text = currentItem[i].humidity.toString()
+        for (i in 0 until holder.binding.llFurrowData.childCount) {
+            val view = holder.binding.llFurrowData.getChildAt(i) as TextView
+            when (i) {
+                0 -> view.text = oldlist[position].soilHum1.toString()
+                1 -> view.text = oldlist[position].soilHum2.toString()
+                2 -> view.text = oldlist[position].soilHum3.toString()
+                3 -> view.text = oldlist[position].soilHum4.toString()
+                4 -> view.text = oldlist[position].soilHum5.toString()
+                5 -> view.text = oldlist[position].soilHum6.toString()
             }
-            return
-
         }
-        return
+
+        for (i in 1 until holder.binding.llTempData.childCount) {
+            val tempView = holder.binding.llTempData.getChildAt(i) as TextView
+            val humView = holder.binding.llHumData.getChildAt(i) as TextView
+
+            when (i) {
+                1 -> {
+                    tempView.text = oldlist[position].tempGreenhouse1.toString()
+                    humView.text = oldlist[position].humGreenhouse1.toString()
+                }
+                2 -> {
+                    tempView.text = oldlist[position].tempGreenhouse2.toString()
+                    humView.text = oldlist[position].tempGreenhouse2.toString()
+                }
+                3 -> {
+                    tempView.text = oldlist[position].tempGreenhouse3.toString()
+                    humView.text = oldlist[position].humGreenhouse3.toString()
+                }
+                4 -> {
+                    tempView.text = oldlist[position].tempGreenhouse4.toString()
+                    humView.text = oldlist[position].humGreenhouse4.toString()
+                }
+            }
+        }
+
     }
 
+    fun setData(newSoilHumList: List<AllData>) {
+        val diffUtil = AppDiffUtil(oldlist, newSoilHumList)
+        val diffResults = DiffUtil.calculateDiff(diffUtil)
+        oldlist = newSoilHumList
+        diffResults.dispatchUpdatesTo(this)
+    }
 
 }

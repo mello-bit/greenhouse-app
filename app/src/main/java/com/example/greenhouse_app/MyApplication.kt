@@ -1,5 +1,6 @@
 package com.example.greenhouse_app
 
+import android.annotation.SuppressLint
 import android.app.Application
 import android.app.NotificationChannel
 import android.app.NotificationManager
@@ -7,7 +8,7 @@ import android.content.Context
 import android.os.Build
 import android.os.Handler
 import android.os.Looper
-import android.util.Log
+import com.example.greenhouse_app.dataClasses.AllData
 import com.example.greenhouse_app.dataClasses.ListForData
 import com.example.greenhouse_app.recyclerView.DataAdapter
 import com.example.greenhouse_app.utils.AppNetworkManager
@@ -18,10 +19,9 @@ class MyApplication : Application() {
 
     private lateinit var networkManager: AppNetworkManager
     private lateinit var handler: Handler
+    val myAdapter by lazy { DataAdapter() }
 
     override fun onCreate() {
-        Log.d("TempTag", "Started application")
-
         AppSettingsManager.initContext(applicationContext)
         AppNotificationManager.initContext(applicationContext)
 
@@ -46,38 +46,53 @@ class MyApplication : Application() {
 
 //        networkManager.getSoilHum()
 //        networkManager.getTempAndHum()
+
         handler.post(object : Runnable {
+            @SuppressLint("NotifyDataSetChanged")
             override fun run() {
                 networkManager.getSoilHum()
                 networkManager.getTempAndHum()
                 handler.postDelayed(this, 10 * 1000)
-                if (ListForData.SoilHumList.size == 6) {
-                    Log.d("MyLog",  "Множество почва ${ListForData.SoilHumList.toString()}")
+                if (ListForData.SoilHumList.size == 6 && ListForData.TempAndHumList.size == 4) {
                     ListForData.EverySoilHumDataList.add(
-                        ListForData.SoilHumList.toMutableList()
+                        toAllSoilHumDataClass()
                     )
-                    Log.d("EveryLog", "Вся почва: " +
-                            ListForData.EverySoilHumDataList.toString())
+
+                    myAdapter.setData(ListForData.EverySoilHumDataList)
+                    myAdapter.notifyDataSetChanged()
+
                     ListForData.SoilHumList.clear()
+                    ListForData.TempAndHumList.clear()
+
                 }
 
-                if (ListForData.TempAndHumList.size == 4) {
-                    Log.d("MyLog", "Множество сенсоры ${ListForData.TempAndHumList.toString()}")
-                    ListForData.EveryTempAndHumDataList.add(
-                        ListForData.TempAndHumList.toMutableList()
-                    )
-                    Log.d(
-                        "EveryLog", "Вся температура и влажность: " +
-                                ListForData.EveryTempAndHumDataList.toString()
-                    )
-                    ListForData.TempAndHumList.clear()
-                }
             }
         })
     }
 
-    private fun callSoilHumApi() {
-
+    private fun toAllSoilHumDataClass(): AllData{
+        ListForData.SoilHumList.sortBy {
+            it.id
+        }
+        ListForData.TempAndHumList.sortBy {
+            it.id
+        }
+        return AllData(
+            ListForData.SoilHumList[0].humidity,
+            ListForData.SoilHumList[1].humidity,
+            ListForData.SoilHumList[2].humidity,
+            ListForData.SoilHumList[3].humidity,
+            ListForData.SoilHumList[4].humidity,
+            ListForData.SoilHumList[5].humidity,
+            ListForData.TempAndHumList[0].temp,
+            ListForData.TempAndHumList[1].temp,
+            ListForData.TempAndHumList[2].temp,
+            ListForData.TempAndHumList[3].temp,
+            ListForData.TempAndHumList[0].hum,
+            ListForData.TempAndHumList[1].hum,
+            ListForData.TempAndHumList[2].hum,
+            ListForData.TempAndHumList[3].hum,
+        )
     }
 
     override fun onTerminate() {
