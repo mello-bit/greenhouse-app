@@ -22,7 +22,7 @@ import kotlin.math.roundToInt
 
 
 interface ApiListener {
-    fun onApiResponseReceived(response: Pair<MutableSet<SoilHum>, MutableSet<TempAndHum>>)
+    fun onApiResponseReceived(response: Pair<MutableList<SoilHum>, MutableList<TempAndHum>>)
 }
 
 class FurrowButton(val Id: Byte, val linearLayout: LinearLayout, private val networkManager: AppNetworkManager) {
@@ -120,7 +120,7 @@ class HomeFragment : Fragment(), ApiListener {
         (activity?.application as? MyApplication)?.setApiListener(this)
     }
 
-    override fun onApiResponseReceived(response: Pair<MutableSet<SoilHum>, MutableSet<TempAndHum>>) {
+    override fun onApiResponseReceived(response: Pair<MutableList<SoilHum>, MutableList<TempAndHum>>) {
         if (isAdded and buttonClasses.isNotEmpty()) {
 
             for (soilHumidity in response.first) {
