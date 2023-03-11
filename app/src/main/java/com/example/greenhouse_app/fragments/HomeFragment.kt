@@ -1,5 +1,6 @@
 package com.example.greenhouse_app.fragments
 
+import android.content.Context
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
@@ -14,6 +15,7 @@ import com.example.greenhouse_app.R
 import com.example.greenhouse_app.dataClasses.SoilHum
 import com.example.greenhouse_app.dataClasses.TempAndHum
 import com.example.greenhouse_app.databinding.FragmentHomeBinding
+import com.example.greenhouse_app.utils.AppNetworkManager
 import com.example.greenhouse_app.utils.AppSettingsManager
 import org.w3c.dom.Text
 import kotlin.math.roundToInt
@@ -23,10 +25,11 @@ interface ApiListener {
     fun onApiResponseReceived(response: Pair<MutableSet<SoilHum>, MutableSet<TempAndHum>>)
 }
 
-class FurrowButton(val Id: Byte, val linearLayout: LinearLayout) {
+class FurrowButton(val Id: Byte, val linearLayout: LinearLayout, private val networkManager: AppNetworkManager) {
     var status: Boolean
-    var button: AppCompatButton
-    var textView: TextView
+    private var button: AppCompatButton
+    private var textView: TextView
+    private var patchFunction = networkManager::changeFurrowState
 
     fun changeStatus(status: Boolean) {
         this.status = status
@@ -35,6 +38,7 @@ class FurrowButton(val Id: Byte, val linearLayout: LinearLayout) {
         val llBackground = if (status) R.drawable.furrow_hydration_on else R.drawable.furrow_hydration_off
         val text = if (status) R.string.watering_on else R.string.watering_off
 
+        patchFunction(Id, status.compareTo(false).toByte())
         this.linearLayout.setBackgroundResource(llBackground)
         this.button.setBackgroundResource(btnBackground)
         this.button.setText(text)
@@ -67,12 +71,18 @@ class FurrowButton(val Id: Byte, val linearLayout: LinearLayout) {
 }
 
 // Names: <Window, Humidifier>
-class BottomHomeButton(val name: String, val linearLayout: LinearLayout, val textView: TextView) {
+class BottomHomeButton(val name: String, val linearLayout: LinearLayout, val textView: TextView, private val networkManager: AppNetworkManager) {
     var status: Boolean = false
-    val turnOnText: Int = if (name == "Humidifier") R.string.humidifier_on else R.string.window_open
-    val turnOffText: Int = if (name == "Humidifier") R.string.humidifier_off else R.string.window_closed
+    private val turnOnText: Int = if (name == "Humidifier") R.string.humidifier_on else R.string.window_open
+    private val turnOffText: Int = if (name == "Humidifier") R.string.humidifier_off else R.string.window_closed
+    private lateinit var patchFunction: (Byte) -> Unit
 
     init {
+        patchFunction = if (name == "Window") {
+            networkManager::changeWindowState
+        } else {
+            networkManager::changeGlobalWateringState
+        }
         changeStatus(AppSettingsManager.loadData("BottomButton$name").toBoolean())
     }
 
@@ -82,6 +92,7 @@ class BottomHomeButton(val name: String, val linearLayout: LinearLayout, val tex
         val bgResource = if (status) R.drawable.green_status_round_button else R.drawable.red_status_round_button
         val newText = if (status) turnOnText else turnOffText
 
+        patchFunction(status.compareTo(false).toByte())
         linearLayout.setBackgroundResource(bgResource)
         textView.setText(newText)
     }
@@ -91,9 +102,17 @@ class HomeFragment : Fragment(), ApiListener {
     private lateinit var binding: FragmentHomeBinding
     private var buttonClasses = mutableMapOf<Byte, FurrowButton>()
     private var bottomButtons = mutableMapOf<String, BottomHomeButton>()
+    private lateinit var networkManager: AppNetworkManager
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+    }
+
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        if (!::networkManager.isInitialized) {
+            networkManager = AppNetworkManager(context.applicationContext)
+        }
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -141,7 +160,7 @@ class HomeFragment : Fragment(), ApiListener {
             "Window" to Pair(binding.llWindowContainer, binding.tvDisplayState1),
             "Humidifier" to Pair(binding.llHumidifierContainer, binding.tvDisplayState2)
         ).forEach {
-            val newInstance = BottomHomeButton(it.key, it.value.first, it.value.second)
+            val newInstance = BottomHomeButton(it.key, it.value.first, it.value.second, networkManager)
 
             newInstance.linearLayout.setOnClickListener {
                 newInstance.changeStatus(!newInstance.status)
@@ -152,7 +171,7 @@ class HomeFragment : Fragment(), ApiListener {
 
         for (i in 1..6) {
             val layout = layouts[i - 1]
-            val furrowClass = FurrowButton(i.toByte(), layout)
+            val furrowClass = FurrowButton(i.toByte(), layout, networkManager)
             layout.setOnClickListener {
                 furrowClass.changeStatus(!furrowClass.status)
             }
