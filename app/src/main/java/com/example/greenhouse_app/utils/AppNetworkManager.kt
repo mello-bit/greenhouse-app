@@ -12,9 +12,19 @@ import org.json.JSONObject
 
 class AppNetworkManager(private val context: Context?) {
 
-    private val urlForGetSoilHum: String = "https://dt.miet.ru/ppo_it/api/hum/"
-    private val urlForGetTempAndHum: String = "https://dt.miet.ru/ppo_it/api/temp_hum/"
-    private val urlForPatch: String = "https://dt.miet.ru/ppo_it/api/fork_drive/"
+    private val urlForGetSoilHum = "https://dt.miet.ru/ppo_it/api/hum/"
+    private val urlForGetTempAndHum = "https://dt.miet.ru/ppo_it/api/temp_hum/"
+    private val urlForWindowOpen = "https://dt.miet.ru/ppo_it/api/fork_drive/"
+    private val urlForGlobalWatering = "https://dt.miet.ru/ppo_it/api/total_hum"
+    private val urlForWateringControl = "https://dt.miet.ru/ppo_it/api/watering"
+    /*
+        urlForGetSoilHum: Влажность с датчиков почвы
+        urlForGetTempAnHum: Влажность и температура с 4х угловых датчиков теплицы
+        urlForWindowOpen: (PATCH) - Открытие/Закрытие форточек
+        urlForGlobalWatering: (PATCH) - Управление единой системой увлажнения
+        urlForWateringControl: (PATCH) - Вкл/выкл увлажнение бороздки
+     */
+
     private val queue = Volley.newRequestQueue(context)
     var canPrint: Boolean = false
 
@@ -66,10 +76,21 @@ class AppNetworkManager(private val context: Context?) {
         }
     }
 
-    /**
-     * @param id of sensor
-     * @return Will return a map
-     */
+    fun changeWindowState(state: Byte) {
+        // urlForWindowOpen: Использовать это.
+        // state: Или 1, или 0. Обрабатывать не требуется.
+    }
+
+    fun changeFurrowState(id: Byte, state: Byte) {
+        // urlForWateringControl: Использовать это
+        // id: От 1 до 6, state: Или 1, или 0. Обрабатывать не требуется
+    }
+
+    fun changeGlobalWateringState(state: Byte) {
+        // urlForGlobalWatering: Использовать это
+        // state: Или 1, или 0. Обрабатывать не требуется.
+    }
+
     private fun getGreenhouseSensorData(jsonString: String): Map<String, Number> {
         val json = JSONObject(jsonString)
 
@@ -80,10 +101,6 @@ class AppNetworkManager(private val context: Context?) {
         )
     }
 
-    /**
-     * @param id of sensor
-     * @return Will return a map
-     */
     private fun getFurrowHumidity(jsonString: String): Map<String, Number> {
         val json = JSONObject(jsonString)
 

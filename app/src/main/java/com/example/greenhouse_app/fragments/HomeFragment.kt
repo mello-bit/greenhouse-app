@@ -1,6 +1,6 @@
 package com.example.greenhouse_app.fragments
 
-import android.graphics.drawable.Drawable
+import android.content.Context
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
@@ -10,152 +10,216 @@ import android.view.ViewGroup
 import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.appcompat.widget.AppCompatButton
-import androidx.core.content.res.ResourcesCompat
+import com.example.greenhouse_app.MyApplication
 import com.example.greenhouse_app.R
+import com.example.greenhouse_app.dataClasses.SoilHum
+import com.example.greenhouse_app.dataClasses.TempAndHum
 import com.example.greenhouse_app.databinding.FragmentHomeBinding
+import com.example.greenhouse_app.utils.AppNetworkManager
 import com.example.greenhouse_app.utils.AppSettingsManager
+import org.w3c.dom.Text
+import kotlin.math.roundToInt
 
 
-inline fun <reified T : View> View.findViewWhichIs(): T? {
-    val queue = ArrayDeque<View>()
-    queue.add(this)
-    while (queue.isNotEmpty()) {
-        val view = queue.removeFirst()
-        if (view is T) {
-            return view
-        }
-        if (view is ViewGroup) {
-            for (i in 0 until view.childCount) {
-                queue.add(view.getChildAt(i))
-            }
-        }
-    }
-    return null
+interface ApiListener {
+    fun onApiResponseReceived(response: Pair<MutableSet<SoilHum>, MutableSet<TempAndHum>>)
 }
 
+class FurrowButton(val Id: Byte, val linearLayout: LinearLayout, private val networkManager: AppNetworkManager) {
+    var status: Boolean
+    private var button: AppCompatButton
+    private var textView: TextView
+    private var patchFunction = networkManager::changeFurrowState
 
-class HomeFragment : Fragment() {
-    private lateinit var greenStatus: Drawable.ConstantState
-    private lateinit var redStatus: Drawable.ConstantState
-    private lateinit var greenStatusBg: Drawable.ConstantState
-    private lateinit var redStatusBg: Drawable.ConstantState
+    fun changeStatus(status: Boolean) {
+        this.status = status
 
+        val btnBackground = if (status) R.drawable.green_status_round_button else R.drawable.red_status_round_button
+        val llBackground = if (status) R.drawable.furrow_hydration_on else R.drawable.furrow_hydration_off
+        val text = if (status) R.string.watering_on else R.string.watering_off
+
+        patchFunction(Id, status.compareTo(false).toByte())
+        this.linearLayout.setBackgroundResource(llBackground)
+        this.button.setBackgroundResource(btnBackground)
+        this.button.setText(text)
+    }
+
+    fun changeDisplayValue(value: Byte) {
+        this.textView.text = "$value%"
+    }
+
+    init {
+        this.status = AppSettingsManager.loadData("Furrow${this.Id}Status").toBoolean()
+        this.button = linearLayout.findViewWithTag<AppCompatButton>("btnFurrow$Id")
+        this.button.setOnClickListener{ changeStatus(!this.status) }
+        this.textView = linearLayout.findViewWithTag<TextView>("tvFurrow${Id}Status")
+
+        Log.d(null, this.button.tag.toString())
+        Log.d(null, this.textView.tag.toString())
+    }
+
+    init {
+        val status = AppSettingsManager.loadData("Furrow${this.Id}Status")
+
+        if (status != null && status.isNotEmpty()) {
+            changeStatus(status.toBoolean())
+            changeDisplayValue((1..100).random().toByte())
+        } else {
+            Log.d(null,"THE RECEIVED STATUS IS $status")
+        }
+    }
+}
+
+// Names: <Window, Humidifier>
+class BottomHomeButton(val name: String, val linearLayout: LinearLayout, val textView: TextView, private val networkManager: AppNetworkManager) {
+    var status: Boolean = false
+    private val turnOnText: Int = if (name == "Humidifier") R.string.humidifier_on else R.string.window_open
+    private val turnOffText: Int = if (name == "Humidifier") R.string.humidifier_off else R.string.window_closed
+    private lateinit var patchFunction: (Byte) -> Unit
+
+    init {
+        patchFunction = if (name == "Window") {
+            networkManager::changeWindowState
+        } else {
+            networkManager::changeGlobalWateringState
+        }
+        changeStatus(AppSettingsManager.loadData("BottomButton$name").toBoolean())
+    }
+
+    fun changeStatus(status: Boolean) {
+        this.status = status
+
+        val bgResource = if (status) R.drawable.green_status_round_button else R.drawable.red_status_round_button
+        val newText = if (status) turnOnText else turnOffText
+
+        patchFunction(status.compareTo(false).toByte())
+        linearLayout.setBackgroundResource(bgResource)
+        textView.setText(newText)
+    }
+}
+
+class HomeFragment : Fragment(), ApiListener {
     private lateinit var binding: FragmentHomeBinding
+    private var buttonClasses = mutableMapOf<Byte, FurrowButton>()
+    private var bottomButtons = mutableMapOf<String, BottomHomeButton>()
+    private lateinit var networkManager: AppNetworkManager
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        greenStatus = ResourcesCompat.getDrawable(resources, R.drawable.green_status_round_button, null)!!.constantState!!
-        greenStatusBg = ResourcesCompat.getDrawable(resources, R.drawable.furrow_hydration_on, null)!!.constantState!!
-        redStatus = ResourcesCompat.getDrawable(resources, R.drawable.red_status_round_button, null)!!.constantState!!
-        redStatusBg = ResourcesCompat.getDrawable(resources, R.drawable.furrow_hydration_off, null)!!.constantState!!
+    }
+
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        if (!::networkManager.isInitialized) {
+            networkManager = AppNetworkManager(context.applicationContext)
+        }
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        (activity?.application as? MyApplication)?.setApiListener(this)
+    }
+
+    override fun onApiResponseReceived(response: Pair<MutableSet<SoilHum>, MutableSet<TempAndHum>>) {
+        if (isAdded and buttonClasses.isNotEmpty()) {
+
+            for (soilHumidity in response.first) {
+                buttonClasses[soilHumidity.id]?.changeDisplayValue(soilHumidity.humidity.toByte())
+            }
+
+            var generalGreenhouseHumidity = 0f
+            var generalGreenhouseTemperature = 0f
+            for (tempHumidity in response.second) {
+                generalGreenhouseHumidity += tempHumidity.hum.toFloat()
+                generalGreenhouseTemperature += tempHumidity.temp.toFloat()
+            }
+
+            binding.tvGreenhouseHumidity.text = getString(
+                R.string.percent_adder,
+                "%.1f".format(generalGreenhouseHumidity / 4)
+            )
+
+            binding.tvGreenhouseTemp.text = getString(
+                R.string.temperature_celsius,
+                "%.1f".format(generalGreenhouseTemperature / 4)
+            )
+        }
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         // Inflate the layout for this fragment
         binding = FragmentHomeBinding.inflate(inflater, container, false)
 
-        binding.btnWindowStatus.setOnClickListener{
-            changeButtonStateBg(it)
-            switchText(it as AppCompatButton, resources.getString(R.string.window_closed), resources.getString(R.string.window_open))
-        }
-        binding.btnHeaterStatus.setOnClickListener{
-            changeButtonStateBg(it)
-            switchText(it as AppCompatButton, resources.getString(R.string.heater_off), resources.getString(R.string.heater_on))
-        }
-
-        val furrowButtons = setOf(
+        val layouts = listOf<LinearLayout>(
             binding.llFurrow1, binding.llFurrow2,
             binding.llFurrow3, binding.llFurrow4,
             binding.llFurrow5, binding.llFurrow6
         )
 
-        furrowButtons.forEach {layout ->
-            layout.setOnClickListener {
-                val button = it.findViewWhichIs<AppCompatButton>()
-                changeButtonStateBg(button as View)
-                changeFurrowStateBg(layout as View)
-                switchText(button as AppCompatButton, resources.getString(R.string.watering_on), resources.getString(R.string.watering_off))
+        mapOf<String, Pair<LinearLayout, TextView>>(
+            "Window" to Pair(binding.llWindowContainer, binding.tvDisplayState1),
+            "Humidifier" to Pair(binding.llHumidifierContainer, binding.tvDisplayState2)
+        ).forEach {
+            val newInstance = BottomHomeButton(it.key, it.value.first, it.value.second, networkManager)
+
+            newInstance.linearLayout.setOnClickListener {
+                newInstance.changeStatus(!newInstance.status)
             }
+
+            this.bottomButtons[it.key] = newInstance
+        }
+
+        for (i in 1..6) {
+            val layout = layouts[i - 1]
+            val furrowClass = FurrowButton(i.toByte(), layout, networkManager)
+            layout.setOnClickListener {
+                furrowClass.changeStatus(!furrowClass.status)
+            }
+            this.buttonClasses[i.toByte()] = furrowClass
         }
 
         return binding.root
     }
 
-    private fun switchText(btn: AppCompatButton, text1: String, text2: String) {
-        when (btn.text) {
-            text1 -> btn.text = text2
-            text2 -> btn.text = text1
-        }
-    }
-    private fun changeButtonStateBg(btn: View) {
-        when (btn.background.constantState) {
-            greenStatus -> btn.setBackgroundResource(R.drawable.red_status_round_button)
-            redStatus -> btn.setBackgroundResource(R.drawable.green_status_round_button)
-            else -> Log.e("UI", "Drawable error occured")
-        }
-    }
-
-    private fun changeFurrowStateBg(ll: View) {
-        when (ll.background.constantState) {
-            greenStatusBg -> ll.setBackgroundResource(R.drawable.furrow_hydration_off)
-            redStatusBg -> ll.setBackgroundResource(R.drawable.furrow_hydration_on)
-        }
-    }
 
     override fun onResume() {
         super.onResume()
+
         // reading data from shared preferences
-        val furrowValues = mutableListOf<String>()
-        val furrowButtonsValues = mutableListOf<String>()
-        val bottomButtonsStatus = listOf(
-            AppSettingsManager.loadData("btnWindowStatus"),
-            AppSettingsManager.loadData("btnHeaterStatus")
-        )
-        for (i in 1..6) {
-            val furrowValue = AppSettingsManager.loadData("tvFurrow${i}Status")
-            val furrowButtonValue = AppSettingsManager.loadData("btnFurrow$i")
-
-//            val llId = resources.getIdentifier("llFurrow$i", "id", "layout")
-//            val layout = binding.root.findViewById<LinearLayout>(llId)
-//            val tvStatus = layout.findViewWhichIs<TextView>()
-//            val btnFurrow = layout.findViewWhichIs<AppCompatButton>()
-
-
-
-            if (furrowValue.toString().isNotEmpty())
-                furrowValues.add(furrowValue.toString())
-
-            if (furrowButtonValue.toString().isNotEmpty())
-                furrowButtonsValues.add(furrowButtonValue.toString())
-        }
-
-        Log.d("SaveTag", furrowValues.toString())
-        Log.d("SaveTag", furrowButtonsValues.toString())
-        Log.d("SaveTag", bottomButtonsStatus.toString())
+//        val furrowValues = mutableListOf<String>()
+//        val furrowButtonsValues = mutableListOf<String>()
+//        val bottomButtonsStatus = listOf(
+//            AppSettingsManager.loadData("btnWindowStatus"),
+//            AppSettingsManager.loadData("btnHeaterStatus")
+//        )
+//        for (i in 1..6) {
+//            val furrowValue = AppSettingsManager.loadData("tvFurrow${i}Status")
+//            val furrowButtonValue = AppSettingsManager.loadData("btnFurrow$i")
+//
+//            if (furrowValue.toString().isNotEmpty())
+//                furrowValues.add(furrowValue.toString())
+//
+//            if (furrowButtonValue.toString().isNotEmpty())
+//                furrowButtonsValues.add(furrowButtonValue.toString())
+//        }
+//
+//        Log.d("SaveTag", furrowValues.toString())
+//        Log.d("SaveTag", furrowButtonsValues.toString())
+//        Log.d("SaveTag", bottomButtonsStatus.toString())
     }
 
     override fun onStop() {
         super.onStop()
 
-        val furrowValues = listOf(
-            binding.tvFurrow1Status.text, binding.tvFurrow2Status.text,
-            binding.tvFurrow3Status.text, binding.tvFurrow4Status.text,
-            binding.tvFurrow5Status.text, binding.tvFurrow6Status.text
-        )
-        val furrowButtonValues = listOf(
-            binding.btnFurrow1.text, binding.btnFurrow2.text,
-            binding.btnFurrow3.text, binding.btnFurrow4.text,
-            binding.btnFurrow5.text, binding.btnFurrow6.text
-        )
-
-        for (i in 1..6) {
-            AppSettingsManager.saveData("tvFurrow${i}Status", "$i - ${furrowValues[i - 1]}")
-            AppSettingsManager.saveData("btnFurrow$i", "$i - ${furrowButtonValues[i - 1]}")
+        this.buttonClasses.forEach {
+            val key = "Furrow${it.value.Id}Status"
+            AppSettingsManager.saveData(key, it.value.status.toString())
         }
-        AppSettingsManager.saveData("btnWindowStatus", binding.btnWindowStatus.text.toString())
-        AppSettingsManager.saveData("btnHeaterStatus", binding.btnHeaterStatus.text.toString())
-        Log.d("SaveTag", "Data has saved")
 
+        this.bottomButtons.forEach {
+            val key = "BottomButton${it.value.name}"
+            AppSettingsManager.saveData(key, it.value.status.toString())
+        }
     }
 
     companion object {

@@ -11,6 +11,7 @@ import android.os.Looper
 import com.example.greenhouse_app.dataClasses.AllData
 import com.example.greenhouse_app.dataClasses.ListForData
 import com.example.greenhouse_app.recyclerView.DataAdapter
+import com.example.greenhouse_app.fragments.ApiListener
 import com.example.greenhouse_app.utils.AppNetworkManager
 import com.example.greenhouse_app.utils.AppSettingsManager
 import com.example.greenhouse_app.utils.AppNotificationManager
@@ -20,6 +21,11 @@ class MyApplication : Application() {
     private lateinit var networkManager: AppNetworkManager
     private lateinit var handler: Handler
     val myAdapter by lazy { DataAdapter() }
+    private var apiListener: ApiListener? = null
+
+    fun setApiListener(listener: ApiListener) {
+        this.apiListener = listener
+    }
 
     override fun onCreate() {
         AppSettingsManager.initContext(applicationContext)
@@ -61,6 +67,10 @@ class MyApplication : Application() {
                     myAdapter.setData(ListForData.EverySoilHumDataList)
                     myAdapter.notifyDataSetChanged()
 
+                    apiListener?.onApiResponseReceived(Pair(ListForData.SoilHumList, ListForData.TempAndHumList))
+
+                    Log.d("MyLog",  "Множество почва ${ListForData.SoilHumList.toString()}")
+                    Log.d("MyLog", "Множество сенсоры ${ListForData.TempAndHumList.toString()}")
                     ListForData.SoilHumList.clear()
                     ListForData.TempAndHumList.clear()
 
