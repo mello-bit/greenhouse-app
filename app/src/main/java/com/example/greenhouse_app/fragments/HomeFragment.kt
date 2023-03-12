@@ -17,6 +17,7 @@ import com.example.greenhouse_app.dataClasses.TempAndHum
 import com.example.greenhouse_app.databinding.FragmentHomeBinding
 import com.example.greenhouse_app.utils.AppNetworkManager
 import com.example.greenhouse_app.utils.AppSettingsManager
+import com.google.firebase.auth.FirebaseAuth
 import org.w3c.dom.Text
 import kotlin.math.roundToInt
 

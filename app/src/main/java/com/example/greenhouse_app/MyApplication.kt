@@ -9,23 +9,100 @@ import android.os.Build
 import android.os.Handler
 import android.os.Looper
 import android.util.Log
+import androidx.room.Room
 import com.example.greenhouse_app.dataClasses.AllData
 import com.example.greenhouse_app.dataClasses.ListForData
 import com.example.greenhouse_app.recyclerView.DataAdapter
 import com.example.greenhouse_app.fragments.ApiListener
-import com.example.greenhouse_app.utils.AppNetworkManager
-import com.example.greenhouse_app.utils.AppSettingsManager
-import com.example.greenhouse_app.utils.AppNotificationManager
+import com.example.greenhouse_app.utils.*
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import java.text.DecimalFormat
+import java.text.DecimalFormatSymbols
+import java.time.Instant
+import java.time.format.DateTimeFormatter
+import java.util.*
+
+fun getCurrentDateTimeISO8601(): String {
+    val formatter = DateTimeFormatter.ISO_DATE_TIME
+    return Instant.now().toString()
+}
 
 class MyApplication : Application() {
+    val DEBUGMODE = true
 
     private lateinit var networkManager: AppNetworkManager
     private lateinit var handler: Handler
-    val myAdapter by lazy { DataAdapter() }
+    private lateinit var db: AppDatabase
+    private lateinit var sensorDao: SensorDao
+    private var decimalFormatter = DecimalFormat("#.##", DecimalFormatSymbols(Locale.US))
     private var apiListener: ApiListener? = null
+    val myAdapter by lazy { DataAdapter() }
+    var currentUID: String = "DEBUG"
+        set(uid) {
+            field = uid
+            loggedIn = true
+
+            db = AppDatabaseHelper.getDatabase(applicationContext, uid)
+            sensorDao = db.SensorDao()
+
+            Log.d("important", "Assigned: $value")
+        }
+    var loggedIn = DEBUGMODE
 
     fun setApiListener(listener: ApiListener) {
         this.apiListener = listener
+    }
+
+    init {
+        if (DEBUGMODE) {
+            currentUID = "DEBUG"
+        }
+    }
+
+    private fun saveEntryToDB(data: ListForData.Companion) {
+        println(data.SoilHumList.toString())
+        println(data.TempAndHumList.toString())
+
+        var totalGreenhouseTemperature = 0f
+        var totalGreenhouseHumidity = 0f
+        for (entry in data.TempAndHumList) {
+            totalGreenhouseTemperature += entry.temp.toFloat()
+            totalGreenhouseHumidity += entry.hum.toFloat()
+        }
+
+        println("1: ${totalGreenhouseTemperature / data.TempAndHumList.size.toFloat()}")
+        println("2: ${totalGreenhouseHumidity / data.TempAndHumList.size.toFloat()}")
+
+        val avgTemp = decimalFormatter.format(totalGreenhouseTemperature / data.TempAndHumList.size.toFloat())
+        val avgHumidity = decimalFormatter.format(totalGreenhouseHumidity / data.TempAndHumList.size.toFloat())
+
+
+        println("3: $avgTemp")
+        println("4: $avgHumidity")
+        println("5: ${data.SoilHumList.size}")
+        val soilHumListCopy = data.SoilHumList.toList()
+
+        CoroutineScope(Dispatchers.IO).launch {
+            val dataToSave = SensorData(
+                createdAt = getCurrentDateTimeISO8601(),
+                greenhouse_temperature = avgTemp.toFloat(),
+                greenhouse_humidity = avgHumidity.toFloat(),
+                furrow1_humidity = soilHumListCopy[0].humidity.toFloat(),
+                furrow2_humidity = soilHumListCopy[1].humidity.toFloat(),
+                furrow3_humidity = soilHumListCopy[2].humidity.toFloat(),
+                furrow4_humidity = soilHumListCopy[3].humidity.toFloat(),
+                furrow5_humidity = soilHumListCopy[4].humidity.toFloat(),
+                furrow6_humidity = soilHumListCopy[5].humidity.toFloat()
+            )
+
+            sensorDao.insertData(dataToSave)
+        }
+
+//        CoroutineScope(Dispatchers.IO).launch {
+//            println(sensorDao.getSensorDataForDate("2023-03-11").toString())
+//        }
     }
 
     override fun onCreate() {
@@ -46,13 +123,6 @@ class MyApplication : Application() {
         createNotificationChannel()
         networkManager = AppNetworkManager(applicationContext)
         handler = Handler(Looper.getMainLooper())
-        // Initialize the Greenhouse instance
-//        Greenhouse.initialize(this)
-//        val ap = AppSettingsManager()
-//        ap.initContext(con)
-
-//        networkManager.getSoilHum()
-//        networkManager.getTempAndHum()
 
         handler.post(object : Runnable {
             @SuppressLint("NotifyDataSetChanged")
@@ -69,6 +139,7 @@ class MyApplication : Application() {
                     myAdapter.notifyDataSetChanged()
 
                     apiListener?.onApiResponseReceived(Pair(ListForData.SoilHumList, ListForData.TempAndHumList))
+                    saveEntryToDB(ListForData)
 
                     Log.d("MyLog",  "Множество почва ${ListForData.SoilHumList.toString()}")
                     Log.d("MyLog", "Множество сенсоры ${ListForData.TempAndHumList.toString()}")

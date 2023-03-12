@@ -53,6 +53,7 @@ class LoginPage : AppCompatActivity() {
                 if (task.isSuccessful) {
                     Log.d("Auth", "User logged in successfully")
                     val intent = Intent(this, MainActivity::class.java)
+                    (application as MyApplication).currentUID = firebaseAuth.currentUser!!.uid
                     val t = Toast.makeText(this, "Вход выполнен", Toast.LENGTH_SHORT)
                     t.show()
                     startActivity(intent)
