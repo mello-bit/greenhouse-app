@@ -52,7 +52,7 @@
                 android:layout_weight="1"
                 android:gravity="center"
                 android:tag="tvFurrow4Status"
-                android:text="15%"
+                android:text="N/A%"
                 android:textAlignment="textStart"
                 android:textColor="@color/white"
                 android:textSize="30sp" />
@@ -110,7 +110,7 @@
                 android:layout_weight="1"
                 android:gravity="center"
                 android:tag="tvFurrow5Status"
-                android:text="15%"
+                android:text="N/A%"
                 android:textAlignment="textStart"
                 android:textColor="@color/white"
                 android:textSize="30sp" />
@@ -168,7 +168,7 @@
                 android:layout_weight="1"
                 android:gravity="center"
                 android:tag="tvFurrow6Status"
-                android:text="15%"
+                android:text="N/A%"
                 android:textAlignment="textStart"
                 android:textColor="@color/white"
                 android:textSize="30sp" />
@@ -225,7 +225,7 @@
                 android:layout_weight="1"
                 android:gravity="center"
                 android:tag="tvFurrow3Status"
-                android:text="15%"
+                android:text="N/A%"
                 android:textAlignment="textStart"
                 android:textColor="@color/white"
                 android:textSize="30sp" />
@@ -283,7 +283,7 @@
                 android:layout_weight="1"
                 android:gravity="center"
                 android:tag="tvFurrow2Status"
-                android:text="15%"
+                android:text="N/A%"
                 android:textAlignment="textStart"
                 android:textColor="@color/white"
                 android:textSize="30sp" />
@@ -341,7 +341,7 @@
                 android:layout_weight="1"
                 android:gravity="center"
                 android:tag="tvFurrow1Status"
-                android:text="15%"
+                android:text="N/A%"
                 android:textAlignment="textStart"
                 android:textColor="@color/white"
                 android:textSize="30sp" />
@@ -408,7 +408,7 @@
             android:layout_weight="1"
             android:gravity="start|center_vertical"
             android:paddingStart="1pt"
-            android:text="16°C"
+            android:text="N/A°C"
             android:textColor="@color/white"
             android:textSize="30sp" />
 
@@ -430,7 +430,7 @@
             android:gravity="start|center_vertical"
             android:includeFontPadding="true"
             android:paddingStart="1pt"
-            android:text="88%"
+            android:text="N/A%"
             android:textColor="@color/white"
             android:textSize="30sp" />
     </LinearLayout>
@@ -601,7 +601,7 @@
             android:paddingTop="1pt"
             android:paddingBottom="1pt"
             android:tag="tvWindowState"
-            android:text="@string/window_open"
+            android:text="@string/window_closed"
             android:textAlignment="textStart"
             android:textColor="#FFFFFF"
             android:textSize="20sp"

@@ -37,14 +37,16 @@ class FurrowButton(val Id: Byte, val linearLayout: LinearLayout, private val net
     private var textView: TextView
     private var patchFunction = networkManager::changeFurrowState
 
-    fun changeStatus(status: Boolean) {
+    fun changeStatus(status: Boolean, send_patch: Boolean = false) {
         this.status = status
 
         val btnBackground = if (status) R.drawable.green_status_round_button else R.drawable.red_status_round_button
         val llBackground = if (status) R.drawable.furrow_hydration_on else R.drawable.furrow_hydration_off
         val text = if (status) R.string.watering_on else R.string.watering_off
 
-        patchFunction(Id, status.compareTo(false).toByte())
+        if (send_patch) {
+            patchFunction(Id, status.compareTo(false).toByte())
+        }
         this.linearLayout.setBackgroundResource(llBackground)
         this.button.setBackgroundResource(btnBackground)
         this.button.setText(text)
@@ -57,7 +59,7 @@ class FurrowButton(val Id: Byte, val linearLayout: LinearLayout, private val net
     init {
         this.status = AppSettingsManager.loadData("Furrow${this.Id}Status").toBoolean()
         this.button = linearLayout.findViewWithTag<AppCompatButton>("btnFurrow$Id")
-        this.button.setOnClickListener{ changeStatus(!this.status) }
+        this.button.setOnClickListener{ changeStatus(!this.status, true) }
         this.textView = linearLayout.findViewWithTag<TextView>("tvFurrow${Id}Status")
 
         Log.d(null, this.button.tag.toString())
@@ -88,16 +90,18 @@ class BottomHomeButton(val name: String, val linearLayout: LinearLayout, val tex
         } else {
             networkManager::changeGlobalWateringState
         }
-        changeStatus(AppSettingsManager.loadData("BottomButton$name").toBoolean())
+        changeStatus(AppSettingsManager.loadData("BottomButton$name").toBoolean(), false)
     }
 
-    fun changeStatus(status: Boolean) {
+    fun changeStatus(status: Boolean, send_patch: Boolean) {
         this.status = status
 
         val bgResource = if (status) R.drawable.green_status_round_button else R.drawable.red_status_round_button
         val newText = if (status) turnOnText else turnOffText
 
-        patchFunction(status.compareTo(false).toByte())
+        if (send_patch) {
+            patchFunction(status.compareTo(false).toByte())
+        }
         linearLayout.setBackgroundResource(bgResource)
         textView.setText(newText)
     }
@@ -175,7 +179,7 @@ class HomeFragment : Fragment(), ApiListener {
             val newInstance = BottomHomeButton(it.key, it.value.first, it.value.second, networkManager)
 
             newInstance.linearLayout.setOnClickListener {
-                newInstance.changeStatus(!newInstance.status)
+                newInstance.changeStatus(!newInstance.status, true)
             }
 
             this.bottomButtons[it.key] = newInstance
@@ -185,7 +189,7 @@ class HomeFragment : Fragment(), ApiListener {
             val layout = layouts[i - 1]
             val furrowClass = FurrowButton(i.toByte(), layout, networkManager)
             layout.setOnClickListener {
-                furrowClass.changeStatus(!furrowClass.status)
+                furrowClass.changeStatus(!furrowClass.status, true)
             }
             this.buttonClasses[i.toByte()] = furrowClass
         }
