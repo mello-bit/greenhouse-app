@@ -15,9 +15,14 @@ import com.example.greenhouse_app.R
 import com.example.greenhouse_app.dataClasses.SoilHum
 import com.example.greenhouse_app.dataClasses.TempAndHum
 import com.example.greenhouse_app.databinding.FragmentHomeBinding
+import com.example.greenhouse_app.utils.AppDatabase
+import com.example.greenhouse_app.utils.AppDatabaseHelper
 import com.example.greenhouse_app.utils.AppNetworkManager
 import com.example.greenhouse_app.utils.AppSettingsManager
 import com.google.firebase.auth.FirebaseAuth
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import org.w3c.dom.Text
 import kotlin.math.roundToInt
 
@@ -64,7 +69,6 @@ class FurrowButton(val Id: Byte, val linearLayout: LinearLayout, private val net
 
         if (status != null && status.isNotEmpty()) {
             changeStatus(status.toBoolean())
-            changeDisplayValue((1..100).random().toByte())
         } else {
             Log.d(null,"THE RECEIVED STATUS IS $status")
         }
@@ -103,14 +107,21 @@ class HomeFragment : Fragment(), ApiListener {
     private lateinit var binding: FragmentHomeBinding
     private var buttonClasses = mutableMapOf<Byte, FurrowButton>()
     private var bottomButtons = mutableMapOf<String, BottomHomeButton>()
+    private lateinit var db: AppDatabase
+    private lateinit var application: MyApplication
     private lateinit var networkManager: AppNetworkManager
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        val applicationContext = requireActivity().applicationContext
+        application = applicationContext as MyApplication
+        db = AppDatabaseHelper.getDatabase(applicationContext, application.currentUID)
     }
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
+
         if (!::networkManager.isInitialized) {
             networkManager = AppNetworkManager(context.applicationContext)
         }
@@ -186,27 +197,28 @@ class HomeFragment : Fragment(), ApiListener {
     override fun onResume() {
         super.onResume()
 
-        // reading data from shared preferences
-//        val furrowValues = mutableListOf<String>()
-//        val furrowButtonsValues = mutableListOf<String>()
-//        val bottomButtonsStatus = listOf(
-//            AppSettingsManager.loadData("btnWindowStatus"),
-//            AppSettingsManager.loadData("btnHeaterStatus")
-//        )
-//        for (i in 1..6) {
-//            val furrowValue = AppSettingsManager.loadData("tvFurrow${i}Status")
-//            val furrowButtonValue = AppSettingsManager.loadData("btnFurrow$i")
-//
-//            if (furrowValue.toString().isNotEmpty())
-//                furrowValues.add(furrowValue.toString())
-//
-//            if (furrowButtonValue.toString().isNotEmpty())
-//                furrowButtonsValues.add(furrowButtonValue.toString())
-//        }
-//
-//        Log.d("SaveTag", furrowValues.toString())
-//        Log.d("SaveTag", furrowButtonsValues.toString())
-//        Log.d("SaveTag", bottomButtonsStatus.toString())
+        // Восстановление отображаемых данных после выхода/захода на фрагмент
+        CoroutineScope(Dispatchers.IO).launch {
+            val latestData = db.SensorDao().getLatestSensorData()
+            if (latestData != null) {
+                binding.tvGreenhouseTemp.text = getString(
+                    R.string.temperature_celsius,
+                    String.format("%.1f", latestData.greenhouse_temperature)
+                )
+                binding.tvGreenhouseHumidity.text = getString(
+                    R.string.percent_adder,
+                    String.format("%.1f", latestData.greenhouse_humidity)
+                )
+
+                listOf(
+                    latestData.furrow1_humidity, latestData.furrow2_humidity,
+                    latestData.furrow3_humidity, latestData.furrow4_humidity,
+                    latestData.furrow5_humidity, latestData.furrow6_humidity
+                ).forEachIndexed { index, fl ->
+                    buttonClasses[(index + 1).toByte()]?.changeDisplayValue(fl.toInt().toByte())
+                }
+            }
+        }
     }
 
     override fun onStop() {

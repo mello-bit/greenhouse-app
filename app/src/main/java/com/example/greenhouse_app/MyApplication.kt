@@ -23,6 +23,8 @@ import java.text.DecimalFormatSymbols
 import java.time.Instant
 import java.time.format.DateTimeFormatter
 import java.util.*
+import kotlin.math.round
+import kotlin.math.roundToInt
 
 fun getCurrentDateTimeISO8601(): String {
     val formatter = DateTimeFormatter.ISO_DATE_TIME
@@ -30,7 +32,7 @@ fun getCurrentDateTimeISO8601(): String {
 }
 
 class MyApplication : Application() {
-    val DEBUGMODE = true
+    val DEBUGMODE = false
 
     private lateinit var networkManager: AppNetworkManager
     private lateinit var handler: Handler
@@ -47,7 +49,37 @@ class MyApplication : Application() {
             db = AppDatabaseHelper.getDatabase(applicationContext, uid)
             sensorDao = db.SensorDao()
 
-            Log.d("important", "Assigned: $value")
+            networkManager = AppNetworkManager(applicationContext)
+            handler = Handler(Looper.getMainLooper())
+
+            handler.post(object : Runnable {
+                @SuppressLint("NotifyDataSetChanged")
+                override fun run() {
+                    networkManager.getSoilHum()
+                    networkManager.getTempAndHum()
+                    handler.postDelayed(this, 10 * 1000)
+                    if (ListForData.SoilHumList.size == 6 && ListForData.TempAndHumList.size == 4) {
+                        ListForData.EverySoilHumDataList.add(
+                            toAllSoilHumDataClass()
+                        )
+
+                        myAdapter.setData(ListForData.EverySoilHumDataList)
+                        myAdapter.notifyDataSetChanged()
+
+                        apiListener?.onApiResponseReceived(Pair(ListForData.SoilHumList, ListForData.TempAndHumList))
+                        saveEntryToDB(ListForData)
+
+                        Log.d("MyLog",  "Множество почва ${ListForData.SoilHumList.toString()}")
+                        Log.d("MyLog", "Множество сенсоры ${ListForData.TempAndHumList.toString()}")
+                        ListForData.SoilHumList.clear()
+                        ListForData.TempAndHumList.clear()
+
+                    }
+
+                }
+            })
+
+            Log.d("important", "Assigned: $uid")
         }
     var loggedIn = DEBUGMODE
 
@@ -55,11 +87,6 @@ class MyApplication : Application() {
         this.apiListener = listener
     }
 
-    init {
-        if (DEBUGMODE) {
-            currentUID = "DEBUG"
-        }
-    }
 
     private fun saveEntryToDB(data: ListForData.Companion) {
         println(data.SoilHumList.toString())
@@ -97,6 +124,7 @@ class MyApplication : Application() {
                 furrow6_humidity = soilHumListCopy[5].humidity.toFloat()
             )
 
+            println(dataToSave.toString())
             sensorDao.insertData(dataToSave)
         }
 
@@ -106,6 +134,7 @@ class MyApplication : Application() {
     }
 
     override fun onCreate() {
+        super.onCreate()
         AppSettingsManager.initContext(applicationContext)
         AppNotificationManager.initContext(applicationContext)
 
@@ -119,37 +148,10 @@ class MyApplication : Application() {
             AppSettingsManager.saveData("soilValue", "67.4")
         }
 
-        super.onCreate()
+        if (DEBUGMODE) {
+            currentUID = "DEBUG"
+        }
         createNotificationChannel()
-        networkManager = AppNetworkManager(applicationContext)
-        handler = Handler(Looper.getMainLooper())
-
-        handler.post(object : Runnable {
-            @SuppressLint("NotifyDataSetChanged")
-            override fun run() {
-                networkManager.getSoilHum()
-                networkManager.getTempAndHum()
-                handler.postDelayed(this, 10 * 1000)
-                if (ListForData.SoilHumList.size == 6 && ListForData.TempAndHumList.size == 4) {
-                    ListForData.EverySoilHumDataList.add(
-                        toAllSoilHumDataClass()
-                    )
-
-                    myAdapter.setData(ListForData.EverySoilHumDataList)
-                    myAdapter.notifyDataSetChanged()
-
-                    apiListener?.onApiResponseReceived(Pair(ListForData.SoilHumList, ListForData.TempAndHumList))
-                    saveEntryToDB(ListForData)
-
-                    Log.d("MyLog",  "Множество почва ${ListForData.SoilHumList.toString()}")
-                    Log.d("MyLog", "Множество сенсоры ${ListForData.TempAndHumList.toString()}")
-                    ListForData.SoilHumList.clear()
-                    ListForData.TempAndHumList.clear()
-
-                }
-
-            }
-        })
     }
 
     private fun toAllSoilHumDataClass(): AllData{

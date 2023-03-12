@@ -47,6 +47,9 @@ interface SensorDao {
     @Query("SELECT * FROM sensor_snapshots WHERE datetime(snapshot_date) BETWEEN datetime(:startDate) AND datetime(:endDate)")
     fun getSensorDataBetweenDates(startDate: String, endDate: String): List<SensorData>
 
+    @Query("SELECT * FROM sensor_snapshots ORDER BY id DESC LIMIT 1")
+    fun getLatestSensorData(): SensorData?
+
     @Query("DELETE FROM sensor_snapshots WHERE id = :id")
     fun deleteDataById(id: Long)
 
