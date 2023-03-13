@@ -3,6 +3,9 @@ package com.example.greenhouse_app.utils
 import android.content.Context
 import android.util.Log
 import com.android.volley.Request
+import com.android.volley.Request.Method
+import com.android.volley.Response
+import com.android.volley.toolbox.JsonObjectRequest
 import com.android.volley.toolbox.StringRequest
 import com.android.volley.toolbox.Volley
 import com.example.greenhouse_app.dataClasses.ListForData
@@ -80,6 +83,28 @@ class AppNetworkManager(private val context: Context?) {
     fun changeWindowState(state: Byte) {
         // urlForWindowOpen: Использовать это.
         // state: Или 1, или 0. Обрабатывать не требуется.
+        val queue = Volley.newRequestQueue(context)
+        val jsonObject = JSONObject()
+        jsonObject.put("state", state)
+
+        val request = object : JsonObjectRequest(
+            Method.PATCH,
+            urlForWindowOpen,
+            jsonObject,
+            Response.Listener {
+                response -> Log.d("ResponseTag", response.toString())
+            },
+            Response.ErrorListener {
+                error -> Log.d("ResponseTag", error.toString() + jsonObject.toString())
+            }
+        ) {
+            override fun getHeaders(): MutableMap<String, String> {
+                val headers = HashMap<String, String>()
+                headers["Authorization"] = "wjlaEu"
+                return headers
+            }
+        }
+        queue.add(request)
     }
 
     fun changeFurrowState(id: Byte, state: Byte) {
