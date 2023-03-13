@@ -32,7 +32,7 @@ fun getCurrentDateTimeISO8601(): String {
 }
 
 class MyApplication : Application() {
-    val DEBUGMODE = false
+    val DEBUGMODE = true
 
     private lateinit var networkManager: AppNetworkManager
     private lateinit var handler: Handler
