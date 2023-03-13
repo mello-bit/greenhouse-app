@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import com.example.greenhouse_app.R
 import com.example.greenhouse_app.databinding.FragmentChartBinding
 import com.github.mikephil.charting.data.Entry
 import com.github.mikephil.charting.data.LineData
@@ -26,6 +27,11 @@ class ChartFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         binding = FragmentChartBinding.inflate(inflater, container, false)
+
+        binding.ibTableButton.setOnClickListener {
+            val tableFragment = ChartsFragment()
+            replaceFragment(tableFragment)
+        }
 
         val someEntries = mutableListOf<Entry>()
 //        someEntries.add(Entry(0f, 5f))
@@ -49,5 +55,12 @@ class ChartFragment : Fragment() {
 
 
         return binding.root
+    }
+
+    private fun replaceFragment(fragment: Fragment) {
+        val fragmentManager = childFragmentManager
+        val fragmentTransaction = fragmentManager.beginTransaction()
+        fragmentTransaction.replace(R.id.chart_fragment, fragment)
+        fragmentTransaction.commit()
     }
 }

@@ -3,7 +3,6 @@ package com.example.greenhouse_app.utils
 import android.content.Context
 import android.util.Log
 import com.android.volley.Request
-import com.android.volley.Request.Method
 import com.android.volley.Response
 import com.android.volley.toolbox.JsonObjectRequest
 import com.android.volley.toolbox.StringRequest
@@ -17,7 +16,7 @@ class AppNetworkManager(private val context: Context?) {
 
     private val urlForGetSoilHum = "https://dt.miet.ru/ppo_it/api/hum/"
     private val urlForGetTempAndHum = "https://dt.miet.ru/ppo_it/api/temp_hum/"
-    private val urlForWindowOpen = "https://dt.miet.ru/ppo_it/api/fork_drive/"
+    private val urlForWindowOpen = "https://dt.miet.ru/ppo_it/api/fork_drive"
     private val urlForGlobalWatering = "https://dt.miet.ru/ppo_it/api/total_hum"
     private val urlForWateringControl = "https://dt.miet.ru/ppo_it/api/watering"
     /*
@@ -29,7 +28,6 @@ class AppNetworkManager(private val context: Context?) {
      */
 
     private val queue = Volley.newRequestQueue(context)
-    var canPrint: Boolean = false
 
     fun getSoilHum() {
         queue.start()
@@ -84,37 +82,47 @@ class AppNetworkManager(private val context: Context?) {
         // urlForWindowOpen: Использовать это.
         // state: Или 1, или 0. Обрабатывать не требуется.
         val queue = Volley.newRequestQueue(context)
-        val jsonObject = JSONObject()
-        jsonObject.put("state", state)
 
-        val request = object : JsonObjectRequest(
-            Method.PATCH,
-            urlForWindowOpen,
-            jsonObject,
-            Response.Listener {
-                response -> Log.d("ResponseTag", response.toString())
+        val request = StringRequest(
+            Request.Method.PATCH,
+            "$urlForWindowOpen?state=$state",
+            {response ->
+                Log.d("ResponseTag", response.toString())
             },
-            Response.ErrorListener {
-                error -> Log.d("ResponseTag", error.toString() + jsonObject.toString())
+            {error ->
+                Log.d("ResponseTag", error.toString())
             }
-        ) {
-            override fun getHeaders(): MutableMap<String, String> {
-                val headers = HashMap<String, String>()
-                headers["Authorization"] = "wjlaEu"
-                return headers
-            }
-        }
+        )
         queue.add(request)
     }
 
     fun changeFurrowState(id: Byte, state: Byte) {
-        // urlForWateringControl: Использовать это
-        // id: От 1 до 6, state: Или 1, или 0. Обрабатывать не требуется
+        val queue = Volley.newRequestQueue(context)
+        val request = StringRequest(
+            Request.Method.PATCH,
+            "$urlForWateringControl?id=$id&state=$state",
+            { response ->
+                Log.d("ResponseTag", response.toString() + id.toString())
+            },
+            { error ->
+                Log.d("ResponseTag", error.toString() + id.toString())
+            }
+        )
+        queue.add(request)
     }
 
     fun changeGlobalWateringState(state: Byte) {
-        // urlForGlobalWatering: Использовать это
-        // state: Или 1, или 0. Обрабатывать не требуется.
+        val queue = Volley.newRequestQueue(context)
+        val request = StringRequest(Request.Method.PATCH,
+            "$urlForGlobalWatering?state=$state",
+            {response ->
+                Log.d("ResponseTag", response.toString())
+            },
+            {error ->
+                Log.d("ResponseTag", error.toString())
+            }
+        )
+        queue.add(request)
     }
 
     private fun getGreenhouseSensorData(jsonString: String): Map<String, Number> {

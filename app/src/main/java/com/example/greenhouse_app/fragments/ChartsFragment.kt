@@ -8,6 +8,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.FragmentTransaction
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.greenhouse_app.R
@@ -38,6 +39,11 @@ class ChartsFragment : Fragment() {
             replaceFragment(chartFragment)
         }
 
+        binding.ibTableButton.setOnClickListener {
+            val chartFragment = ChartFragment()
+            replaceFragment(chartFragment)
+        }
+
         val layoutManager = LinearLayoutManager(context)
 
         recyclerView = binding.rvDataFromSensors
@@ -64,8 +70,15 @@ class ChartsFragment : Fragment() {
     private fun replaceFragment(fragment: Fragment) {
         val fragmentManager = childFragmentManager
         val fragmentTransaction = fragmentManager.beginTransaction()
-        fragmentTransaction.replace(R.id.flSwitchRvToCharts, fragment)
+        fragmentTransaction.replace(R.id.charts_fragment, fragment)
         fragmentTransaction.commit()
     }
+
+//    private fun deleteFragment(fragment: Fragment) {
+//        val fragmentManager = childFragmentManager
+//        val fragmentTransaction = fragmentManager.beginTransaction()
+//        fragmentTransaction.replace(R.id.charts_fragment, fragment)
+//        fragmentTransaction.commit()
+//    }
 
 }
