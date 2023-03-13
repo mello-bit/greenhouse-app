@@ -76,6 +76,7 @@ class AppNetworkManager(private val context: Context?) {
         }
     }
 
+    //изменение статуса форточка
     fun changeWindowState(state: Byte) {
         // urlForWindowOpen: Использовать это.
         // state: Или 1, или 0. Обрабатывать не требуется.

@@ -39,4 +39,6 @@
     <string name="extreme_control_mode">Режим экстренного управления</string>
     <string name="temperature_celsius">%s°C</string>
     <string name="percent_adder">%s%%</string>
+    <string name="choice_a_time">ВЫБОР ВРЕМЕНИ\n(ПО ЧАСАМ)</string>
+    <string name="choice_a_date">ВЫБОР ДАТЫ</string>
 </resources>

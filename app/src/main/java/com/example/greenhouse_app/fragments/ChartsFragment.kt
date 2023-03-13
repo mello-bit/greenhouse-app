@@ -10,6 +10,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.example.greenhouse_app.R
 import com.example.greenhouse_app.dataClasses.ListForData
 import com.example.greenhouse_app.databinding.FragmentChartsBinding
 import com.example.greenhouse_app.recyclerView.DataAdapter
@@ -32,6 +33,11 @@ class ChartsFragment : Fragment() {
         binding = FragmentChartsBinding.inflate(inflater, container, false)
         handler = Handler(Looper.getMainLooper())
 
+        binding.ibChartButton.setOnClickListener {
+            val chartFragment = ChartFragment()
+            replaceFragment(chartFragment)
+        }
+
         val layoutManager = LinearLayoutManager(context)
 
         recyclerView = binding.rvDataFromSensors
@@ -45,12 +51,21 @@ class ChartsFragment : Fragment() {
             override fun run() {
                 myAdapter.setData(ListForData.EverySoilHumDataList)
                 myAdapter.notifyDataSetChanged()
-                recyclerView.scrollToPosition(ListForData.EverySoilHumDataList.size - 1)
+                if (!recyclerView.canScrollVertically(1)) {
+                    recyclerView.scrollToPosition(ListForData.EverySoilHumDataList.size - 1)
+                }
                 handler.postDelayed(this, 200)
             }
         })
 
         return binding.root
+    }
+
+    private fun replaceFragment(fragment: Fragment) {
+        val fragmentManager = childFragmentManager
+        val fragmentTransaction = fragmentManager.beginTransaction()
+        fragmentTransaction.replace(R.id.flSwitchRvToCharts, fragment)
+        fragmentTransaction.commit()
     }
 
 }

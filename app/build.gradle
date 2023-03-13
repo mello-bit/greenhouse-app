@@ -80,4 +80,8 @@ dependencies {
     api "org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.4"
     api "org.jetbrains.kotlinx:kotlinx-coroutines-android:1.6.4"
 
+    // Charts components
+    implementation 'com.github.PhilJay:MPAndroidChart:v3.1.0'
+
+
 }

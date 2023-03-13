@@ -39,7 +39,7 @@
             android:tag="tvFurrow1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:paddingHorizontal="15dp"
+            android:paddingHorizontal="3dp"
             android:text="0"
             android:textSize="20sp"
             tools:ignore="SmallSp" />
@@ -49,7 +49,7 @@
             android:tag="tvFurrow2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:paddingHorizontal="15dp"
+            android:paddingHorizontal="3dp"
             android:text="0"
             android:textSize="20sp"
             tools:ignore="SmallSp" />
@@ -59,7 +59,7 @@
             android:tag="tvFurrow3"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:paddingHorizontal="15dp"
+            android:paddingHorizontal="3dp"
             android:text="0"
             android:textSize="20sp"
             tools:ignore="SmallSp" />
@@ -69,7 +69,7 @@
             android:tag="tvFurrow4"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:paddingHorizontal="15dp"
+            android:paddingHorizontal="3dp"
             android:text="0"
             android:textSize="20sp"
             tools:ignore="SmallSp" />
@@ -79,7 +79,7 @@
             android:tag="tvFurrow5"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:paddingHorizontal="15dp"
+            android:paddingHorizontal="3dp"
             android:text="0"
             android:textSize="20sp"
             tools:ignore="SmallSp" />
@@ -89,7 +89,7 @@
             android:tag="tvFurrow6"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:paddingHorizontal="15dp"
+            android:paddingHorizontal="3dp"
             android:text="0"
             android:textSize="20sp"
             tools:ignore="SmallSp" />
@@ -127,7 +127,6 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:paddingLeft="10dp"
             android:text="Температура"
             android:textSize="20sp" />
 
@@ -136,7 +135,7 @@
             android:tag="tvHumidity1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:paddingHorizontal="15dp"
+            android:paddingHorizontal="3dp"
             android:text="0"
             android:textSize="20sp"
             tools:ignore="SmallSp" />
@@ -146,7 +145,7 @@
             android:tag="tvHumidity1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:paddingHorizontal="15dp"
+            android:paddingHorizontal="3dp"
             android:text="0"
             android:textSize="20sp"
             tools:ignore="SmallSp" />
@@ -156,7 +155,7 @@
             android:tag="tvHumidity3"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:paddingHorizontal="15dp"
+            android:paddingHorizontal="3dp"
             android:text="0"
             android:textSize="20sp"
             tools:ignore="SmallSp" />
@@ -166,7 +165,7 @@
             android:tag="tvHumidity4"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:paddingHorizontal="15dp"
+            android:paddingHorizontal="3dp"
             android:text="0"
             android:textSize="20sp"
             tools:ignore="SmallSp" />
@@ -180,7 +179,6 @@
         android:gravity="center"
         android:orientation="horizontal"
         android:paddingTop="5dp"
-        android:layout_marginBottom="10dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
@@ -200,7 +198,7 @@
             android:tag="tvHumidity1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:paddingHorizontal="15dp"
+            android:paddingHorizontal="3dp"
             android:text="0"
             android:textSize="20sp"
             tools:ignore="SmallSp" />
@@ -210,7 +208,7 @@
             android:tag="tvHumidity2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:paddingHorizontal="15dp"
+            android:paddingHorizontal="3dp"
             android:text="0"
             android:textSize="20sp"
             tools:ignore="SmallSp" />
@@ -220,7 +218,7 @@
             android:tag="tvHumidity3"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:paddingHorizontal="15dp"
+            android:paddingHorizontal="3dp"
             android:text="0"
             android:textSize="20sp"
             tools:ignore="SmallSp" />
@@ -230,7 +228,7 @@
             android:tag="tvHumidity4"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:paddingHorizontal="15dp"
+            android:paddingHorizontal="3dp"
             android:text="0"
             android:textSize="20sp"
             tools:ignore="SmallSp" />

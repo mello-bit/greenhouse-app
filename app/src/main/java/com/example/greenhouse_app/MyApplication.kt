@@ -62,7 +62,7 @@ class MyApplication : Application() {
                         ListForData.EverySoilHumDataList.add(
                             toAllSoilHumDataClass()
                         )
-
+                        Log.d("CheckTag", ListForData.EverySoilHumDataList.toString())
                         myAdapter.setData(ListForData.EverySoilHumDataList)
                         myAdapter.notifyDataSetChanged()
 
