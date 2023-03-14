@@ -9,289 +9,6 @@
     android:backgroundTintMode="multiply"
     tools:context=".fragments.SettingsFragment">
 
-    <EditText
-        android:id="@+id/etFurrowOverwetting"
-        android:layout_width="60dp"
-        android:layout_height="40dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="4dp"
-        android:background="@drawable/background_shape_for_boundary"
-        android:ems="10"
-        android:inputType="number"
-        android:maxLength="3"
-        android:textAlignment="center"
-        android:textColor="@color/black"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="@+id/guideline"
-        app:layout_constraintTop_toBottomOf="@+id/etGreenhouseOverwetting" />
-
-    <EditText
-        android:id="@+id/etGreenhouseOverwetting"
-        android:layout_width="60dp"
-        android:layout_height="40dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="4dp"
-        android:background="@drawable/background_shape_for_boundary"
-        android:ems="10"
-        android:inputType="number"
-        android:maxLength="3"
-        android:textAlignment="center"
-        android:textColor="@color/black"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="@+id/guideline"
-        app:layout_constraintTop_toBottomOf="@+id/etThresholdTemp" />
-
-    <androidx.appcompat.widget.SwitchCompat
-
-        android:id="@+id/scTemperatureUnits"
-        android:layout_width="wrap_content"
-        android:layout_height="0dp"
-        android:thumb="@drawable/thumb"
-        android:track="@drawable/track"
-        app:layout_constraintHorizontal_chainStyle="packed"
-        app:layout_constraintStart_toStartOf="@+id/scLanguage"
-        app:layout_constraintTop_toBottomOf="@+id/scLanguage"
-        app:trackTint="@color/white" />
-
-    <TextView
-        android:id="@+id/tvLanguageLabel"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:autoSizeTextType="uniform"
-        android:text="Язык приложения:"
-        android:textAlignment="viewEnd"
-        android:textColor="@color/white"
-        android:textSize="20sp"
-        app:layout_constraintBottom_toBottomOf="@+id/scLanguage"
-        app:layout_constraintEnd_toStartOf="@+id/guideline"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/scLanguage" />
-
-    <androidx.appcompat.widget.SwitchCompat
-
-        android:id="@+id/scLanguage"
-        android:layout_width="wrap_content"
-        android:layout_height="0dp"
-        android:layout_marginStart="2dp"
-        android:layout_marginTop="8dp"
-        android:thumb="@drawable/thumb"
-        app:layout_constraintHorizontal_chainStyle="packed"
-        app:layout_constraintStart_toEndOf="@+id/tvRU"
-        app:layout_constraintTop_toTopOf="parent"
-        app:trackTint="@color/white" />
-
-    <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/guideline"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        app:layout_constraintGuide_percent="0.65" />
-
-    <TextView
-        android:id="@+id/tvRU"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:text="RU"
-        android:textAllCaps="true"
-        android:textColor="@color/white"
-        app:layout_constraintBottom_toBottomOf="@+id/scLanguage"
-        app:layout_constraintStart_toEndOf="@+id/tvLanguageLabel"
-        app:layout_constraintTop_toTopOf="@+id/scLanguage" />
-
-    <TextView
-        android:id="@+id/tvEN"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="EN"
-        android:textColor="@color/white"
-        app:layout_constraintBottom_toBottomOf="@+id/scLanguage"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toEndOf="@+id/scLanguage"
-        app:layout_constraintTop_toTopOf="@+id/scLanguage" />
-
-    <TextView
-        android:id="@+id/tvC"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:text="°C"
-        android:textColor="@color/white"
-        app:layout_constraintBottom_toBottomOf="@+id/scTemperatureUnits"
-        app:layout_constraintEnd_toStartOf="@+id/scTemperatureUnits"
-        app:layout_constraintStart_toStartOf="@+id/guideline"
-        app:layout_constraintTop_toTopOf="@+id/scTemperatureUnits" />
-
-    <TextView
-        android:id="@+id/tvF"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="°F"
-        android:textColor="@color/white"
-        app:layout_constraintBottom_toBottomOf="@+id/scTemperatureUnits"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toEndOf="@+id/scTemperatureUnits"
-        app:layout_constraintTop_toTopOf="@+id/scTemperatureUnits" />
-
-    <TextView
-        android:id="@+id/tvTemperatureUnits"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:autoSizeTextType="uniform"
-        android:text="Единицы температуры:"
-        android:textAlignment="viewEnd"
-        android:textColor="@color/white"
-        android:textSize="20sp"
-        app:layout_constraintBottom_toBottomOf="@+id/scTemperatureUnits"
-        app:layout_constraintEnd_toStartOf="@+id/guideline"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/scTemperatureUnits" />
-
-    <TextView
-        android:id="@+id/tvInterval"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="32dp"
-        android:text="Интервал снятия показаний"
-        android:textColor="@color/white"
-        android:textSize="20sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/scTemperatureUnits" />
-
-    <RadioGroup
-        android:id="@+id/rgIntervalButtons"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:clipToPadding="false"
-        android:orientation="horizontal"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tvInterval">
-
-        <RadioButton
-            android:id="@+id/rb10Seconds"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:text="10 секунд"
-            android:textColor="@color/white" />
-
-        <RadioButton
-            android:id="@+id/rb1Minute"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:checked="true"
-            android:text="1 минута"
-            android:textColor="@color/white" />
-
-        <RadioButton
-            android:id="@+id/rb2Minutes"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:text="2 минуты"
-            android:textColor="@color/white" />
-    </RadioGroup>
-
-    <TextView
-        android:id="@+id/tvProtectionLabel"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="32dp"
-        android:text="Защитные показатели"
-        android:textColor="@color/white"
-        android:textSize="20sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/rgIntervalButtons" />
-
-    <EditText
-        android:id="@+id/etThresholdTemp"
-        android:layout_width="60dp"
-        android:layout_height="40dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="8dp"
-        android:background="@drawable/background_shape_for_boundary"
-        android:ems="10"
-        android:inputType="number"
-        android:maxLength="3"
-        android:textAlignment="center"
-        android:textColor="@color/black"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="@+id/guideline"
-        app:layout_constraintTop_toBottomOf="@+id/tvProtectionLabel" />
-
-    <TextView
-        android:id="@+id/tvThresholdTempLabel"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:autoSizeTextType="uniform"
-        android:text="Пороговая температура"
-        android:textAlignment="viewEnd"
-        android:textColor="@color/white"
-        android:textSize="20sp"
-        app:layout_constraintBottom_toBottomOf="@+id/etThresholdTemp"
-        app:layout_constraintEnd_toStartOf="@+id/guideline"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/etThresholdTemp" />
-
-    <TextView
-        android:id="@+id/tvOverwettingLabel"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:autoSizeTextType="uniform"
-        android:maxLines="1"
-        android:text="Защита от переувлажнения"
-        android:textAlignment="viewEnd"
-        android:textColor="@color/white"
-        android:textSize="20sp"
-        app:layout_constraintBottom_toBottomOf="@+id/etGreenhouseOverwetting"
-        app:layout_constraintEnd_toStartOf="@+id/guideline"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/etGreenhouseOverwetting" />
-
-    <TextView
-        android:id="@+id/tvFurrowOverwettingLabel"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:autoSizeTextType="uniform"
-        android:maxLines="1"
-        android:text="Ограничение увлажнения грядок"
-        android:textAlignment="viewEnd"
-        android:textColor="@color/white"
-        android:textSize="20sp"
-        app:layout_constraintBottom_toBottomOf="@+id/etFurrowOverwetting"
-        app:layout_constraintEnd_toStartOf="@+id/guideline"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/etFurrowOverwetting" />
-
-    <androidx.appcompat.widget.AppCompatButton
-        android:id="@+id/btnEmergencyMode"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:background="@drawable/green_status_round_button"
-        android:paddingHorizontal="5pt"
-        android:text="Экстренный режим(ВЫКЛ)"
-        android:textColor="@color/white"
-        android:textSize="15sp"
-        app:layout_constraintBottom_toTopOf="@+id/btnSubmit"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/etFurrowOverwetting"
-        app:layout_constraintVertical_bias="0.19999999" />
-
     <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/btnSubmit"
         android:layout_width="0dp"
@@ -306,5 +23,317 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/constraintLayout2"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="24dp"
+        android:layout_marginEnd="16dp"
+        android:background="@drawable/blue_gradient_round_corners"
+        android:padding="3pt"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/constraintLayout">
+
+        <EditText
+            android:id="@+id/etThresholdTemp"
+            android:layout_width="60dp"
+            android:layout_height="40dp"
+            android:layout_marginTop="4dp"
+            android:layout_marginEnd="8dp"
+            android:background="@drawable/background_shape_for_boundary"
+            android:ems="10"
+            android:inputType="number"
+            android:maxLength="3"
+            android:textAlignment="center"
+            android:textColor="@color/black"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tvProtectionLabel" />
+
+        <TextView
+            android:id="@+id/tvProtectionLabel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Защитные показатели"
+            android:textColor="@color/white"
+            android:textSize="20sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/tvThresholdTempLabel"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="16dp"
+            android:autoSizeTextType="uniform"
+            android:text="Пороговая температура"
+            android:textAlignment="viewEnd"
+            android:textColor="@color/white"
+            android:textSize="20sp"
+            app:layout_constraintBottom_toBottomOf="@+id/etThresholdTemp"
+            app:layout_constraintEnd_toStartOf="@+id/etThresholdTemp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/etThresholdTemp" />
+
+        <TextView
+            android:id="@+id/tvOverwettingLabel"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="16dp"
+            android:autoSizeTextType="uniform"
+            android:maxLines="1"
+            android:text="Защита от переувлажнения"
+            android:textAlignment="viewEnd"
+            android:textColor="@color/white"
+            android:textSize="20sp"
+            app:layout_constraintBottom_toBottomOf="@+id/etGreenhouseOverwetting"
+            app:layout_constraintEnd_toStartOf="@+id/etGreenhouseOverwetting"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/etGreenhouseOverwetting" />
+
+        <TextView
+            android:id="@+id/tvFurrowOverwettingLabel"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="16dp"
+            android:autoSizeTextType="uniform"
+            android:maxLines="1"
+            android:text="Ограничение увлажнения грядок"
+            android:textAlignment="viewEnd"
+            android:textColor="@color/white"
+            android:textSize="20sp"
+            app:layout_constraintBottom_toBottomOf="@+id/etFurrowOverwetting"
+            app:layout_constraintEnd_toStartOf="@+id/etFurrowOverwetting"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/etFurrowOverwetting" />
+
+        <EditText
+            android:id="@+id/etGreenhouseOverwetting"
+            android:layout_width="60dp"
+            android:layout_height="40dp"
+            android:layout_marginTop="4dp"
+            android:layout_marginEnd="8dp"
+            android:background="@drawable/background_shape_for_boundary"
+            android:ems="10"
+            android:inputType="number"
+            android:maxLength="3"
+            android:textAlignment="center"
+            android:textColor="@color/black"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/etThresholdTemp" />
+
+        <EditText
+            android:id="@+id/etFurrowOverwetting"
+            android:layout_width="60dp"
+            android:layout_height="40dp"
+            android:layout_marginTop="4dp"
+            android:layout_marginEnd="8dp"
+            android:background="@drawable/background_shape_for_boundary"
+            android:ems="10"
+            android:inputType="number"
+            android:maxLength="3"
+            android:textAlignment="center"
+            android:textColor="@color/black"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/etGreenhouseOverwetting" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/constraintLayout"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="24dp"
+        android:layout_marginEnd="16dp"
+        android:background="@drawable/blue_gradient_round_corners"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/constraintLayout3">
+
+        <TextView
+            android:id="@+id/tvInterval"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:text="Интервал снятия показаний"
+            android:textColor="@color/white"
+            android:textSize="20sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <RadioGroup
+            android:id="@+id/rgIntervalButtons"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:clipToPadding="false"
+            android:orientation="horizontal"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tvInterval">
+
+            <RadioButton
+                android:id="@+id/rb10Seconds"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:text="10 секунд"
+                android:textColor="@color/white" />
+
+            <RadioButton
+                android:id="@+id/rb1Minute"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:checked="true"
+                android:text="1 минута"
+                android:textColor="@color/white" />
+
+            <RadioButton
+                android:id="@+id/rb2Minutes"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:text="2 минуты"
+                android:textColor="@color/white" />
+        </RadioGroup>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/constraintLayout3"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="16dp"
+        android:background="@drawable/blue_gradient_round_corners"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <TextView
+            android:id="@+id/tvLanguageLabel"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="4dp"
+            android:autoSizeTextType="uniform"
+            android:text="Язык приложения:"
+            android:textAlignment="viewEnd"
+            android:textColor="@color/white"
+            android:textSize="20sp"
+            app:layout_constraintBottom_toTopOf="@+id/scTemperatureUnits"
+            app:layout_constraintEnd_toStartOf="@+id/tvRU"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/scLanguage" />
+
+        <androidx.appcompat.widget.SwitchCompat
+
+            android:id="@+id/scTemperatureUnits"
+            android:layout_width="wrap_content"
+            android:layout_height="0dp"
+            android:layout_marginEnd="24dp"
+            android:thumb="@drawable/thumb"
+            android:track="@drawable/track"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:trackTint="@color/white" />
+
+        <TextView
+            android:id="@+id/tvC"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="°C"
+            android:textColor="@color/white"
+            app:layout_constraintBottom_toBottomOf="@+id/scTemperatureUnits"
+            app:layout_constraintEnd_toStartOf="@+id/scTemperatureUnits"
+            app:layout_constraintTop_toTopOf="@+id/scTemperatureUnits" />
+
+        <TextView
+            android:id="@+id/tvF"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="°F"
+            android:textColor="@color/white"
+            app:layout_constraintBottom_toBottomOf="@+id/scTemperatureUnits"
+            app:layout_constraintStart_toEndOf="@+id/scTemperatureUnits"
+            app:layout_constraintTop_toTopOf="@+id/scTemperatureUnits" />
+
+        <androidx.appcompat.widget.SwitchCompat
+
+            android:id="@+id/scLanguage"
+            android:layout_width="wrap_content"
+            android:layout_height="0dp"
+            android:layout_marginEnd="24dp"
+            android:thumb="@drawable/thumb"
+            app:layout_constraintBottom_toTopOf="@+id/scTemperatureUnits"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:trackTint="@color/white" />
+
+        <TextView
+            android:id="@+id/tvRU"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="RU"
+            android:textAllCaps="true"
+            android:textColor="@color/white"
+            app:layout_constraintBottom_toTopOf="@+id/scTemperatureUnits"
+            app:layout_constraintEnd_toStartOf="@+id/scLanguage"
+            app:layout_constraintTop_toTopOf="@+id/scLanguage" />
+
+        <TextView
+            android:id="@+id/tvEN"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="EN"
+            android:textColor="@color/white"
+            app:layout_constraintBottom_toTopOf="@+id/scTemperatureUnits"
+            app:layout_constraintStart_toEndOf="@+id/scLanguage"
+            app:layout_constraintTop_toTopOf="@+id/scLanguage" />
+
+        <TextView
+            android:id="@+id/tvTemperatureUnits"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="4dp"
+            android:autoSizeTextType="uniform"
+            android:text="Единицы температуры:"
+            android:textAlignment="viewEnd"
+            android:textColor="@color/white"
+            android:textSize="20sp"
+            app:layout_constraintBottom_toBottomOf="@+id/scTemperatureUnits"
+            app:layout_constraintEnd_toStartOf="@+id/tvRU"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/scTemperatureUnits" />
+
+        <TextView
+            android:id="@+id/textView4"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:autoSizeTextType="uniform"
+            android:text="Общее"
+            android:textColor="@color/white"
+            android:textSize="20sp"
+            app:layout_constraintBottom_toTopOf="@+id/scLanguage"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/green_status_round_button"
+        android:paddingHorizontal="4pt"
+        android:text="Режим экстренного управления\n(ВЫКЛ)"
+        android:textColor="@color/white"
+        app:layout_constraintBottom_toTopOf="@+id/btnSubmit"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/constraintLayout2"
+        app:layout_constraintVertical_bias="0.15" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

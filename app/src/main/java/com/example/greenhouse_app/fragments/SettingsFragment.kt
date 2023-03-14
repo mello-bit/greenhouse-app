@@ -46,9 +46,9 @@ open class SettingsFragment : Fragment() {
             saveSettings()
         }
 
-        binding.btnEmergencyMode.setOnClickListener {
-
-        }
+//        binding.btnEmergencyMode.setOnClickListener {
+//
+//        }
 
         binding.etFurrowOverwetting.addTextChangedListener(SettingFilter)
         binding.etThresholdTemp.addTextChangedListener(SettingFilter)
