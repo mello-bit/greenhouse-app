@@ -138,17 +138,21 @@ class MyApplication : Application() {
         AppSettingsManager.initContext(applicationContext)
         AppNotificationManager.initContext(applicationContext)
 
-        if (AppSettingsManager.checkThatDataExists("tempValue") &&
-                AppSettingsManager.checkThatDataExists("humValue")&&
-                AppSettingsManager.checkThatDataExists("soilValue")) {
+        if (AppSettingsManager.checkThatDataExists("WereSettingsLoadedOnce")) {
             AppSettingsManager.isAllBoundaryDataExists = true
         } else {
-            AppSettingsManager.saveData("tempValue", "21")
-            AppSettingsManager.saveData("humValue", "69.7")
-            AppSettingsManager.saveData("soilValue", "67.4")
+            AppSettingsManager.saveData("Language", "RU")
+            AppSettingsManager.saveData("TempUnits", "C")
+            AppSettingsManager.saveData("Interval", "60")
+            AppSettingsManager.saveData("EmergencyMode", "false")
+            AppSettingsManager.saveData("GreenhouseThresholdTemp", "50")
+            AppSettingsManager.saveData("GreenhouseOverwettingPercent", "50")
+            AppSettingsManager.saveData("FurrowOverwettingPercent", "50")
+            AppSettingsManager.saveData("WereSettingsLoadedOnce", "true")
         }
 
         if (DEBUGMODE) {
+            Log.d("important", "Assigned in OnCreate()")
             currentUID = "DEBUG"
         }
         createNotificationChannel()

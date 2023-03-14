@@ -4,11 +4,13 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/background"
+    android:background="@drawable/test_gradient"
+    android:backgroundTint="#6740AC"
+    android:backgroundTintMode="multiply"
     tools:context=".fragments.SettingsFragment">
 
     <EditText
-        android:id="@+id/editTextNumber4"
+        android:id="@+id/etFurrowOverwetting"
         android:layout_width="60dp"
         android:layout_height="40dp"
         android:layout_marginStart="16dp"
@@ -22,10 +24,10 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="@+id/guideline"
-        app:layout_constraintTop_toBottomOf="@+id/editTextNumber3" />
+        app:layout_constraintTop_toBottomOf="@+id/etGreenhouseOverwetting" />
 
     <EditText
-        android:id="@+id/editTextNumber3"
+        android:id="@+id/etGreenhouseOverwetting"
         android:layout_width="60dp"
         android:layout_height="40dp"
         android:layout_marginStart="16dp"
@@ -39,25 +41,22 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="@+id/guideline"
-        app:layout_constraintTop_toBottomOf="@+id/editTextNumber2" />
+        app:layout_constraintTop_toBottomOf="@+id/etThresholdTemp" />
 
     <androidx.appcompat.widget.SwitchCompat
 
-        android:id="@+id/switch1"
+        android:id="@+id/scTemperatureUnits"
         android:layout_width="wrap_content"
         android:layout_height="0dp"
-        android:showText="true"
-        android:textColor="#000000"
-        android:textOff="EN"
-        android:textOn="RU"
         android:thumb="@drawable/thumb"
         android:track="@drawable/track"
         app:layout_constraintHorizontal_chainStyle="packed"
-        app:layout_constraintStart_toStartOf="@+id/switch2"
-        app:layout_constraintTop_toBottomOf="@+id/switch2" />
+        app:layout_constraintStart_toStartOf="@+id/scLanguage"
+        app:layout_constraintTop_toBottomOf="@+id/scLanguage"
+        app:trackTint="@color/white" />
 
     <TextView
-        android:id="@+id/textView5"
+        android:id="@+id/tvLanguageLabel"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
@@ -66,27 +65,23 @@
         android:textAlignment="viewEnd"
         android:textColor="@color/white"
         android:textSize="20sp"
-        app:layout_constraintBottom_toBottomOf="@+id/switch2"
+        app:layout_constraintBottom_toBottomOf="@+id/scLanguage"
         app:layout_constraintEnd_toStartOf="@+id/guideline"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/switch2" />
+        app:layout_constraintTop_toTopOf="@+id/scLanguage" />
 
     <androidx.appcompat.widget.SwitchCompat
 
-        android:id="@+id/switch2"
+        android:id="@+id/scLanguage"
         android:layout_width="wrap_content"
         android:layout_height="0dp"
         android:layout_marginStart="2dp"
         android:layout_marginTop="8dp"
-        android:showText="true"
-        android:textColor="#000000"
-        android:textOff="EN"
-        android:textOn="RU"
         android:thumb="@drawable/thumb"
-        android:track="@drawable/track"
         app:layout_constraintHorizontal_chainStyle="packed"
-        app:layout_constraintStart_toEndOf="@+id/textView4"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintStart_toEndOf="@+id/tvRU"
+        app:layout_constraintTop_toTopOf="parent"
+        app:trackTint="@color/white" />
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/guideline"
@@ -96,55 +91,55 @@
         app:layout_constraintGuide_percent="0.65" />
 
     <TextView
-        android:id="@+id/textView4"
+        android:id="@+id/tvRU"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:text="RU"
         android:textAllCaps="true"
         android:textColor="@color/white"
-        app:layout_constraintBottom_toBottomOf="@+id/switch2"
-        app:layout_constraintStart_toEndOf="@+id/textView5"
-        app:layout_constraintTop_toTopOf="@+id/switch2" />
+        app:layout_constraintBottom_toBottomOf="@+id/scLanguage"
+        app:layout_constraintStart_toEndOf="@+id/tvLanguageLabel"
+        app:layout_constraintTop_toTopOf="@+id/scLanguage" />
 
     <TextView
-        android:id="@+id/textView6"
+        android:id="@+id/tvEN"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="EN"
         android:textColor="@color/white"
-        app:layout_constraintBottom_toBottomOf="@+id/switch2"
+        app:layout_constraintBottom_toBottomOf="@+id/scLanguage"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toEndOf="@+id/switch2"
-        app:layout_constraintTop_toTopOf="@+id/switch2" />
+        app:layout_constraintStart_toEndOf="@+id/scLanguage"
+        app:layout_constraintTop_toTopOf="@+id/scLanguage" />
 
     <TextView
-        android:id="@+id/textView7"
+        android:id="@+id/tvC"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:text="°C"
         android:textColor="@color/white"
-        app:layout_constraintBottom_toBottomOf="@+id/switch1"
-        app:layout_constraintEnd_toStartOf="@+id/switch1"
+        app:layout_constraintBottom_toBottomOf="@+id/scTemperatureUnits"
+        app:layout_constraintEnd_toStartOf="@+id/scTemperatureUnits"
         app:layout_constraintStart_toStartOf="@+id/guideline"
-        app:layout_constraintTop_toTopOf="@+id/switch1" />
+        app:layout_constraintTop_toTopOf="@+id/scTemperatureUnits" />
 
     <TextView
-        android:id="@+id/textView8"
+        android:id="@+id/tvF"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="°F"
         android:textColor="@color/white"
-        app:layout_constraintBottom_toBottomOf="@+id/switch1"
+        app:layout_constraintBottom_toBottomOf="@+id/scTemperatureUnits"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toEndOf="@+id/switch1"
-        app:layout_constraintTop_toTopOf="@+id/switch1" />
+        app:layout_constraintStart_toEndOf="@+id/scTemperatureUnits"
+        app:layout_constraintTop_toTopOf="@+id/scTemperatureUnits" />
 
     <TextView
-        android:id="@+id/textView9"
+        android:id="@+id/tvTemperatureUnits"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
@@ -153,35 +148,35 @@
         android:textAlignment="viewEnd"
         android:textColor="@color/white"
         android:textSize="20sp"
-        app:layout_constraintBottom_toBottomOf="@+id/switch1"
+        app:layout_constraintBottom_toBottomOf="@+id/scTemperatureUnits"
         app:layout_constraintEnd_toStartOf="@+id/guideline"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/switch1" />
+        app:layout_constraintTop_toTopOf="@+id/scTemperatureUnits" />
 
     <TextView
-        android:id="@+id/textView10"
+        android:id="@+id/tvInterval"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="32dp"
         android:text="Интервал снятия показаний"
         android:textColor="@color/white"
         android:textSize="20sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/switch1" />
+        app:layout_constraintTop_toBottomOf="@+id/scTemperatureUnits" />
 
     <RadioGroup
-        android:id="@+id/radioGroup"
+        android:id="@+id/rgIntervalButtons"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:clipToPadding="false"
         android:orientation="horizontal"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView10">
+        app:layout_constraintTop_toBottomOf="@+id/tvInterval">
 
         <RadioButton
-            android:id="@+id/radioButton"
+            android:id="@+id/rb10Seconds"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
@@ -189,15 +184,16 @@
             android:textColor="@color/white" />
 
         <RadioButton
-            android:id="@+id/radioButton2"
+            android:id="@+id/rb1Minute"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
+            android:checked="true"
             android:text="1 минута"
             android:textColor="@color/white" />
 
         <RadioButton
-            android:id="@+id/radioButton3"
+            android:id="@+id/rb2Minutes"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
@@ -206,19 +202,19 @@
     </RadioGroup>
 
     <TextView
-        android:id="@+id/textView11"
+        android:id="@+id/tvProtectionLabel"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="32dp"
         android:text="Защитные показатели"
         android:textColor="@color/white"
         android:textSize="20sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/radioGroup" />
+        app:layout_constraintTop_toBottomOf="@+id/rgIntervalButtons" />
 
     <EditText
-        android:id="@+id/editTextNumber2"
+        android:id="@+id/etThresholdTemp"
         android:layout_width="60dp"
         android:layout_height="40dp"
         android:layout_marginStart="16dp"
@@ -232,10 +228,10 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="@+id/guideline"
-        app:layout_constraintTop_toBottomOf="@+id/textView11" />
+        app:layout_constraintTop_toBottomOf="@+id/tvProtectionLabel" />
 
     <TextView
-        android:id="@+id/textView12"
+        android:id="@+id/tvThresholdTempLabel"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
@@ -244,13 +240,13 @@
         android:textAlignment="viewEnd"
         android:textColor="@color/white"
         android:textSize="20sp"
-        app:layout_constraintBottom_toBottomOf="@+id/editTextNumber2"
+        app:layout_constraintBottom_toBottomOf="@+id/etThresholdTemp"
         app:layout_constraintEnd_toStartOf="@+id/guideline"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/editTextNumber2" />
+        app:layout_constraintTop_toTopOf="@+id/etThresholdTemp" />
 
     <TextView
-        android:id="@+id/textView13"
+        android:id="@+id/tvOverwettingLabel"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
@@ -260,13 +256,13 @@
         android:textAlignment="viewEnd"
         android:textColor="@color/white"
         android:textSize="20sp"
-        app:layout_constraintBottom_toBottomOf="@+id/editTextNumber3"
+        app:layout_constraintBottom_toBottomOf="@+id/etGreenhouseOverwetting"
         app:layout_constraintEnd_toStartOf="@+id/guideline"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/editTextNumber3" />
+        app:layout_constraintTop_toTopOf="@+id/etGreenhouseOverwetting" />
 
     <TextView
-        android:id="@+id/textView14"
+        android:id="@+id/tvFurrowOverwettingLabel"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
@@ -276,9 +272,39 @@
         android:textAlignment="viewEnd"
         android:textColor="@color/white"
         android:textSize="20sp"
-        app:layout_constraintBottom_toBottomOf="@+id/editTextNumber4"
+        app:layout_constraintBottom_toBottomOf="@+id/etFurrowOverwetting"
         app:layout_constraintEnd_toStartOf="@+id/guideline"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/editTextNumber4" />
+        app:layout_constraintTop_toTopOf="@+id/etFurrowOverwetting" />
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/btnEmergencyMode"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/green_status_round_button"
+        android:paddingHorizontal="5pt"
+        android:text="Экстренный режим(ВЫКЛ)"
+        android:textColor="@color/white"
+        android:textSize="15sp"
+        app:layout_constraintBottom_toTopOf="@+id/btnSubmit"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/etFurrowOverwetting"
+        app:layout_constraintVertical_bias="0.19999999" />
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/btnSubmit"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="16dp"
+        android:background="@drawable/background_button_shape"
+        android:text="Применить и сохранить"
+        android:textColor="@color/white"
+        android:textSize="15sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
