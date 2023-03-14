@@ -7,18 +7,33 @@
     android:background="@drawable/background_for_card">
 
     <TextView
+        android:id="@+id/currentDate"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="155dp"
+        android:text="@string/zero"
+        android:textAlignment="center"
+        android:textSize="20sp"
+        android:layout_marginTop="5dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/tvFurrowHumidity"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.05" />
+
+    <TextView
         android:id="@+id/tvFurrowHumidity"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingTop="10dp"
-        android:text="Влажность почвы"
+        android:text="@string/soil_moisture"
         android:textAlignment="center"
         android:textSize="25sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/currentDate"
         app:layout_constraintVertical_bias="0.0" />
 
     <LinearLayout
@@ -40,7 +55,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:paddingHorizontal="3dp"
-            android:text="0"
+            android:text="@string/zero"
             android:textSize="20sp"
             tools:ignore="SmallSp" />
 
@@ -50,7 +65,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:paddingHorizontal="3dp"
-            android:text="0"
+            android:text="@string/zero"
             android:textSize="20sp"
             tools:ignore="SmallSp" />
 
@@ -60,7 +75,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:paddingHorizontal="3dp"
-            android:text="0"
+            android:text="@string/zero"
             android:textSize="20sp"
             tools:ignore="SmallSp" />
 
@@ -70,7 +85,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:paddingHorizontal="3dp"
-            android:text="0"
+            android:text="@string/zero"
             android:textSize="20sp"
             tools:ignore="SmallSp" />
 
@@ -80,7 +95,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:paddingHorizontal="3dp"
-            android:text="0"
+            android:text="@string/zero"
             android:textSize="20sp"
             tools:ignore="SmallSp" />
 
@@ -90,7 +105,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:paddingHorizontal="3dp"
-            android:text="0"
+            android:text="@string/zero"
             android:textSize="20sp"
             tools:ignore="SmallSp" />
 
@@ -102,7 +117,7 @@
         android:layout_height="wrap_content"
         android:paddingVertical="5dp"
         android:layout_marginBottom="10dp"
-        android:text="Температура и влажность"
+        android:text="@string/temperature_and_humidity"
         android:textAlignment="center"
         android:textSize="20sp"
         app:layout_constraintEnd_toEndOf="parent"
@@ -127,7 +142,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Температура"
+            android:text="@string/temperature"
             android:textSize="20sp" />
 
         <TextView
@@ -178,7 +193,7 @@
         android:layout_height="wrap_content"
         android:gravity="center"
         android:orientation="horizontal"
-        android:paddingTop="5dp"
+        android:paddingVertical="5dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
@@ -190,7 +205,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:paddingLeft="10dp"
-            android:text="Влажность"
+            android:text="@string/humidity"
             android:textSize="20sp" />
 
         <TextView

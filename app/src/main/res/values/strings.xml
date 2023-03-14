@@ -41,4 +41,13 @@
     <string name="percent_adder">%s%%</string>
     <string name="choice_a_time">ВЫБОР ВРЕМЕНИ\n(ПО ЧАСАМ)</string>
     <string name="choice_a_date">ВЫБОР ДАТЫ</string>
+    <string name="soil_moisture">Влажность почвы</string>
+    <string name="zero">0</string>
+    <string name="temperature_and_humidity">Температура и влажность</string>
+    <string name="temperature">Температура</string>
+    <string name="humidity">Влажность</string>
+    <string name="choice_soil_hum">Показатель влажности почвы, для грядки с номером</string>
+    <string name="choice">Выберите грядку</string>
+    <string name="choice_temp">Показатель температуры теплицы с номером</string>
+    <string name="choice_hum">Показатель влажности теплицы с номером</string>
 </resources>

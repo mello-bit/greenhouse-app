@@ -1,6 +1,7 @@
 package com.example.greenhouse_app.dataClasses
 
 data class AllData(
+    val currentData: String,
     val soilHum1: Number,
     val soilHum2: Number,
     val soilHum3: Number,

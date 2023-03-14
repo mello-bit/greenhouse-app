@@ -74,11 +74,4 @@ class ChartsFragment : Fragment() {
         fragmentTransaction.commit()
     }
 
-//    private fun deleteFragment(fragment: Fragment) {
-//        val fragmentManager = childFragmentManager
-//        val fragmentTransaction = fragmentManager.beginTransaction()
-//        fragmentTransaction.replace(R.id.charts_fragment, fragment)
-//        fragmentTransaction.commit()
-//    }
-
 }

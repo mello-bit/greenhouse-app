@@ -8,4 +8,13 @@
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
     <color name="light_text_color">#EDB1F1</color>
+    <color name="purple_450">#6740AC</color>
+    <color name="persian_indigo">#3a1772</color>
+    <color name="celestial_blue">#5398BE</color>
+    <color name="sienna">#862009</color>
+    <color name="bittersweet">#F9564F</color>
+    <color name="jade">#00A878</color>
+    <color name="indigo_dye">#044B7F</color>
+    <color name="tyrian_purple">#044B7F</color>
+    <color name="saffron">#E3B505</color>
 </resources>
