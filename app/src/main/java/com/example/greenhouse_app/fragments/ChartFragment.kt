@@ -1,18 +1,17 @@
 package com.example.greenhouse_app.fragments
 
+import android.app.DatePickerDialog
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.CheckBox
-import android.widget.TextView
-import androidx.core.content.ContentProviderCompat.requireContext
 import androidx.core.content.ContextCompat
 import com.example.greenhouse_app.R
-import com.example.greenhouse_app.dataClasses.ListForData
 import com.example.greenhouse_app.dataClasses.ListForData.Companion.EverySoilHumDataList
 import com.example.greenhouse_app.dataClasses.ListForData.Companion.averageSoilHumList
 import com.example.greenhouse_app.dataClasses.ListForData.Companion.currentDateList
@@ -38,6 +37,12 @@ import com.github.mikephil.charting.data.Entry
 import com.github.mikephil.charting.data.LineData
 import com.github.mikephil.charting.data.LineDataSet
 import com.github.mikephil.charting.formatter.IndexAxisValueFormatter
+import com.google.android.material.timepicker.MaterialTimePicker
+import com.google.android.material.timepicker.TimeFormat
+import org.intellij.lang.annotations.JdkConstants.CalendarMonth
+import java.text.SimpleDateFormat
+import java.time.format.DateTimeFormatter
+import java.util.*
 
 
 class ChartFragment : Fragment() {
@@ -45,10 +50,8 @@ class ChartFragment : Fragment() {
     private lateinit var binding: FragmentChartBinding
     private lateinit var handler: Handler
     private val list = EverySoilHumDataList
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-    }
+    private var hour: Int? = null
+    private var date: String? = null
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -70,7 +73,48 @@ class ChartFragment : Fragment() {
             }
         })
 
+        binding.chooseTheDate.setOnClickListener {
+            showDatePickerDialog()
+        }
+
+        binding.chooseTheTime.setOnClickListener {
+            showTimePickerDialog()
+        }
+
         return binding.root
+    }
+
+    private fun showTimePickerDialog() {
+        val picker = MaterialTimePicker.Builder()
+            .setTimeFormat(TimeFormat.CLOCK_24H)
+            .setMinute(0)
+            .build()
+        picker.show(childFragmentManager, "TAG")
+        picker.addOnPositiveButtonClickListener {
+            hour = picker.hour
+        }
+    }
+
+    private fun showDatePickerDialog() {
+        val myCalendar = Calendar.getInstance()
+        val datePicker = DatePickerDialog.OnDateSetListener { _, year, month, day ->
+            myCalendar.set(Calendar.YEAR, year)
+            myCalendar.set(Calendar.MONTH, month)
+            myCalendar.set(Calendar.DAY_OF_MONTH, day)
+            formatterDate(myCalendar)
+        }
+
+        DatePickerDialog(requireContext(), datePicker,
+            myCalendar.get(Calendar.YEAR),
+            myCalendar.get(Calendar.MONTH),
+            myCalendar.get(Calendar.DAY_OF_MONTH)
+        ).show()
+    }
+
+    private fun formatterDate(calendar: Calendar) {
+        val myFormat = "yyyy-mm-dd"
+        val sdf = SimpleDateFormat(myFormat, Locale.UK)
+        date = sdf.format(calendar.time)
     }
 
     private fun fromAllDataToEntry() {
