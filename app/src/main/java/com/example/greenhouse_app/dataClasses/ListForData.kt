@@ -2,7 +2,8 @@ package com.example.greenhouse_app.dataClasses
 
 class ListForData {
     companion object {
-        val TempAndHumList = mutableSetOf<TempAndHum>()
-        val SoilHumList = mutableSetOf<SoilHum>()
+        val EverySoilHumDataList = mutableListOf<AllData>()
+        val TempAndHumList = mutableListOf<TempAndHum>()
+        val SoilHumList = mutableListOf<SoilHum>()
     }
 }

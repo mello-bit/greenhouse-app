@@ -56,6 +56,9 @@ dependencies {
     androidTestImplementation 'androidx.test.ext:junit:1.1.5'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.5.1'
 
+    // add recyclerview
+    implementation 'androidx.recyclerview:recyclerview:1.2.1'
+
     // Navigation Component
     implementation 'androidx.navigation:navigation-fragment-ktx:2.5.3'
     implementation 'androidx.navigation:navigation-ui-ktx:2.5.3'
@@ -63,6 +66,7 @@ dependencies {
     // Room components
     implementation 'androidx.room:room-common:2.5.0'
     implementation 'androidx.room:room-ktx:2.5.0'
+    implementation "androidx.room:room-runtime:2.5.0"
     androidTestImplementation 'androidx.room:room-testing:2.5.0'
     kapt 'androidx.room:room-compiler:2.5.0'
 
@@ -75,5 +79,9 @@ dependencies {
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:1.7.21"
     api "org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.4"
     api "org.jetbrains.kotlinx:kotlinx-coroutines-android:1.6.4"
+
+    // Charts components
+    implementation 'com.github.PhilJay:MPAndroidChart:v3.1.0'
+
 
 }

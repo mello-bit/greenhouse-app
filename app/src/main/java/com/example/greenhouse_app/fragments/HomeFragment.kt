@@ -15,14 +15,22 @@ import com.example.greenhouse_app.R
 import com.example.greenhouse_app.dataClasses.SoilHum
 import com.example.greenhouse_app.dataClasses.TempAndHum
 import com.example.greenhouse_app.databinding.FragmentHomeBinding
+import com.example.greenhouse_app.utils.AppDatabase
+import com.example.greenhouse_app.utils.AppDatabaseHelper
 import com.example.greenhouse_app.utils.AppNetworkManager
 import com.example.greenhouse_app.utils.AppSettingsManager
+import com.google.firebase.auth.FirebaseAuth
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import org.checkerframework.checker.units.qual.Temperature
 import org.w3c.dom.Text
 import kotlin.math.roundToInt
+import kotlin.properties.Delegates
 
 
 interface ApiListener {
-    fun onApiResponseReceived(response: Pair<MutableSet<SoilHum>, MutableSet<TempAndHum>>)
+    fun onApiResponseReceived(response: Pair<MutableList<SoilHum>, MutableList<TempAndHum>>)
 }
 
 class FurrowButton(val Id: Byte, val linearLayout: LinearLayout, private val networkManager: AppNetworkManager) {
@@ -31,14 +39,16 @@ class FurrowButton(val Id: Byte, val linearLayout: LinearLayout, private val net
     private var textView: TextView
     private var patchFunction = networkManager::changeFurrowState
 
-    fun changeStatus(status: Boolean) {
+    fun changeStatus(status: Boolean, send_patch: Boolean = false) {
         this.status = status
 
         val btnBackground = if (status) R.drawable.green_status_round_button else R.drawable.red_status_round_button
         val llBackground = if (status) R.drawable.furrow_hydration_on else R.drawable.furrow_hydration_off
         val text = if (status) R.string.watering_on else R.string.watering_off
 
-        patchFunction(Id, status.compareTo(false).toByte())
+        if (send_patch) {
+            patchFunction(Id, status.compareTo(false).toByte())
+        }
         this.linearLayout.setBackgroundResource(llBackground)
         this.button.setBackgroundResource(btnBackground)
         this.button.setText(text)
@@ -51,7 +61,7 @@ class FurrowButton(val Id: Byte, val linearLayout: LinearLayout, private val net
     init {
         this.status = AppSettingsManager.loadData("Furrow${this.Id}Status").toBoolean()
         this.button = linearLayout.findViewWithTag<AppCompatButton>("btnFurrow$Id")
-        this.button.setOnClickListener{ changeStatus(!this.status) }
+        this.button.setOnClickListener{ changeStatus(!this.status, true) }
         this.textView = linearLayout.findViewWithTag<TextView>("tvFurrow${Id}Status")
 
         Log.d(null, this.button.tag.toString())
@@ -63,7 +73,6 @@ class FurrowButton(val Id: Byte, val linearLayout: LinearLayout, private val net
 
         if (status != null && status.isNotEmpty()) {
             changeStatus(status.toBoolean())
-            changeDisplayValue((1..100).random().toByte())
         } else {
             Log.d(null,"THE RECEIVED STATUS IS $status")
         }
@@ -83,16 +92,18 @@ class BottomHomeButton(val name: String, val linearLayout: LinearLayout, val tex
         } else {
             networkManager::changeGlobalWateringState
         }
-        changeStatus(AppSettingsManager.loadData("BottomButton$name").toBoolean())
+        changeStatus(AppSettingsManager.loadData("BottomButton$name").toBoolean(), false)
     }
 
-    fun changeStatus(status: Boolean) {
+    fun changeStatus(status: Boolean, send_patch: Boolean) {
         this.status = status
 
         val bgResource = if (status) R.drawable.green_status_round_button else R.drawable.red_status_round_button
         val newText = if (status) turnOnText else turnOffText
 
-        patchFunction(status.compareTo(false).toByte())
+        if (send_patch) {
+            patchFunction(status.compareTo(false).toByte())
+        }
         linearLayout.setBackgroundResource(bgResource)
         textView.setText(newText)
     }
@@ -102,14 +113,27 @@ class HomeFragment : Fragment(), ApiListener {
     private lateinit var binding: FragmentHomeBinding
     private var buttonClasses = mutableMapOf<Byte, FurrowButton>()
     private var bottomButtons = mutableMapOf<String, BottomHomeButton>()
+    private lateinit var db: AppDatabase
+    private lateinit var application: MyApplication
     private lateinit var networkManager: AppNetworkManager
+    private var TemperatureUnits = R.string.temperature_celsius
+    private var ThresholdTemperature = 100
+    private var FurrowOverhydration = 100
+    private var GreenhouseOverhydration = 100
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        TemperatureUnits =
+            if (AppSettingsManager.loadData("TempUnits") == "C") R.string.temperature_celsius else R.string.fahrenheit
+
+        val applicationContext = requireActivity().applicationContext
+        application = applicationContext as MyApplication
+        db = AppDatabaseHelper.getDatabase(applicationContext, application.currentUID)
     }
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
+
         if (!::networkManager.isInitialized) {
             networkManager = AppNetworkManager(context.applicationContext)
         }
@@ -120,7 +144,7 @@ class HomeFragment : Fragment(), ApiListener {
         (activity?.application as? MyApplication)?.setApiListener(this)
     }
 
-    override fun onApiResponseReceived(response: Pair<MutableSet<SoilHum>, MutableSet<TempAndHum>>) {
+    override fun onApiResponseReceived(response: Pair<MutableList<SoilHum>, MutableList<TempAndHum>>) {
         if (isAdded and buttonClasses.isNotEmpty()) {
 
             for (soilHumidity in response.first) {
@@ -139,9 +163,14 @@ class HomeFragment : Fragment(), ApiListener {
                 "%.1f".format(generalGreenhouseHumidity / 4)
             )
 
+            var temp = generalGreenhouseTemperature / 4
+            if (TemperatureUnits == R.string.temperature_fahrenheit) {
+                temp = (temp * 1.8 + 32).toFloat()
+            }
+
             binding.tvGreenhouseTemp.text = getString(
-                R.string.temperature_celsius,
-                "%.1f".format(generalGreenhouseTemperature / 4)
+                TemperatureUnits,
+                "%.1f".format(temp)
             )
         }
     }
@@ -163,7 +192,7 @@ class HomeFragment : Fragment(), ApiListener {
             val newInstance = BottomHomeButton(it.key, it.value.first, it.value.second, networkManager)
 
             newInstance.linearLayout.setOnClickListener {
-                newInstance.changeStatus(!newInstance.status)
+                newInstance.changeStatus(!newInstance.status, true)
             }
 
             this.bottomButtons[it.key] = newInstance
@@ -173,7 +202,7 @@ class HomeFragment : Fragment(), ApiListener {
             val layout = layouts[i - 1]
             val furrowClass = FurrowButton(i.toByte(), layout, networkManager)
             layout.setOnClickListener {
-                furrowClass.changeStatus(!furrowClass.status)
+                furrowClass.changeStatus(!furrowClass.status, true)
             }
             this.buttonClasses[i.toByte()] = furrowClass
         }
@@ -184,28 +213,38 @@ class HomeFragment : Fragment(), ApiListener {
 
     override fun onResume() {
         super.onResume()
+        TemperatureUnits =
+            if (AppSettingsManager.loadData("TempUnits") == "C") R.string.temperature_celsius else R.string.temperature_fahrenheit
 
-        // reading data from shared preferences
-//        val furrowValues = mutableListOf<String>()
-//        val furrowButtonsValues = mutableListOf<String>()
-//        val bottomButtonsStatus = listOf(
-//            AppSettingsManager.loadData("btnWindowStatus"),
-//            AppSettingsManager.loadData("btnHeaterStatus")
-//        )
-//        for (i in 1..6) {
-//            val furrowValue = AppSettingsManager.loadData("tvFurrow${i}Status")
-//            val furrowButtonValue = AppSettingsManager.loadData("btnFurrow$i")
-//
-//            if (furrowValue.toString().isNotEmpty())
-//                furrowValues.add(furrowValue.toString())
-//
-//            if (furrowButtonValue.toString().isNotEmpty())
-//                furrowButtonsValues.add(furrowButtonValue.toString())
-//        }
-//
-//        Log.d("SaveTag", furrowValues.toString())
-//        Log.d("SaveTag", furrowButtonsValues.toString())
-//        Log.d("SaveTag", bottomButtonsStatus.toString())
+
+
+        // Восстановление отображаемых данных после выхода/захода на фрагмент
+        CoroutineScope(Dispatchers.IO).launch {
+            val latestData = db.SensorDao().getLatestSensorData()
+            if (latestData != null) {
+                var temp = latestData.greenhouse_temperature
+                if (TemperatureUnits == R.string.temperature_fahrenheit) {
+                    temp = (temp * 1.8 + 32).toFloat()
+                }
+
+                binding.tvGreenhouseTemp.text = getString(
+                    TemperatureUnits,
+                    String.format("%.1f", temp)
+                )
+                binding.tvGreenhouseHumidity.text = getString(
+                    R.string.percent_adder,
+                    String.format("%.1f", latestData.greenhouse_humidity)
+                )
+
+                listOf(
+                    latestData.furrow1_humidity, latestData.furrow2_humidity,
+                    latestData.furrow3_humidity, latestData.furrow4_humidity,
+                    latestData.furrow5_humidity, latestData.furrow6_humidity
+                ).forEachIndexed { index, fl ->
+                    buttonClasses[(index + 1).toByte()]?.changeDisplayValue(fl.toInt().toByte())
+                }
+            }
+        }
     }
 
     override fun onStop() {

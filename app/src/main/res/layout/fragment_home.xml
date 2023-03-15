@@ -52,7 +52,7 @@
                 android:layout_weight="1"
                 android:gravity="center"
                 android:tag="tvFurrow4Status"
-                android:text="15%"
+                android:text="N/A%"
                 android:textAlignment="textStart"
                 android:textColor="@color/white"
                 android:textSize="30sp" />
@@ -65,7 +65,7 @@
             android:layout_weight="1"
             android:background="@drawable/red_status_round_button"
             android:tag="btnFurrow4"
-            android:text="@string/watering_on"
+            android:text="@string/watering_off"
             android:textColor="@color/white" />
     </LinearLayout>
 
@@ -110,7 +110,7 @@
                 android:layout_weight="1"
                 android:gravity="center"
                 android:tag="tvFurrow5Status"
-                android:text="15%"
+                android:text="N/A%"
                 android:textAlignment="textStart"
                 android:textColor="@color/white"
                 android:textSize="30sp" />
@@ -123,7 +123,7 @@
             android:layout_weight="1"
             android:background="@drawable/red_status_round_button"
             android:tag="btnFurrow5"
-            android:text="@string/watering_on"
+            android:text="@string/watering_off"
             android:textColor="@color/white" />
     </LinearLayout>
 
@@ -168,7 +168,7 @@
                 android:layout_weight="1"
                 android:gravity="center"
                 android:tag="tvFurrow6Status"
-                android:text="15%"
+                android:text="N/A%"
                 android:textAlignment="textStart"
                 android:textColor="@color/white"
                 android:textSize="30sp" />
@@ -181,7 +181,7 @@
             android:layout_weight="1"
             android:background="@drawable/red_status_round_button"
             android:tag="btnFurrow6"
-            android:text="@string/watering_on"
+            android:text="@string/watering_off"
             android:textColor="@color/white" />
     </LinearLayout>
 
@@ -225,7 +225,7 @@
                 android:layout_weight="1"
                 android:gravity="center"
                 android:tag="tvFurrow3Status"
-                android:text="15%"
+                android:text="N/A%"
                 android:textAlignment="textStart"
                 android:textColor="@color/white"
                 android:textSize="30sp" />
@@ -238,7 +238,7 @@
             android:layout_weight="1"
             android:background="@drawable/red_status_round_button"
             android:tag="btnFurrow3"
-            android:text="@string/watering_on"
+            android:text="@string/watering_off"
             android:textColor="@color/white" />
     </LinearLayout>
 
@@ -283,7 +283,7 @@
                 android:layout_weight="1"
                 android:gravity="center"
                 android:tag="tvFurrow2Status"
-                android:text="15%"
+                android:text="N/A%"
                 android:textAlignment="textStart"
                 android:textColor="@color/white"
                 android:textSize="30sp" />
@@ -296,7 +296,7 @@
             android:layout_weight="1"
             android:background="@drawable/red_status_round_button"
             android:tag="btnFurrow2"
-            android:text="@string/watering_on"
+            android:text="@string/watering_off"
             android:textColor="@color/white" />
     </LinearLayout>
 
@@ -308,7 +308,7 @@
         android:layout_marginTop="12.5pt"
         android:layout_marginEnd="10pt"
         android:layout_marginBottom="12.5pt"
-        android:background="@drawable/furrow_hydration_off"
+        android:background="@drawable/furrow_hydration_disabled"
         android:orientation="vertical"
         app:layout_constraintBottom_toTopOf="@+id/llFurrow2"
         app:layout_constraintEnd_toStartOf="@+id/llFurrow4"
@@ -341,7 +341,7 @@
                 android:layout_weight="1"
                 android:gravity="center"
                 android:tag="tvFurrow1Status"
-                android:text="15%"
+                android:text="N/A%"
                 android:textAlignment="textStart"
                 android:textColor="@color/white"
                 android:textSize="30sp" />
@@ -352,9 +352,9 @@
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="1"
-            android:background="@drawable/red_status_round_button"
+            android:background="@drawable/gray_status_round_button"
             android:tag="btnFurrow1"
-            android:text="@string/watering_on"
+            android:text="@string/watering_off"
             android:textColor="@color/white" />
     </LinearLayout>
 
@@ -365,11 +365,13 @@
         android:layout_marginStart="16dp"
         android:layout_marginTop="4pt"
         android:layout_marginEnd="16dp"
+        android:autoSizeTextType="uniform"
         android:background="@drawable/blue_gradient_round_corners"
         android:elevation="8dp"
+        android:maxLines="1"
         android:paddingHorizontal="10pt"
         android:paddingVertical="3pt"
-        android:text="Управление теплицей"
+        android:text="@string/greenhouse_control"
         android:textAlignment="center"
         android:textColor="@color/white"
         android:textSize="30sp"
@@ -408,7 +410,7 @@
             android:layout_weight="1"
             android:gravity="start|center_vertical"
             android:paddingStart="1pt"
-            android:text="16°C"
+            android:text="N/A°C"
             android:textColor="@color/white"
             android:textSize="30sp" />
 
@@ -430,7 +432,7 @@
             android:gravity="start|center_vertical"
             android:includeFontPadding="true"
             android:paddingStart="1pt"
-            android:text="88%"
+            android:text="N/A%"
             android:textColor="@color/white"
             android:textSize="30sp" />
     </LinearLayout>
@@ -601,7 +603,7 @@
             android:paddingTop="1pt"
             android:paddingBottom="1pt"
             android:tag="tvWindowState"
-            android:text="@string/window_open"
+            android:text="@string/window_closed"
             android:textAlignment="textStart"
             android:textColor="#FFFFFF"
             android:textSize="20sp"

@@ -1,0 +1,239 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/background_for_card">
+
+    <TextView
+        android:id="@+id/tvFurrowHumidity"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingTop="10dp"
+        android:text="Влажность почвы"
+        android:textAlignment="center"
+        android:textSize="25sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.0" />
+
+    <LinearLayout
+        android:id="@+id/llFurrowData"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:orientation="horizontal"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tvFurrowHumidity"
+        app:layout_constraintVertical_bias="0.021">
+
+        <TextView
+            android:id="@+id/tvFurrow1"
+            android:tag="tvFurrow1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingHorizontal="3dp"
+            android:text="0"
+            android:textSize="20sp"
+            tools:ignore="SmallSp" />
+
+        <TextView
+            android:id="@+id/tvFurrow2"
+            android:tag="tvFurrow2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingHorizontal="3dp"
+            android:text="0"
+            android:textSize="20sp"
+            tools:ignore="SmallSp" />
+
+        <TextView
+            android:id="@+id/tvFurrow3"
+            android:tag="tvFurrow3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingHorizontal="3dp"
+            android:text="0"
+            android:textSize="20sp"
+            tools:ignore="SmallSp" />
+
+        <TextView
+            android:id="@+id/tvFurrow4"
+            android:tag="tvFurrow4"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingHorizontal="3dp"
+            android:text="0"
+            android:textSize="20sp"
+            tools:ignore="SmallSp" />
+
+        <TextView
+            android:id="@+id/tvFurrow5"
+            android:tag="tvFurrow5"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingHorizontal="3dp"
+            android:text="0"
+            android:textSize="20sp"
+            tools:ignore="SmallSp" />
+
+        <TextView
+            android:id="@+id/tvFurrow6"
+            android:tag="tvFurrow6"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingHorizontal="3dp"
+            android:text="0"
+            android:textSize="20sp"
+            tools:ignore="SmallSp" />
+
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/textView3"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingVertical="5dp"
+        android:layout_marginBottom="10dp"
+        android:text="Температура и влажность"
+        android:textAlignment="center"
+        android:textSize="20sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/llFurrowData" />
+
+
+    <LinearLayout
+        android:id="@+id/llTempData"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:orientation="horizontal"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView3"
+        app:layout_constraintVertical_bias="0.0">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Температура"
+            android:textSize="20sp" />
+
+        <TextView
+            android:id="@+id/tvTemperature1"
+            android:tag="tvHumidity1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingHorizontal="3dp"
+            android:text="0"
+            android:textSize="20sp"
+            tools:ignore="SmallSp" />
+
+        <TextView
+            android:id="@+id/tvTemperature2"
+            android:tag="tvHumidity1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingHorizontal="3dp"
+            android:text="0"
+            android:textSize="20sp"
+            tools:ignore="SmallSp" />
+
+        <TextView
+            android:id="@+id/tvTemperature3"
+            android:tag="tvHumidity3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingHorizontal="3dp"
+            android:text="0"
+            android:textSize="20sp"
+            tools:ignore="SmallSp" />
+
+        <TextView
+            android:id="@+id/tvTemperature4"
+            android:tag="tvHumidity4"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingHorizontal="3dp"
+            android:text="0"
+            android:textSize="20sp"
+            tools:ignore="SmallSp" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/llHumData"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:orientation="horizontal"
+        android:paddingTop="5dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/llTempData"
+        app:layout_constraintVertical_bias="0.026">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingLeft="10dp"
+            android:text="Влажность"
+            android:textSize="20sp" />
+
+        <TextView
+            android:id="@+id/tvHumidity1"
+            android:tag="tvHumidity1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingHorizontal="3dp"
+            android:text="0"
+            android:textSize="20sp"
+            tools:ignore="SmallSp" />
+
+        <TextView
+            android:id="@+id/tvHumidity2"
+            android:tag="tvHumidity2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingHorizontal="3dp"
+            android:text="0"
+            android:textSize="20sp"
+            tools:ignore="SmallSp" />
+
+        <TextView
+            android:id="@+id/tvHumidity3"
+            android:tag="tvHumidity3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingHorizontal="3dp"
+            android:text="0"
+            android:textSize="20sp"
+            tools:ignore="SmallSp" />
+
+        <TextView
+            android:id="@+id/tvHumidity4"
+            android:tag="tvHumidity4"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingHorizontal="3dp"
+            android:text="0"
+            android:textSize="20sp"
+            tools:ignore="SmallSp" />
+
+    </LinearLayout>
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

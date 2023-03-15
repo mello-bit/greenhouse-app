@@ -3,6 +3,7 @@ package com.example.greenhouse_app
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.widget.Toast
 import com.example.greenhouse_app.databinding.ActivitySignUpPageBinding
 import com.google.firebase.auth.FirebaseAuth
@@ -59,10 +60,18 @@ class SignUpPage : AppCompatActivity() {
                     password.toString()
                 ).addOnCompleteListener {
                     if (it.isSuccessful) {
-                        val t = Toast.makeText(this, "Все хорошо", Toast.LENGTH_SHORT)
-                        t.show()
-                        val intent = Intent(this, MainActivity::class.java)
-                        startActivity(intent)
+                        firebaseAuth.signInWithEmailAndPassword(textEmail.toString(), password.toString())
+                            .addOnCompleteListener {
+                                if (it.isSuccessful) {
+                                    val t = Toast.makeText(this, "Все хорошо", Toast.LENGTH_SHORT)
+                                    t.show()
+                                    val intent = Intent(this, MainActivity::class.java)
+                                    (application as MyApplication).currentUID = firebaseAuth.currentUser!!.uid
+                                    startActivity(intent)
+                                } else {
+                                    Log.e(null, "External server error. Couldn't log in after sign up.")
+                                }
+                            }
                     } else {
                         val response = R.string.response
                         val t = Toast.makeText(

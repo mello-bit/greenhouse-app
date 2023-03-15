@@ -11,7 +11,6 @@ import com.example.greenhouse_app.databinding.FragmentNotificationBinding
 import com.example.greenhouse_app.utils.AppNotificationManager
 import com.example.greenhouse_app.utils.AppSettingsManager
 
-
 class NotificationFragment : Fragment() {
 
     private lateinit var binding: FragmentNotificationBinding
@@ -26,7 +25,6 @@ class NotificationFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         binding = FragmentNotificationBinding.inflate(inflater, container, false)
-
         binding.loadDtNt.setOnClickListener {
             val tempValue = AppSettingsManager.loadData("tempValue").toString()
             val humValue = AppSettingsManager.loadData("humValue").toString()
