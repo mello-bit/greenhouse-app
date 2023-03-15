@@ -1,5 +1,8 @@
 package com.example.greenhouse_app.fragments
 
+import android.content.Context
+import android.content.res.Configuration
+import android.os.Build
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
@@ -8,11 +11,10 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.view.inputmethod.EditorInfo
-import android.widget.Toast
+import androidx.core.os.ConfigurationCompat
 import com.example.greenhouse_app.databinding.FragmentSettingsBinding
 import com.example.greenhouse_app.utils.AppSettingsManager
-import com.example.greenhouse_app.utils.AppNetworkManager
+import java.util.*
 
 val SettingFilter = object : TextWatcher {
     override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
@@ -32,6 +34,7 @@ val SettingFilter = object : TextWatcher {
     }
 }
 
+
 open class SettingsFragment : Fragment() {
     private lateinit var binding: FragmentSettingsBinding
 
@@ -46,9 +49,10 @@ open class SettingsFragment : Fragment() {
             saveSettings()
         }
 
-//        binding.btnEmergencyMode.setOnClickListener {
-//
-//        }
+        binding.scLanguage.setOnCheckedChangeListener { _, isChecked ->
+            val language = if (isChecked) "EN" else "RU"
+            setLocale(language)
+        }
 
         binding.etFurrowOverwetting.addTextChangedListener(SettingFilter)
         binding.etThresholdTemp.addTextChangedListener(SettingFilter)
@@ -62,10 +66,19 @@ open class SettingsFragment : Fragment() {
         loadSettings()
     }
 
+    fun setLocale(languageCode: String) {
+        Log.d("important", "Accessed with: $languageCode")
+        val locale = Locale("en")
+        val configuration = resources.configuration
+        configuration.setLocale(locale)
+        val context = requireContext().createConfigurationContext(configuration)
+        requireActivity().applicationContext.resources.updateConfiguration(configuration, requireActivity().resources.displayMetrics)
+        requireActivity().recreate()
+    }
+
     fun loadSettings() {
-        // Load from sharedPreferences (Validation is done in MyApplication.kt)
-        var SavedLanguage = AppSettingsManager.loadData("Language")!! // "RU", "EN"
-        var SavedUnits = AppSettingsManager.loadData("TempUnits")!!  // "C", "F"
+        val SavedLanguage = AppSettingsManager.loadData("Language")!! // "RU", "EN"
+        val SavedUnits = AppSettingsManager.loadData("TempUnits")!!  // "C", "F"
         val SavedInterval = AppSettingsManager.loadData("Interval")!! // "10", "60", "120"
         val IsEmergencyModeActive = AppSettingsManager.loadData("EmergencyMode") == "true" // true, false
         val GreenhouseThresholdTemp = AppSettingsManager.loadData("GreenhouseThresholdTemp")!! // 0..100
@@ -95,8 +108,11 @@ open class SettingsFragment : Fragment() {
             else -> "60"
         }
 
-        Log.d("Important", "Saving language: $language")
-        Log.d("Important", "Saving tempUnits: $tempUnits")
-        Log.d("Important", "Saving interval: $Interval")
+        AppSettingsManager.saveData("GreenhouseThresholdTemp", binding.etThresholdTemp.text.toString())
+        AppSettingsManager.saveData("GreenhouseOverwettingPercent", binding.etGreenhouseOverwetting.text.toString())
+        AppSettingsManager.saveData("FurrowOverwettingPercent", binding.etFurrowOverwetting.text.toString())
+        AppSettingsManager.saveData("Language", language)
+        AppSettingsManager.saveData("TempUnits", tempUnits)
+        AppSettingsManager.saveData("Interval", Interval)
     }
 }

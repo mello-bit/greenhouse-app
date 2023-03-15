@@ -89,9 +89,6 @@ class MyApplication : Application() {
 
 
     private fun saveEntryToDB(data: ListForData.Companion) {
-        println(data.SoilHumList.toString())
-        println(data.TempAndHumList.toString())
-
         var totalGreenhouseTemperature = 0f
         var totalGreenhouseHumidity = 0f
         for (entry in data.TempAndHumList) {
@@ -99,16 +96,9 @@ class MyApplication : Application() {
             totalGreenhouseHumidity += entry.hum.toFloat()
         }
 
-        println("1: ${totalGreenhouseTemperature / data.TempAndHumList.size.toFloat()}")
-        println("2: ${totalGreenhouseHumidity / data.TempAndHumList.size.toFloat()}")
-
         val avgTemp = decimalFormatter.format(totalGreenhouseTemperature / data.TempAndHumList.size.toFloat())
         val avgHumidity = decimalFormatter.format(totalGreenhouseHumidity / data.TempAndHumList.size.toFloat())
 
-
-        println("3: $avgTemp")
-        println("4: $avgHumidity")
-        println("5: ${data.SoilHumList.size}")
         val soilHumListCopy = data.SoilHumList.toList()
 
         CoroutineScope(Dispatchers.IO).launch {
@@ -124,13 +114,8 @@ class MyApplication : Application() {
                 furrow6_humidity = soilHumListCopy[5].humidity.toFloat()
             )
 
-            println(dataToSave.toString())
             sensorDao.insertData(dataToSave)
         }
-
-//        CoroutineScope(Dispatchers.IO).launch {
-//            println(sensorDao.getSensorDataForDate("2023-03-11").toString())
-//        }
     }
 
     override fun onCreate() {
@@ -183,10 +168,6 @@ class MyApplication : Application() {
         )
     }
 
-    override fun onTerminate() {
-//        Greenhouse.getInstance().saveState()
-        super.onTerminate()
-    }
 
     private fun createNotificationChannel() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {

@@ -1,6 +1,5 @@
 package com.example.greenhouse_app.fragments
 
-import android.annotation.SuppressLint
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
@@ -23,7 +22,6 @@ class ChartsFragment : Fragment() {
     private lateinit var handler: Handler
     private val myAdapter by lazy { DataAdapter() }
 
-    @SuppressLint("NotifyDataSetChanged")
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?

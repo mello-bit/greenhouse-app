@@ -23,8 +23,10 @@ import com.google.firebase.auth.FirebaseAuth
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import org.checkerframework.checker.units.qual.Temperature
 import org.w3c.dom.Text
 import kotlin.math.roundToInt
+import kotlin.properties.Delegates
 
 
 interface ApiListener {
@@ -114,9 +116,12 @@ class HomeFragment : Fragment(), ApiListener {
     private lateinit var db: AppDatabase
     private lateinit var application: MyApplication
     private lateinit var networkManager: AppNetworkManager
+    private var TemperatureUnits = R.string.temperature_celsius
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        TemperatureUnits =
+            if (AppSettingsManager.loadData("TempUnits") == "C") R.string.temperature_celsius else R.string.fahrenheit
 
         val applicationContext = requireActivity().applicationContext
         application = applicationContext as MyApplication
@@ -155,9 +160,14 @@ class HomeFragment : Fragment(), ApiListener {
                 "%.1f".format(generalGreenhouseHumidity / 4)
             )
 
+            var temp = generalGreenhouseTemperature / 4
+            if (TemperatureUnits == R.string.temperature_fahrenheit) {
+                temp = (temp * 1.8 + 32).toFloat()
+            }
+
             binding.tvGreenhouseTemp.text = getString(
-                R.string.temperature_celsius,
-                "%.1f".format(generalGreenhouseTemperature / 4)
+                TemperatureUnits,
+                "%.1f".format(temp)
             )
         }
     }
@@ -200,14 +210,21 @@ class HomeFragment : Fragment(), ApiListener {
 
     override fun onResume() {
         super.onResume()
+        TemperatureUnits =
+            if (AppSettingsManager.loadData("TempUnits") == "C") R.string.temperature_celsius else R.string.temperature_fahrenheit
 
         // Восстановление отображаемых данных после выхода/захода на фрагмент
         CoroutineScope(Dispatchers.IO).launch {
             val latestData = db.SensorDao().getLatestSensorData()
             if (latestData != null) {
+                var temp = latestData.greenhouse_temperature
+                if (TemperatureUnits == R.string.temperature_fahrenheit) {
+                    temp = (temp * 1.8 + 32).toFloat()
+                }
+
                 binding.tvGreenhouseTemp.text = getString(
-                    R.string.temperature_celsius,
-                    String.format("%.1f", latestData.greenhouse_temperature)
+                    TemperatureUnits,
+                    String.format("%.1f", temp)
                 )
                 binding.tvGreenhouseHumidity.text = getString(
                     R.string.percent_adder,
