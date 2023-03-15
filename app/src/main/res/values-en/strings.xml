@@ -54,4 +54,6 @@
     <string name="choice_temp">Ne ponyal kak perevesti bez demonstracii</string>
     <string name="choice_hum">Ne ponyal kak perevesti bez demonstracii</string>
     <string name="furrow_disabled_message">Very high humidity. Cannot open sprinkler</string>
+    <string name="window_disabled_message">Low temperature. Cannot open window</string>
+    <string name="humidifier_disabled_message">High humidity. Cannot turn on the humidifier</string>
 </resources>

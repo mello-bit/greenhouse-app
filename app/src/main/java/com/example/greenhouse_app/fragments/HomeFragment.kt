@@ -84,9 +84,9 @@ class FurrowButton(val Id: Byte, val linearLayout: LinearLayout, private val net
     fun changeDisplayValue(value: Byte) {
         this.textView.text = "$value%"
 
-        if (value > protectionValue) {
+        if (value >= protectionValue) {
             this.changeStatus(STATE.DISABLED, this.status == STATE.ON)
-        } else if(value <= protectionValue && this.status == STATE.DISABLED) {
+        } else if(value < protectionValue && this.status == STATE.DISABLED) {
             this.changeStatus(STATE.OFF, false)
         }
     }
@@ -112,28 +112,36 @@ class FurrowButton(val Id: Byte, val linearLayout: LinearLayout, private val net
 
 // Names: <Window, Humidifier>
 class BottomHomeButton(val name: String, val linearLayout: LinearLayout, val textView: TextView, private val networkManager: AppNetworkManager) {
-    var status: Boolean = false
+    var status: STATE = STATE.OFF
     private val turnOnText: Int = if (name == "Humidifier") R.string.humidifier_on else R.string.window_open
     private val turnOffText: Int = if (name == "Humidifier") R.string.humidifier_off else R.string.window_closed
-    private lateinit var patchFunction: (Byte) -> Unit
-
-    init {
-        patchFunction = if (name == "Window") {
-            networkManager::changeWindowState
-        } else {
-            networkManager::changeGlobalWateringState
-        }
-        changeStatus(AppSettingsManager.loadData("BottomButton$name").toBoolean(), false)
+    private var patchFunction = if (name == "Window") {
+        networkManager::changeWindowState
+    } else {
+        networkManager::changeGlobalWateringState
     }
 
-    fun changeStatus(status: Boolean, send_patch: Boolean) {
+    init {
+        changeStatus(STATE.valueOf(AppSettingsManager.loadData("BottomButton$name") ?: "OFF"), false)
+    }
+
+    fun changeStatus(status: STATE, send_patch: Boolean) {
         this.status = status
 
-        val bgResource = if (status) R.drawable.green_status_round_button else R.drawable.red_status_round_button
-        val newText = if (status) turnOnText else turnOffText
+        val bgResource = when(status) {
+            STATE.ON -> R.drawable.green_status_round_button
+            STATE.OFF -> R.drawable.red_status_round_button
+            STATE.DISABLED -> R.drawable.gray_status_round_button
+        }
+
+        val newText = when(status) {
+            STATE.ON -> turnOnText
+            else -> turnOffText
+        }
 
         if (send_patch) {
-            patchFunction(status.compareTo(false).toByte())
+            val patchStatus = if (status == STATE.DISABLED) 0 else status.ordinal.toByte()
+            patchFunction(patchStatus)
         }
         linearLayout.setBackgroundResource(bgResource)
         textView.setText(newText)
@@ -148,9 +156,9 @@ class HomeFragment : Fragment(), ApiListener {
     private lateinit var application: MyApplication
     private lateinit var networkManager: AppNetworkManager
     private var TemperatureUnits = R.string.temperature_celsius
-    private var ThresholdTemperature = 100
+    private var ThresholdTemperature = 30
     private var FurrowOverhydration = 100
-    private var GreenhouseOverhydration = 100
+    private var GreenhouseOverhydration = 70
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -177,6 +185,8 @@ class HomeFragment : Fragment(), ApiListener {
 
     override fun onApiResponseReceived(response: Pair<MutableList<SoilHum>, MutableList<TempAndHum>>) {
         if (isAdded and buttonClasses.isNotEmpty()) {
+            val windowButton = bottomButtons["Window"]!!
+            val humidifierButton = bottomButtons["Humidifier"]!!
 
             for (soilHumidity in response.first) {
                 buttonClasses[soilHumidity.id]?.changeDisplayValue(soilHumidity.humidity.toByte())
@@ -189,15 +199,32 @@ class HomeFragment : Fragment(), ApiListener {
                 generalGreenhouseTemperature += tempHumidity.temp.toFloat()
             }
 
-            binding.tvGreenhouseHumidity.text = getString(
-                R.string.percent_adder,
-                "%.1f".format(generalGreenhouseHumidity / 4)
-            )
-
+            val humidity = generalGreenhouseHumidity / 4
             var temp = generalGreenhouseTemperature / 4
+
+            // Меняем на градусы фаренгейта, если они установлены в настройках
             if (TemperatureUnits == R.string.temperature_fahrenheit) {
                 temp = (temp * 1.8 + 32).toFloat()
             }
+
+            // Изменяем состояние кнопок, взависимости от защитных параметров
+            if (humidity > GreenhouseOverhydration) {
+                humidifierButton.changeStatus(STATE.DISABLED, humidifierButton.status == STATE.ON)
+            } else if (humidifierButton.status == STATE.DISABLED && humidity <= GreenhouseOverhydration) {
+                humidifierButton.changeStatus(STATE.OFF, false)
+            }
+
+            if (temp < ThresholdTemperature) {
+                windowButton.changeStatus(STATE.DISABLED, windowButton.status == STATE.ON)
+            } else if (windowButton.status == STATE.DISABLED && temp >= ThresholdTemperature) {
+                windowButton.changeStatus(STATE.OFF, false)
+            }
+
+            // Обновляем UI
+            binding.tvGreenhouseHumidity.text = getString(
+                R.string.percent_adder,
+                "%.1f".format(humidity)
+            )
 
             binding.tvGreenhouseTemp.text = getString(
                 TemperatureUnits,
@@ -207,7 +234,6 @@ class HomeFragment : Fragment(), ApiListener {
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        // Inflate the layout for this fragment
         binding = FragmentHomeBinding.inflate(inflater, container, false)
 
         val layouts = listOf<LinearLayout>(
@@ -221,9 +247,19 @@ class HomeFragment : Fragment(), ApiListener {
             "Humidifier" to Pair(binding.llHumidifierContainer, binding.tvDisplayState2)
         ).forEach {
             val newInstance = BottomHomeButton(it.key, it.value.first, it.value.second, networkManager)
+            val disabledMessage =
+                if (it.key == "Window") R.string.window_disabled_message else R.string.humidifier_disabled_message
 
             newInstance.linearLayout.setOnClickListener {
-                newInstance.changeStatus(!newInstance.status, true)
+                if (newInstance.status != STATE.DISABLED) {
+                    newInstance.changeStatus(newInstance.status.toggle(), true)
+                } else {
+                    MainActivity.showToast(
+                        context=requireContext(),
+                        message=requireContext().getString(disabledMessage),
+                        replace_last=true
+                    )
+                }
             }
 
             this.bottomButtons[it.key] = newInstance

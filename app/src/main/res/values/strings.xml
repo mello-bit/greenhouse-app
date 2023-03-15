@@ -66,4 +66,6 @@
     <string name="choice_temp">Показатель температуры теплицы с номером</string>
     <string name="choice_hum">Показатель влажности теплицы с номером</string>
     <string name="furrow_disabled_message">Слишком высокая влажность. Невозможно включить полив</string>
+    <string name="window_disabled_message">Слишком низкая температура. Окно открыть невозможно</string>
+    <string name="humidifier_disabled_message">Слишком высокая влажность. Включить увлажнитель не получиться</string>
 </resources>
