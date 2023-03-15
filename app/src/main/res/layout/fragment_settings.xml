@@ -4,168 +4,344 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".fragments.SettingsFragment"
-    android:background="@drawable/background">
-
-    <LinearLayout
-        android:id="@+id/linearLayout2"
-        android:layout_width="wrap_content"
-        android:layout_height="0dp"
-        android:layout_marginTop="80dp"
-        android:orientation="vertical"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.481"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
-
-        <LinearLayout
-            android:id="@+id/llboundary_temperature"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:layout_marginEnd="16dp"
-            android:orientation="horizontal"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.054">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="3"
-                android:text="@string/boundary_temperature"
-                android:textColor="#FFFFFF"
-                android:textSize="20sp"
-                android:textStyle="bold|italic" />
-
-            <EditText
-                android:id="@+id/boundaryTempValue"
-                android:layout_width="wrap_content"
-                android:layout_height="48dp"
-                android:background="@drawable/background_shape_for_boundary"
-                android:imeOptions="actionDone"
-                android:inputType="number"
-                android:paddingHorizontal="15dp"
-                android:paddingVertical="5dp"
-                android:text="@string/temperature_boundary_value"
-                android:textColor="#242325"
-                android:textSize="20sp"
-                android:gravity="center"
-                android:textStyle="bold"
-                tools:ignore="InvalidImeActionId" />
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:layout_marginTop="20pt"
-            android:layout_marginEnd="16dp"
-            android:orientation="horizontal"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.054">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="3pt"
-                android:layout_weight="3"
-                android:text="@string/boundary_humidity"
-                android:textColor="#FFFFFF"
-                android:paddingVertical="5dp"
-                android:textSize="20sp"
-                android:textStyle="bold|italic" />
-
-            <EditText
-                android:id="@+id/boundaryHumValue"
-                android:layout_width="wrap_content"
-                android:layout_height="48dp"
-                android:layout_marginStart="4pt"
-                android:layout_weight="1.2"
-                android:background="@drawable/background_shape_for_boundary"
-                android:imeOptions="actionDone"
-                android:inputType="number"
-                android:paddingHorizontal="13dp"
-                android:paddingVertical="5dp"
-                android:text="@string/humidity_boundary_value"
-                android:textAlignment="center"
-                android:textColor="#242325"
-                android:textSize="20sp"
-                android:textStyle="bold" />
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:layout_marginTop="20pt"
-            android:layout_marginEnd="16dp"
-            android:orientation="horizontal"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.054">
-
-            <TextView
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="3pt"
-                android:layout_weight="3"
-                android:paddingVertical="5dp"
-                android:text="@string/boundary_soil_humidity"
-                android:textColor="#FFFFFF"
-                android:textSize="20sp"
-                android:textStyle="bold|italic" />
-
-            <EditText
-                android:id="@+id/boundarySoilHum"
-                android:layout_width="wrap_content"
-                android:layout_height="48dp"
-                android:background="@drawable/background_shape_for_boundary"
-                android:inputType="number"
-                android:paddingHorizontal="16dp"
-                android:paddingVertical="5dp"
-                android:text="@string/soil_hum_boundary_value"
-                android:textColor="#242325"
-                android:textSize="20sp"
-                android:textStyle="bold" />
-
-        </LinearLayout>
-
-    </LinearLayout>
+    android:background="@drawable/test_gradient"
+    android:backgroundTint="#6740AC"
+    android:backgroundTintMode="multiply"
+    tools:context=".fragments.SettingsFragment">
 
     <androidx.appcompat.widget.AppCompatButton
-        android:id="@+id/saveChanges"
-        android:layout_width="wrap_content"
+        android:id="@+id/btnSubmit"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="27dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="16dp"
         android:background="@drawable/background_button_shape"
-        android:paddingHorizontal="20dp"
-        android:text="@string/save_changes"
-        app:layout_constraintBottom_toTopOf="@+id/extreme_control_btn"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
-
-    <androidx.appcompat.widget.AppCompatButton
-        android:id="@+id/extreme_control_btn"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="24dp"
-        android:paddingHorizontal="20dp"
-        android:background="@drawable/background_button_shape"
-        android:text="@string/extreme_control_mode"
+        android:text="@string/apply_and_save"
+        android:textAllCaps="false"
+        android:textColor="@color/white"
+        android:textSize="15sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
 
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/constraintLayout2"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="24dp"
+        android:layout_marginEnd="16dp"
+        android:background="@drawable/blue_gradient_round_corners"
+        android:padding="3pt"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/constraintLayout">
+
+        <EditText
+            android:id="@+id/etThresholdTemp"
+            android:layout_width="60dp"
+            android:layout_height="40dp"
+            android:layout_marginTop="4dp"
+            android:layout_marginEnd="8dp"
+            android:background="@drawable/background_shape_for_boundary"
+            android:ems="10"
+            android:inputType="number"
+            android:maxLength="3"
+            android:textAlignment="center"
+            android:textColor="@color/black"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tvProtectionLabel" />
+
+        <TextView
+            android:id="@+id/tvProtectionLabel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/protection_params"
+            android:textAllCaps="true"
+            android:textColor="@color/white"
+            android:textSize="20sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/tvThresholdTempLabel"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="16dp"
+            android:autoSizeTextType="uniform"
+            android:text="@string/threshold_temperature"
+            android:textAlignment="viewEnd"
+            android:textColor="@color/white"
+            android:textSize="20sp"
+            app:layout_constraintBottom_toBottomOf="@+id/etThresholdTemp"
+            app:layout_constraintEnd_toStartOf="@+id/etThresholdTemp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/etThresholdTemp" />
+
+        <TextView
+            android:id="@+id/tvOverwettingLabel"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="16dp"
+            android:autoSizeTextType="uniform"
+            android:maxLines="1"
+            android:text="@string/greenhouse_overhumidification_protection"
+            android:textAlignment="viewEnd"
+            android:textColor="@color/white"
+            android:textSize="20sp"
+            app:layout_constraintBottom_toBottomOf="@+id/etGreenhouseOverwetting"
+            app:layout_constraintEnd_toStartOf="@+id/etGreenhouseOverwetting"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/etGreenhouseOverwetting" />
+
+        <TextView
+            android:id="@+id/tvFurrowOverwettingLabel"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="16dp"
+            android:autoSizeTextType="uniform"
+            android:maxLines="1"
+            android:text="@string/furrow_overhumidification_protection"
+            android:textAlignment="viewEnd"
+            android:textColor="@color/white"
+            android:textSize="20sp"
+            app:layout_constraintBottom_toBottomOf="@+id/etFurrowOverwetting"
+            app:layout_constraintEnd_toStartOf="@+id/etFurrowOverwetting"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/etFurrowOverwetting" />
+
+        <EditText
+            android:id="@+id/etGreenhouseOverwetting"
+            android:layout_width="60dp"
+            android:layout_height="40dp"
+            android:layout_marginTop="4dp"
+            android:layout_marginEnd="8dp"
+            android:background="@drawable/background_shape_for_boundary"
+            android:ems="10"
+            android:inputType="number"
+            android:maxLength="3"
+            android:textAlignment="center"
+            android:textColor="@color/black"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/etThresholdTemp" />
+
+        <EditText
+            android:id="@+id/etFurrowOverwetting"
+            android:layout_width="60dp"
+            android:layout_height="40dp"
+            android:layout_marginTop="4dp"
+            android:layout_marginEnd="8dp"
+            android:background="@drawable/background_shape_for_boundary"
+            android:ems="10"
+            android:inputType="number"
+            android:maxLength="3"
+            android:textAlignment="center"
+            android:textColor="@color/black"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/etGreenhouseOverwetting" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/constraintLayout"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="24dp"
+        android:layout_marginEnd="16dp"
+        android:background="@drawable/blue_gradient_round_corners"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/constraintLayout3">
+
+        <TextView
+            android:id="@+id/tvInterval"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:text="@string/interval"
+            android:textAllCaps="true"
+            android:textColor="@color/white"
+            android:textSize="20sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <RadioGroup
+            android:id="@+id/rgIntervalButtons"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:clipToPadding="false"
+            android:orientation="horizontal"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tvInterval">
+
+            <RadioButton
+                android:id="@+id/rb10Seconds"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:text="@string/seconds10"
+                android:textColor="@color/white" />
+
+            <RadioButton
+                android:id="@+id/rb1Minute"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:checked="true"
+                android:text="@string/minute1"
+                android:textColor="@color/white" />
+
+            <RadioButton
+                android:id="@+id/rb2Minutes"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:text="@string/minutes2"
+                android:textColor="@color/white" />
+        </RadioGroup>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/constraintLayout3"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="16dp"
+        android:background="@drawable/blue_gradient_round_corners"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <TextView
+            android:id="@+id/tvLanguageLabel"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="4dp"
+            android:autoSizeTextType="uniform"
+            android:text="@string/app_language"
+            android:textAlignment="viewEnd"
+            android:textColor="@color/white"
+            android:textSize="20sp"
+            app:layout_constraintBottom_toTopOf="@+id/scTemperatureUnits"
+            app:layout_constraintEnd_toStartOf="@+id/tvRU"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/scLanguage" />
+
+        <androidx.appcompat.widget.SwitchCompat
+
+            android:id="@+id/scTemperatureUnits"
+            android:layout_width="wrap_content"
+            android:layout_height="0dp"
+            android:layout_marginEnd="24dp"
+            android:thumb="@drawable/thumb"
+            android:track="@drawable/track"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:trackTint="@color/white" />
+
+        <TextView
+            android:id="@+id/tvC"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/celcius"
+            android:textColor="@color/white"
+            app:layout_constraintBottom_toBottomOf="@+id/scTemperatureUnits"
+            app:layout_constraintEnd_toStartOf="@+id/scTemperatureUnits"
+            app:layout_constraintTop_toTopOf="@+id/scTemperatureUnits" />
+
+        <TextView
+            android:id="@+id/tvF"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/fahrenheit"
+            android:textColor="@color/white"
+            app:layout_constraintBottom_toBottomOf="@+id/scTemperatureUnits"
+            app:layout_constraintStart_toEndOf="@+id/scTemperatureUnits"
+            app:layout_constraintTop_toTopOf="@+id/scTemperatureUnits" />
+
+        <androidx.appcompat.widget.SwitchCompat
+
+            android:id="@+id/scLanguage"
+            android:layout_width="wrap_content"
+            android:layout_height="0dp"
+            android:layout_marginEnd="24dp"
+            android:thumb="@drawable/thumb"
+            app:layout_constraintBottom_toTopOf="@+id/scTemperatureUnits"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:trackTint="@color/white" />
+
+        <TextView
+            android:id="@+id/tvRU"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/ru"
+            android:textAllCaps="true"
+            android:textColor="@color/white"
+            app:layout_constraintBottom_toTopOf="@+id/scTemperatureUnits"
+            app:layout_constraintEnd_toStartOf="@+id/scLanguage"
+            app:layout_constraintTop_toTopOf="@+id/scLanguage" />
+
+        <TextView
+            android:id="@+id/tvEN"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/en"
+            android:textColor="@color/white"
+            app:layout_constraintBottom_toTopOf="@+id/scTemperatureUnits"
+            app:layout_constraintStart_toEndOf="@+id/scLanguage"
+            app:layout_constraintTop_toTopOf="@+id/scLanguage" />
+
+        <TextView
+            android:id="@+id/tvTemperatureUnits"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="4dp"
+            android:autoSizeTextType="uniform"
+            android:text="@string/temperature_units"
+            android:textAlignment="viewEnd"
+            android:textColor="@color/white"
+            android:textSize="20sp"
+            app:layout_constraintBottom_toBottomOf="@+id/scTemperatureUnits"
+            app:layout_constraintEnd_toStartOf="@+id/tvRU"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/scTemperatureUnits" />
+
+        <TextView
+            android:id="@+id/textView4"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:autoSizeTextType="uniform"
+            android:text="@string/general"
+            android:textAllCaps="true"
+            android:textColor="@color/white"
+            android:textSize="20sp"
+            app:layout_constraintBottom_toTopOf="@+id/scLanguage"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/button"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
+        android:autoSizeTextType="uniform"
+        android:background="@drawable/green_status_round_button"
+        android:paddingHorizontal="4pt"
+        android:text="@string/extreme_mode_off"
+        android:textAllCaps="false"
+        android:textColor="@color/white"
+        app:layout_constraintBottom_toTopOf="@+id/btnSubmit"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/constraintLayout2"
+        app:layout_constraintVertical_bias="0.15" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

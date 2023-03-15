@@ -1,16 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">Теплица</string>
-    <string name="first_name">First name</string>
-    <string name="second_name">Second name</string>
-    <string name="birth_day">Birth day</string>
-    <string name="country">Country</string>
-    <string name="submit">Submit</string>
+    <string name="first_name">Имя</string>
+    <string name="second_name">Фамилия</string>
+    <string name="birth_day">Дата рождения</string>
+    <string name="country">Страна</string>
+    <string name="submit">Отправить</string>
     <string name="email">Почта</string>
-    <string name="email_example">example@gmail.com</string>
+    <string name="email_example" translatable="false">example@gmail.com</string>
     <string name="password">Пароль</string>
     <string name="password_context">(не меньше восьми символов)</string>
     <string name="repeat_password">Повторите пароль</string>
-    <string name="password_example">1234567</string>
+    <string name="password_example" translatable="false">1234567</string>
     <string name="register">Зарегистрироваться</string>
     <string name="back">Назад</string>
     <string name="welcome_to_sign_up">Регистрация</string>
@@ -18,17 +19,11 @@
     <string name="not_account">Нет аккаунта</string>
     <string name="login">Войти</string>
     <string name="forgot_username">Забыл пароль</string>
-    <string name="app_title">My Greenhouse</string>
-    <string name="response">Такая почта уже есть в базе или она некорректна</string>
+    <string name="app_title" translatable="false">My Greenhouse</string>
+    <string name="response">Такая почта уже зарегистрирована или некорректна</string>
     <string name="restore_title">Войти в свой аккаунт</string>
     <string name="restore_description">Пройдите по ссылке в письме для восстановления пароля</string>
-    <string name="hello_blank_fragment">Hello blank fragment</string>
-    <string name="boundary_temperature">Граничная температура: </string>
-    <string name="boundary_humidity">Граничная влажность\n воздуха: </string>
-    <string name="boundary_soil_humidity">Граничная влажность\n почвы: </string>
-    <string name="temperature_boundary_value">21</string>
-    <string name="humidity_boundary_value">70</string>
-    <string name="soil_hum_boundary_value">60</string>
+    <string name="hello_blank_fragment" translatable="false">Hello blank fragment</string>
     <string name="window_open">Форточка\nоткрыта</string>
     <string name="window_closed">Форточка\nзакрыта</string>
     <string name="humidifier_on">Увлажнение\nвкл</string>
@@ -37,8 +32,26 @@
     <string name="watering_off">Полив выкл</string>
     <string name="save_changes">Сохранить изменения</string>
     <string name="extreme_control_mode">Режим экстренного управления</string>
-    <string name="temperature_celsius">%s°C</string>
-    <string name="percent_adder">%s%%</string>
-    <string name="choice_a_time">ВЫБОР ВРЕМЕНИ\n(ПО ЧАСАМ)</string>
-    <string name="choice_a_date">ВЫБОР ДАТЫ</string>
+    <string name="temperature_celsius" translatable="false">%s°C</string>
+    <string name="temperature_fahrenheit" translatable="false">%s°F</string>
+    <string name="percent_adder" translatable="false">%s%%</string>
+    <string name="general">Общее</string>
+    <string name="app_language">Язык приложения:</string>
+    <string name="temperature_units">Единицы температуры:</string>
+    <string name="ru" translatable="false">RU</string>
+    <string name="en" translatable="false">EN</string>
+    <string name="celcius" translatable="false">°C</string>
+    <string name="fahrenheit" translatable="false">°F</string>
+    <string name="interval">Интервал снятия показаний</string>
+    <string name="seconds10">10 секунд</string>
+    <string name="minute1">1 минута</string>
+    <string name="minutes2">2 минуты</string>
+    <string name="protection_params">Защитные показатели</string>
+    <string name="threshold_temperature">Пороговая температура</string>
+    <string name="greenhouse_overhumidification_protection">Защита от переувлажнения</string>
+    <string name="furrow_overhumidification_protection">Ограничение увлажения грядок</string>
+    <string name="extreme_mode_off">Режим экстренного управления\n(ВЫКЛ)</string>
+    <string name="extreme_mode_on">Режим экстренного управления\n(ВКЛ)</string>
+    <string name="apply_and_save">Применить и сохранить</string>
+    <string name="greenhouse_control">Управление теплицей</string>
 </resources>

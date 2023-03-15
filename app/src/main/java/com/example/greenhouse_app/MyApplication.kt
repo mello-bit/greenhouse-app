@@ -32,7 +32,8 @@ fun getCurrentDateTimeISO8601(): String {
 }
 
 class MyApplication : Application() {
-    val DEBUGMODE = false
+    val DEBUGMODE = true
+    var loggedIn = DEBUGMODE
 
     private lateinit var networkManager: AppNetworkManager
     private lateinit var handler: Handler
@@ -41,7 +42,7 @@ class MyApplication : Application() {
     private var decimalFormatter = DecimalFormat("#.##", DecimalFormatSymbols(Locale.US))
     private var apiListener: ApiListener? = null
     val myAdapter by lazy { DataAdapter() }
-    var currentUID: String = "DEBUG"
+    var currentUID: String = "UNASSIGNED"
         set(uid) {
             field = uid
             loggedIn = true
@@ -53,7 +54,6 @@ class MyApplication : Application() {
             handler = Handler(Looper.getMainLooper())
 
             handler.post(object : Runnable {
-                @SuppressLint("NotifyDataSetChanged")
                 override fun run() {
                     networkManager.getSoilHum()
                     networkManager.getTempAndHum()
@@ -69,8 +69,6 @@ class MyApplication : Application() {
                         apiListener?.onApiResponseReceived(Pair(ListForData.SoilHumList, ListForData.TempAndHumList))
                         saveEntryToDB(ListForData)
 
-                        Log.d("MyLog",  "Множество почва ${ListForData.SoilHumList.toString()}")
-                        Log.d("MyLog", "Множество сенсоры ${ListForData.TempAndHumList.toString()}")
                         ListForData.SoilHumList.clear()
                         ListForData.TempAndHumList.clear()
 
@@ -78,10 +76,7 @@ class MyApplication : Application() {
 
                 }
             })
-
-            Log.d("important", "Assigned: $uid")
         }
-    var loggedIn = DEBUGMODE
 
     fun setApiListener(listener: ApiListener) {
         this.apiListener = listener
@@ -89,9 +84,6 @@ class MyApplication : Application() {
 
 
     private fun saveEntryToDB(data: ListForData.Companion) {
-        println(data.SoilHumList.toString())
-        println(data.TempAndHumList.toString())
-
         var totalGreenhouseTemperature = 0f
         var totalGreenhouseHumidity = 0f
         for (entry in data.TempAndHumList) {
@@ -99,16 +91,9 @@ class MyApplication : Application() {
             totalGreenhouseHumidity += entry.hum.toFloat()
         }
 
-        println("1: ${totalGreenhouseTemperature / data.TempAndHumList.size.toFloat()}")
-        println("2: ${totalGreenhouseHumidity / data.TempAndHumList.size.toFloat()}")
-
         val avgTemp = decimalFormatter.format(totalGreenhouseTemperature / data.TempAndHumList.size.toFloat())
         val avgHumidity = decimalFormatter.format(totalGreenhouseHumidity / data.TempAndHumList.size.toFloat())
 
-
-        println("3: $avgTemp")
-        println("4: $avgHumidity")
-        println("5: ${data.SoilHumList.size}")
         val soilHumListCopy = data.SoilHumList.toList()
 
         CoroutineScope(Dispatchers.IO).launch {
@@ -124,13 +109,8 @@ class MyApplication : Application() {
                 furrow6_humidity = soilHumListCopy[5].humidity.toFloat()
             )
 
-            println(dataToSave.toString())
             sensorDao.insertData(dataToSave)
         }
-
-//        CoroutineScope(Dispatchers.IO).launch {
-//            println(sensorDao.getSensorDataForDate("2023-03-11").toString())
-//        }
     }
 
     override fun onCreate() {
@@ -138,17 +118,20 @@ class MyApplication : Application() {
         AppSettingsManager.initContext(applicationContext)
         AppNotificationManager.initContext(applicationContext)
 
-        if (AppSettingsManager.checkThatDataExists("tempValue") &&
-                AppSettingsManager.checkThatDataExists("humValue")&&
-                AppSettingsManager.checkThatDataExists("soilValue")) {
+        if (AppSettingsManager.checkThatDataExists("WereSettingsLoadedOnce")) {
             AppSettingsManager.isAllBoundaryDataExists = true
         } else {
-            AppSettingsManager.saveData("tempValue", "21")
-            AppSettingsManager.saveData("humValue", "69.7")
-            AppSettingsManager.saveData("soilValue", "67.4")
+            AppSettingsManager.saveData("Language", "RU")
+            AppSettingsManager.saveData("TempUnits", "C")
+            AppSettingsManager.saveData("Interval", "60")
+            AppSettingsManager.saveData("EmergencyMode", "false")
+            AppSettingsManager.saveData("GreenhouseThresholdTemp", "50")
+            AppSettingsManager.saveData("GreenhouseOverwettingPercent", "50")
+            AppSettingsManager.saveData("FurrowOverwettingPercent", "50")
+            AppSettingsManager.saveData("WereSettingsLoadedOnce", "true")
         }
 
-        if (DEBUGMODE) {
+        if (DEBUGMODE && currentUID == "UNASSIGNED") {
             currentUID = "DEBUG"
         }
         createNotificationChannel()
@@ -179,10 +162,6 @@ class MyApplication : Application() {
         )
     }
 
-    override fun onTerminate() {
-//        Greenhouse.getInstance().saveState()
-        super.onTerminate()
-    }
 
     private fun createNotificationChannel() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
