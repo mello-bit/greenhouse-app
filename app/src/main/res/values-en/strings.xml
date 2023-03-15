@@ -43,4 +43,14 @@
     <string name="extreme_mode_on">Emergency mode\n(ON)</string>
     <string name="apply_and_save">Apply and save</string>
     <string name="greenhouse_control">Greenhouse control panel</string>
+    <string name="choice_a_date">Choose the date</string>
+    <string name="choice_a_time">Choose the time\n(HOURLY)</string>
+    <string name="soil_moisture">Soil humidity</string>
+    <string name="temperature_and_humidity">Temperature and humidity</string>
+    <string name="temperature">Temperature</string>
+    <string name="humidity">Humidity</string>
+    <string name="choice_soil_hum">Ne ponyal kak perevesti bez demonstracii</string>
+    <string name="choice">Choose the furrow</string>
+    <string name="choice_temp">Ne ponyal kak perevesti bez demonstracii</string>
+    <string name="choice_hum">Ne ponyal kak perevesti bez demonstracii</string>
 </resources>
