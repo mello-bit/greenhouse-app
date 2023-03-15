@@ -77,13 +77,13 @@ open class SettingsFragment : Fragment() {
     }
 
     fun loadSettings() {
-        val SavedLanguage = AppSettingsManager.loadData("Language")!! // "RU", "EN"
-        val SavedUnits = AppSettingsManager.loadData("TempUnits")!!  // "C", "F"
-        val SavedInterval = AppSettingsManager.loadData("Interval")!! // "10", "60", "120"
+        val SavedLanguage = AppSettingsManager.loadData("Language") // "RU", "EN"
+        val SavedUnits = AppSettingsManager.loadData("TempUnits")  // "C", "F"
+        val SavedInterval = AppSettingsManager.loadData("Interval") // "10", "60", "120"
         val IsEmergencyModeActive = AppSettingsManager.loadData("EmergencyMode") == "true" // true, false
-        val GreenhouseThresholdTemp = AppSettingsManager.loadData("GreenhouseThresholdTemp")!! // 0..100
-        val GreenhouseOverwetting = AppSettingsManager.loadData("GreenhouseOverwettingPercent")!! // 0..100
-        val FurrowOverwetting = AppSettingsManager.loadData("FurrowOverwettingPercent")!! // 0.100
+        val GreenhouseThresholdTemp = AppSettingsManager.loadData("GreenhouseThresholdTemp") // 0..100
+        val GreenhouseOverwetting = AppSettingsManager.loadData("GreenhouseOverwettingPercent") // 0..100
+        val FurrowOverwetting = AppSettingsManager.loadData("FurrowOverwettingPercent") // 0.100
 
         binding.scLanguage.isChecked = SavedLanguage == "EN"
         binding.scTemperatureUnits.isChecked = SavedUnits == "F"

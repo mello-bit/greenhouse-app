@@ -156,18 +156,24 @@ class HomeFragment : Fragment(), ApiListener {
     private lateinit var application: MyApplication
     private lateinit var networkManager: AppNetworkManager
     private var TemperatureUnits = R.string.temperature_celsius
-    private var ThresholdTemperature = 30
-    private var FurrowOverhydration = 100
-    private var GreenhouseOverhydration = 70
+    private var ThresholdTemperature: Byte = 30
+    private var FurrowOverhydration: Byte = 100
+    private var GreenhouseOverhydration: Byte = 70
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        TemperatureUnits =
-            if (AppSettingsManager.loadData("TempUnits") == "C") R.string.temperature_celsius else R.string.fahrenheit
+        updateSettings()
 
         val applicationContext = requireActivity().applicationContext
         application = applicationContext as MyApplication
         db = AppDatabaseHelper.getDatabase(applicationContext, application.currentUID)
+    }
+
+    fun updateSettings() {
+        TemperatureUnits = if (AppSettingsManager.loadData("TempUnits") == "C") R.string.temperature_celsius else R.string.fahrenheit
+        ThresholdTemperature = AppSettingsManager.loadData("GreenhouseThresholdTemp")!!.toByte()
+        GreenhouseOverhydration = AppSettingsManager.loadData("GreenhouseOverwettingPercent")!!.toByte()
+        FurrowOverhydration = AppSettingsManager.loadData("FurrowOverwettingPercent")!!.toByte()
     }
 
     override fun onAttach(context: Context) {
@@ -200,25 +206,16 @@ class HomeFragment : Fragment(), ApiListener {
             }
 
             val humidity = generalGreenhouseHumidity / 4
-            var temp = generalGreenhouseTemperature / 4
+            var temperature = generalGreenhouseTemperature / 4
 
             // Меняем на градусы фаренгейта, если они установлены в настройках
             if (TemperatureUnits == R.string.temperature_fahrenheit) {
-                temp = (temp * 1.8 + 32).toFloat()
+                temperature = (temperature * 1.8 + 32).toFloat()
             }
 
-            // Изменяем состояние кнопок, взависимости от защитных параметров
-            if (humidity > GreenhouseOverhydration) {
-                humidifierButton.changeStatus(STATE.DISABLED, humidifierButton.status == STATE.ON)
-            } else if (humidifierButton.status == STATE.DISABLED && humidity <= GreenhouseOverhydration) {
-                humidifierButton.changeStatus(STATE.OFF, false)
-            }
-
-            if (temp < ThresholdTemperature) {
-                windowButton.changeStatus(STATE.DISABLED, windowButton.status == STATE.ON)
-            } else if (windowButton.status == STATE.DISABLED && temp >= ThresholdTemperature) {
-                windowButton.changeStatus(STATE.OFF, false)
-            }
+            // Изменяем состояние кнопок, в зависимости от защитных параметров
+            processHumidity(humidity)
+            processTemperature(temperature)
 
             // Обновляем UI
             binding.tvGreenhouseHumidity.text = getString(
@@ -228,8 +225,27 @@ class HomeFragment : Fragment(), ApiListener {
 
             binding.tvGreenhouseTemp.text = getString(
                 TemperatureUnits,
-                "%.1f".format(temp)
+                "%.1f".format(temperature)
             )
+        }
+    }
+
+    fun processHumidity(humidity: Float) {
+        Log.d("Important", "called processHumidity() with protection: $GreenhouseOverhydration")
+        val humidifierButton = bottomButtons["Humidifier"]!!
+        if (humidity > GreenhouseOverhydration) {
+            humidifierButton.changeStatus(STATE.DISABLED, humidifierButton.status == STATE.ON)
+        } else if (humidifierButton.status == STATE.DISABLED && humidity <= GreenhouseOverhydration) {
+            humidifierButton.changeStatus(STATE.OFF, false)
+        }
+    }
+    fun processTemperature(temperature: Float) {
+        Log.d("Important", "called processTemperature() with protection: $ThresholdTemperature")
+        val windowButton = bottomButtons["Window"]!!
+        if (temperature < ThresholdTemperature) {
+            windowButton.changeStatus(STATE.DISABLED, windowButton.status == STATE.ON)
+        } else if (windowButton.status == STATE.DISABLED && temperature >= ThresholdTemperature) {
+            windowButton.changeStatus(STATE.OFF, false)
         }
     }
 
@@ -284,21 +300,23 @@ class HomeFragment : Fragment(), ApiListener {
 
     override fun onResume() {
         super.onResume()
-        TemperatureUnits =
-            if (AppSettingsManager.loadData("TempUnits") == "C") R.string.temperature_celsius else R.string.temperature_fahrenheit
+        updateSettings()
 
         // Восстановление отображаемых данных после выхода/захода на фрагмент
         CoroutineScope(Dispatchers.IO).launch {
             val latestData = db.SensorDao().getLatestSensorData()
             if (latestData != null) {
-                var temp = latestData.greenhouse_temperature
+                var temperature = latestData.greenhouse_temperature
                 if (TemperatureUnits == R.string.temperature_fahrenheit) {
-                    temp = (temp * 1.8 + 32).toFloat()
+                    temperature = (temperature * 1.8 + 32).toFloat()
                 }
+
+                processTemperature(temperature)
+                processHumidity(latestData.greenhouse_humidity)
 
                 binding.tvGreenhouseTemp.text = getString(
                     TemperatureUnits,
-                    String.format("%.1f", temp)
+                    String.format("%.1f", temperature)
                 )
                 binding.tvGreenhouseHumidity.text = getString(
                     R.string.percent_adder,
