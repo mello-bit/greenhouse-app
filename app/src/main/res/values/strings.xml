@@ -53,4 +53,5 @@
     <string name="extreme_mode_off">Режим экстренного управления\n(ВЫКЛ)</string>
     <string name="extreme_mode_on">Режим экстренного управления\n(ВКЛ)</string>
     <string name="apply_and_save">Применить и сохранить</string>
+    <string name="greenhouse_control">Управление теплицей</string>
 </resources>

@@ -42,4 +42,5 @@
     <string name="extreme_mode_off">Emergency mode\n(OFF)</string>
     <string name="extreme_mode_on">Emergency mode\n(ON)</string>
     <string name="apply_and_save">Apply and save</string>
+    <string name="greenhouse_control">Greenhouse control panel</string>
 </resources>

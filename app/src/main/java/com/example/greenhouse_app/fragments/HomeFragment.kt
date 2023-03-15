@@ -117,6 +117,9 @@ class HomeFragment : Fragment(), ApiListener {
     private lateinit var application: MyApplication
     private lateinit var networkManager: AppNetworkManager
     private var TemperatureUnits = R.string.temperature_celsius
+    private var ThresholdTemperature = 100
+    private var FurrowOverhydration = 100
+    private var GreenhouseOverhydration = 100
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -212,6 +215,8 @@ class HomeFragment : Fragment(), ApiListener {
         super.onResume()
         TemperatureUnits =
             if (AppSettingsManager.loadData("TempUnits") == "C") R.string.temperature_celsius else R.string.temperature_fahrenheit
+
+
 
         // Восстановление отображаемых данных после выхода/захода на фрагмент
         CoroutineScope(Dispatchers.IO).launch {
