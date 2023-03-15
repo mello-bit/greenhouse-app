@@ -33,6 +33,7 @@ fun getCurrentDateTimeISO8601(): String {
 
 class MyApplication : Application() {
     val DEBUGMODE = true
+    var loggedIn = DEBUGMODE
 
     private lateinit var networkManager: AppNetworkManager
     private lateinit var handler: Handler
@@ -41,7 +42,7 @@ class MyApplication : Application() {
     private var decimalFormatter = DecimalFormat("#.##", DecimalFormatSymbols(Locale.US))
     private var apiListener: ApiListener? = null
     val myAdapter by lazy { DataAdapter() }
-    var currentUID: String = "DEBUG"
+    var currentUID: String = "UNASSIGNED"
         set(uid) {
             field = uid
             loggedIn = true
@@ -53,7 +54,6 @@ class MyApplication : Application() {
             handler = Handler(Looper.getMainLooper())
 
             handler.post(object : Runnable {
-                @SuppressLint("NotifyDataSetChanged")
                 override fun run() {
                     networkManager.getSoilHum()
                     networkManager.getTempAndHum()
@@ -69,8 +69,6 @@ class MyApplication : Application() {
                         apiListener?.onApiResponseReceived(Pair(ListForData.SoilHumList, ListForData.TempAndHumList))
                         saveEntryToDB(ListForData)
 
-                        Log.d("MyLog",  "Множество почва ${ListForData.SoilHumList.toString()}")
-                        Log.d("MyLog", "Множество сенсоры ${ListForData.TempAndHumList.toString()}")
                         ListForData.SoilHumList.clear()
                         ListForData.TempAndHumList.clear()
 
@@ -78,10 +76,7 @@ class MyApplication : Application() {
 
                 }
             })
-
-            Log.d("important", "Assigned: $uid")
         }
-    var loggedIn = DEBUGMODE
 
     fun setApiListener(listener: ApiListener) {
         this.apiListener = listener
@@ -136,8 +131,7 @@ class MyApplication : Application() {
             AppSettingsManager.saveData("WereSettingsLoadedOnce", "true")
         }
 
-        if (DEBUGMODE) {
-            Log.d("important", "Assigned in OnCreate()")
+        if (DEBUGMODE && currentUID == "UNASSIGNED") {
             currentUID = "DEBUG"
         }
         createNotificationChannel()
