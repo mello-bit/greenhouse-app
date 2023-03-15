@@ -28,7 +28,7 @@ class AppSettingsManager {
         }
 
         fun loadData(key: String): String? {
-            return sharedPreferences.getString(key, "")
+            return sharedPreferences.getString(key, null)
         }
 
         fun checkThatDataExists(key: String): Boolean {

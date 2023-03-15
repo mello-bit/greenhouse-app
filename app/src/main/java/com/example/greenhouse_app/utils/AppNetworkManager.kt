@@ -19,14 +19,6 @@ class AppNetworkManager(private val context: Context?) {
     private val urlForWindowOpen = "https://dt.miet.ru/ppo_it/api/fork_drive"
     private val urlForGlobalWatering = "https://dt.miet.ru/ppo_it/api/total_hum"
     private val urlForWateringControl = "https://dt.miet.ru/ppo_it/api/watering"
-    /*
-        urlForGetSoilHum: Влажность с датчиков почвы
-        urlForGetTempAnHum: Влажность и температура с 4х угловых датчиков теплицы
-        urlForWindowOpen: (PATCH) - Открытие/Закрытие форточек
-        urlForGlobalWatering: (PATCH) - Управление единой системой увлажнения
-        urlForWateringControl: (PATCH) - Вкл/выкл увлажнение бороздки
-     */
-
     private val queue = Volley.newRequestQueue(context)
 
     fun getSoilHum() {
@@ -42,11 +34,8 @@ class AppNetworkManager(private val context: Context?) {
                         mapJson["humidity"]!!
                     )
                     ListForData.SoilHumList.add(soilHum)
-
                 },
-                { error ->
-                    Log.e(null, "$error")
-                }
+                { }
             )
             queue.add(request)
         }
@@ -67,46 +56,31 @@ class AppNetworkManager(private val context: Context?) {
                         mapJson["hum"]!!
                     )
                     ListForData.TempAndHumList.add(tempAndHum)
-                },
-                { error ->
-                    Log.d("MyLog", "$error")
-                }
+                }, {}
             )
             queue.add(request)
 
         }
     }
 
-    //изменение статуса форточка
     fun changeWindowState(state: Byte) {
-        // urlForWindowOpen: Использовать это.
-        // state: Или 1, или 0. Обрабатывать не требуется.
         val queue = Volley.newRequestQueue(context)
 
         val request = StringRequest(
             Request.Method.PATCH,
             "$urlForWindowOpen?state=$state",
-            {response ->
-                Log.d("ResponseTag", response.toString())
-            },
-            {error ->
-                Log.d("ResponseTag", error.toString())
-            }
+            {}, {}
         )
         queue.add(request)
     }
 
     fun changeFurrowState(id: Byte, state: Byte) {
+        Log.d("important", "Sent PATCH for furrow: ($id) with state: $state")
         val queue = Volley.newRequestQueue(context)
         val request = StringRequest(
             Request.Method.PATCH,
             "$urlForWateringControl?id=$id&state=$state",
-            { response ->
-                Log.d("ResponseTag", response.toString() + id.toString())
-            },
-            { error ->
-                Log.d("ResponseTag", error.toString() + id.toString())
-            }
+            {}, {}
         )
         queue.add(request)
     }
@@ -115,12 +89,7 @@ class AppNetworkManager(private val context: Context?) {
         val queue = Volley.newRequestQueue(context)
         val request = StringRequest(Request.Method.PATCH,
             "$urlForGlobalWatering?state=$state",
-            {response ->
-                Log.d("ResponseTag", response.toString())
-            },
-            {error ->
-                Log.d("ResponseTag", error.toString())
-            }
+            {}, {}
         )
         queue.add(request)
     }

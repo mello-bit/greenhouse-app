@@ -65,4 +65,5 @@
     <string name="choice">Выберите грядку</string>
     <string name="choice_temp">Показатель температуры теплицы с номером</string>
     <string name="choice_hum">Показатель влажности теплицы с номером</string>
+    <string name="furrow_disabled_message">Слишком высокая влажность. Невозможно включить полив</string>
 </resources>

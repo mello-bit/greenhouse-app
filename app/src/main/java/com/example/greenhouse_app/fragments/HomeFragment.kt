@@ -9,7 +9,9 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.LinearLayout
 import android.widget.TextView
+import android.widget.Toast
 import androidx.appcompat.widget.AppCompatButton
+import com.example.greenhouse_app.MainActivity
 import com.example.greenhouse_app.MyApplication
 import com.example.greenhouse_app.R
 import com.example.greenhouse_app.dataClasses.SoilHum
@@ -33,21 +35,46 @@ interface ApiListener {
     fun onApiResponseReceived(response: Pair<MutableList<SoilHum>, MutableList<TempAndHum>>)
 }
 
-class FurrowButton(val Id: Byte, val linearLayout: LinearLayout, private val networkManager: AppNetworkManager) {
-    var status: Boolean
+enum class STATE { OFF, ON, DISABLED;
+    fun toggle(): STATE {
+        return when(this) {
+            ON -> OFF
+            OFF -> ON
+            DISABLED -> this
+        }
+    }
+}
+
+class FurrowButton(val Id: Byte, val linearLayout: LinearLayout, private val networkManager: AppNetworkManager, private val context: Context) {
+    var status: STATE
     private var button: AppCompatButton
     private var textView: TextView
     private var patchFunction = networkManager::changeFurrowState
+    private var protectionValue: Byte = 65
 
-    fun changeStatus(status: Boolean, send_patch: Boolean = false) {
+    fun changeStatus(status: STATE, send_patch: Boolean = false) {
         this.status = status
 
-        val btnBackground = if (status) R.drawable.green_status_round_button else R.drawable.red_status_round_button
-        val llBackground = if (status) R.drawable.furrow_hydration_on else R.drawable.furrow_hydration_off
-        val text = if (status) R.string.watering_on else R.string.watering_off
+        val btnBackground = when(status) {
+            STATE.ON -> R.drawable.green_status_round_button
+            STATE.OFF -> R.drawable.red_status_round_button
+            STATE.DISABLED -> R.drawable.gray_status_round_button
+        }
+
+        val llBackground = when(status) {
+            STATE.ON -> R.drawable.furrow_hydration_on
+            STATE.OFF -> R.drawable.furrow_hydration_off
+            STATE.DISABLED -> R.drawable.furrow_hydration_disabled
+        }
+
+        val text = when(status) {
+            STATE.ON -> R.string.watering_on
+            else -> R.string.watering_off
+        }
 
         if (send_patch) {
-            patchFunction(Id, status.compareTo(false).toByte())
+            val patchStatus = if (status == STATE.DISABLED) 0 else status.ordinal.toByte()
+            patchFunction(Id, patchStatus)
         }
         this.linearLayout.setBackgroundResource(llBackground)
         this.button.setBackgroundResource(btnBackground)
@@ -56,26 +83,30 @@ class FurrowButton(val Id: Byte, val linearLayout: LinearLayout, private val net
 
     fun changeDisplayValue(value: Byte) {
         this.textView.text = "$value%"
-    }
 
-    init {
-        this.status = AppSettingsManager.loadData("Furrow${this.Id}Status").toBoolean()
-        this.button = linearLayout.findViewWithTag<AppCompatButton>("btnFurrow$Id")
-        this.button.setOnClickListener{ changeStatus(!this.status, true) }
-        this.textView = linearLayout.findViewWithTag<TextView>("tvFurrow${Id}Status")
-
-        Log.d(null, this.button.tag.toString())
-        Log.d(null, this.textView.tag.toString())
-    }
-
-    init {
-        val status = AppSettingsManager.loadData("Furrow${this.Id}Status")
-
-        if (status != null && status.isNotEmpty()) {
-            changeStatus(status.toBoolean())
-        } else {
-            Log.d(null,"THE RECEIVED STATUS IS $status")
+        if (value > protectionValue) {
+            this.changeStatus(STATE.DISABLED, this.status == STATE.ON)
+        } else if(value <= protectionValue && this.status == STATE.DISABLED) {
+            this.changeStatus(STATE.OFF, false)
         }
+    }
+
+    init {
+        this.status = STATE.valueOf(AppSettingsManager.loadData("Furrow${this.Id}Status") ?: "OFF")
+        this.button = linearLayout.findViewWithTag<AppCompatButton>("btnFurrow$Id")
+        this.textView = linearLayout.findViewWithTag<TextView>("tvFurrow${Id}Status")
+        this.button.setOnClickListener{
+            if (this.status != STATE.DISABLED) {
+                changeStatus(this.status.toggle(), true)
+            } else {
+                MainActivity.showToast(context, context.getString(R.string.furrow_disabled_message), true)
+            }
+        }
+    }
+
+    init {
+        val status = STATE.valueOf(AppSettingsManager.loadData("Furrow${this.Id}Status") ?: "OFF")
+        changeStatus(status, false)
     }
 }
 
@@ -200,9 +231,13 @@ class HomeFragment : Fragment(), ApiListener {
 
         for (i in 1..6) {
             val layout = layouts[i - 1]
-            val furrowClass = FurrowButton(i.toByte(), layout, networkManager)
+            val furrowClass = FurrowButton(i.toByte(), layout, networkManager, this.requireContext())
             layout.setOnClickListener {
-                furrowClass.changeStatus(!furrowClass.status, true)
+                if (furrowClass.status != STATE.DISABLED) {
+                    furrowClass.changeStatus(furrowClass.status.toggle(), true)
+                } else {
+                    MainActivity.showToast(requireContext(), requireContext().getString(R.string.furrow_disabled_message), true)
+                }
             }
             this.buttonClasses[i.toByte()] = furrowClass
         }
@@ -215,8 +250,6 @@ class HomeFragment : Fragment(), ApiListener {
         super.onResume()
         TemperatureUnits =
             if (AppSettingsManager.loadData("TempUnits") == "C") R.string.temperature_celsius else R.string.temperature_fahrenheit
-
-
 
         // Восстановление отображаемых данных после выхода/захода на фрагмент
         CoroutineScope(Dispatchers.IO).launch {

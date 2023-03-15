@@ -53,4 +53,5 @@
     <string name="choice">Choose the furrow</string>
     <string name="choice_temp">Ne ponyal kak perevesti bez demonstracii</string>
     <string name="choice_hum">Ne ponyal kak perevesti bez demonstracii</string>
+    <string name="furrow_disabled_message">Very high humidity. Cannot open sprinkler</string>
 </resources>
