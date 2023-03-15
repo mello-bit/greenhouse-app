@@ -4,7 +4,7 @@ import com.github.mikephil.charting.data.Entry
 
 class ListForData {
     companion object {
-        val EverySoilHumDataList = mutableListOf<AllData>()
+        var EverySoilHumDataList = mutableListOf<AllData>()
         val TempAndHumList = mutableListOf<TempAndHum>()
         val SoilHumList = mutableListOf<SoilHum>()
         val currentDateList = mutableListOf<String>()

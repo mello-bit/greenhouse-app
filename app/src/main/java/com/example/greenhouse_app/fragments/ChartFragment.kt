@@ -11,7 +11,9 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.CheckBox
 import androidx.core.content.ContextCompat
+import com.example.greenhouse_app.MyApplication
 import com.example.greenhouse_app.R
+import com.example.greenhouse_app.dataClasses.AllData
 import com.example.greenhouse_app.dataClasses.ListForData.Companion.EverySoilHumDataList
 import com.example.greenhouse_app.dataClasses.ListForData.Companion.averageSoilHumList
 import com.example.greenhouse_app.dataClasses.ListForData.Companion.currentDateList
@@ -31,15 +33,24 @@ import com.example.greenhouse_app.dataClasses.ListForData.Companion.tempList1
 import com.example.greenhouse_app.dataClasses.ListForData.Companion.tempList2
 import com.example.greenhouse_app.dataClasses.ListForData.Companion.tempList3
 import com.example.greenhouse_app.dataClasses.ListForData.Companion.tempList4
+import com.example.greenhouse_app.dataClasses.SoilHum
+import com.example.greenhouse_app.dataClasses.TempAndHum
 import com.example.greenhouse_app.databinding.FragmentChartBinding
+import com.example.greenhouse_app.utils.AppDatabase
+import com.example.greenhouse_app.utils.AppDatabaseHelper
+import com.example.greenhouse_app.utils.SensorDao
+import com.example.greenhouse_app.utils.SensorData
 import com.github.mikephil.charting.components.XAxis
 import com.github.mikephil.charting.data.Entry
 import com.github.mikephil.charting.data.LineData
 import com.github.mikephil.charting.data.LineDataSet
 import com.github.mikephil.charting.formatter.IndexAxisValueFormatter
+import com.google.android.gms.common.internal.FallbackServiceBroker
 import com.google.android.material.timepicker.MaterialTimePicker
 import com.google.android.material.timepicker.TimeFormat
+import kotlinx.coroutines.*
 import org.intellij.lang.annotations.JdkConstants.CalendarMonth
+import java.lang.Runnable
 import java.text.SimpleDateFormat
 import java.time.format.DateTimeFormatter
 import java.util.*
@@ -49,9 +60,13 @@ class ChartFragment : Fragment() {
 
     private lateinit var binding: FragmentChartBinding
     private lateinit var handler: Handler
-    private val list = EverySoilHumDataList
+    private var list = EverySoilHumDataList
     private var hour: Int? = null
     private var date: String? = null
+    var useSpace = true
+
+    private lateinit var db: AppDatabase
+    private lateinit var sensorDao: SensorDao
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -68,7 +83,7 @@ class ChartFragment : Fragment() {
 
         handler.post(object : Runnable {
             override fun run() {
-                fromAllDataToEntry()
+                fromAllDataToEntry(useSpace)
                 handler.postDelayed(this, 200)
             }
         })
@@ -102,6 +117,27 @@ class ChartFragment : Fragment() {
             myCalendar.set(Calendar.MONTH, month)
             myCalendar.set(Calendar.DAY_OF_MONTH, day)
             formatterDate(myCalendar)
+
+            CoroutineScope(Dispatchers.IO).launch {
+                val application = requireActivity().applicationContext as MyApplication
+
+                db = AppDatabaseHelper.getDatabase(requireContext(), application.currentUID)
+                sensorDao = db.SensorDao()
+                Log.d("CheckList", date!!)
+                val dataList = sensorDao.getSensorDataForDate(date!!)
+//                handler.removeCallbacksAndMessages(null)
+                fromSensorDaoToAllData(dataList)
+                Log.d("CheckList", list.toString())
+                useSpace = false
+                fromAllDataToEntry(useSpace)
+
+                withContext(Dispatchers.Main) {
+                    fromAllDataToEntry(useSpace)
+                    delay(200L)
+                }
+
+                Log.d("CheckDateTime", dataList.toString())
+            }
         }
 
         DatePickerDialog(requireContext(), datePicker,
@@ -111,19 +147,49 @@ class ChartFragment : Fragment() {
         ).show()
     }
 
+    private fun fromSensorDaoToAllData(dataList: List<SensorData>) {
+        val result = mutableListOf<AllData>()
+
+        for (sd in dataList.indices) {
+            result.add(
+                AllData(
+                    dataList[sd].createdAt.split('T')[1].split('.')[0],
+                    dataList[sd].furrow1_humidity,
+                    dataList[sd].furrow2_humidity,
+                    dataList[sd].furrow3_humidity,
+                    dataList[sd].furrow4_humidity,
+                    dataList[sd].furrow5_humidity,
+                    dataList[sd].furrow6_humidity,
+                    dataList[sd].greenhouse_temperature,
+                    dataList[sd].greenhouse_temperature,
+                    dataList[sd].greenhouse_temperature,
+                    dataList[sd].greenhouse_temperature,
+                    dataList[sd].greenhouse_humidity,
+                    dataList[sd].greenhouse_humidity,
+                    dataList[sd].greenhouse_humidity,
+                    dataList[sd].greenhouse_humidity,
+                )
+            )
+        }
+        Log.d("CheckList", result.toString())
+        list = result
+    }
+
     private fun formatterDate(calendar: Calendar) {
-        val myFormat = "yyyy-mm-dd"
+        val myFormat = "yyyy-MM-dd"
         val sdf = SimpleDateFormat(myFormat, Locale.UK)
         date = sdf.format(calendar.time)
     }
 
-    private fun fromAllDataToEntry() {
+    private fun fromAllDataToEntry(useSpace: Boolean) {
 
         clearSoilHumLists()
         clearTempAndHumLists()
 
+        Log.d("CheckList", list.toString())
         for (dt in 0 until list.size) {
-            currentDateList.add(list[dt].currentData.split(' ')[1])
+            if (useSpace) currentDateList.add(list[dt].currentData.split(' ')[0])
+            else currentDateList.add(list[dt].currentData)
 
             fillInAllSoilHumLists(dt)
             fillInAllTempAndHumLists(dt)
