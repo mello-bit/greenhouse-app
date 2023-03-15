@@ -17,4 +17,14 @@
     <color name="indigo_dye">#044B7F</color>
     <color name="tyrian_purple">#044B7F</color>
     <color name="saffron">#E3B505</color>
+    <color name="apple_green">#8EA604</color>
+    <color name="coral">#FF855C</color>
+    <color name="peach">#FDC086</color>
+    <color name="walnut_brown">#696047</color>
+    <color name="mindaro">#EDFF86</color>
+    <color name="gunmetal">#202C39</color>
+    <color name="sage">#B8B08D</color>
+    <color name="citrine">#DDD92A</color>
+    <color name="red_crayola">#EE4266</color>
+    <color name="thistle">#B7ADCF</color>
 </resources>

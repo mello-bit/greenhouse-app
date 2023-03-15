@@ -55,18 +55,19 @@ class MyApplication : Application() {
             handler = Handler(Looper.getMainLooper())
 
             handler.post(object : Runnable {
-                @SuppressLint("NotifyDataSetChanged")
                 override fun run() {
+
                     networkManager.getSoilHum()
                     networkManager.getTempAndHum()
                     handler.postDelayed(this, 10 * 1000)
+
                     if (ListForData.SoilHumList.size == 6 && ListForData.TempAndHumList.size == 4) {
                         ListForData.EverySoilHumDataList.add(
                             toAllSoilHumDataClass()
                         )
 //                        Log.d("CheckTag", ListForData.EverySoilHumDataList.toString())
                         myAdapter.setData(ListForData.EverySoilHumDataList)
-                        myAdapter.notifyDataSetChanged()
+                        myAdapter.notifyItemInserted(ListForData.EverySoilHumDataList.size - 1)
 
                         apiListener?.onApiResponseReceived(Pair(ListForData.SoilHumList, ListForData.TempAndHumList))
                         saveEntryToDB(ListForData)

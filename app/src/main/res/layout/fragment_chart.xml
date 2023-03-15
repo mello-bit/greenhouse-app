@@ -13,47 +13,64 @@
         android:layout_height="match_parent"
         android:orientation="vertical"
         android:layout_gravity="center"
+        android:layout_marginHorizontal="7dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
-
         <LinearLayout
-            android:id="@+id/linearLayout3"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:background="@drawable/table_chart_background"
-            android:orientation="horizontal">
+            android:orientation="vertical"
+            android:layout_marginTop="7dp"
+            android:layout_gravity="center">
 
-            <ImageButton
-                android:id="@+id/ibTableButton"
+            <LinearLayout
+                android:id="@+id/linearLayout3"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_gravity="center"
                 android:background="@drawable/table_chart_background"
-                android:src="@drawable/table_chart_image"
-                tools:ignore="ContentDescription" />
+                android:orientation="horizontal">
+
+                <ImageButton
+                    android:id="@+id/ibTableButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/table_chart_background"
+                    android:src="@drawable/table_chart_image"
+                    tools:ignore="ContentDescription" />
+
+                <androidx.appcompat.widget.AppCompatButton
+                    android:layout_width="70pt"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/table_chart_background"
+                    android:paddingHorizontal="10dp"
+                    android:text="@string/choice_a_time" />
+
+                <ImageButton
+                    android:id="@+id/ibChartButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/table_chart_background"
+                    android:src="@drawable/ssid_chart_image" />
+            </LinearLayout>
 
             <androidx.appcompat.widget.AppCompatButton
-                android:layout_width="70pt"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@drawable/table_chart_background"
-                android:paddingHorizontal="10dp"
-                android:text="@string/choice_a_time" />
+                android:text="@string/choice_a_date"
+                android:background="@drawable/table_chart_background"/>
 
-            <ImageButton
-                android:id="@+id/ibChartButton"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:background="@drawable/table_chart_background"
-                android:src="@drawable/ssid_chart_image" />
         </LinearLayout>
+
+
 
         <com.github.mikephil.charting.charts.LineChart
             android:id="@+id/lcLineChart"
             android:layout_width="match_parent"
-            android:layout_height="200pt"
+            android:layout_height="180pt"
             android:paddingHorizontal="15dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -69,6 +86,7 @@
             android:text="@string/choice_soil_hum" />
 
         <LinearLayout
+            android:id="@+id/soilHumCheckboxes"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
@@ -136,6 +154,7 @@
                 android:textColor="@color/black"/>
 
             <LinearLayout
+                android:id="@+id/tempCheckboxes"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
@@ -190,6 +209,7 @@
                 android:textSize="15sp"/>
 
             <LinearLayout
+                android:id="@+id/humCheckboxes"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
