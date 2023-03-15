@@ -109,30 +109,35 @@ class ChartFragment : Fragment() {
         lineDate.addAll(filteredTemp)
         lineDate.addAll(filteredHum)
 
-//        if (binding.firstSoilHum.isChecked) lineDate.add(lineDataSetSoilHum1)
-//        if (binding.secondSoilHum.isChecked) lineDate.add(lineDataSetSoilHum2)
-//        if (binding.thirdSoilHum.isChecked) lineDate.add(lineDataSetSoilHum3)
-//        if (binding.fourthSoilHum.isChecked) lineDate.add(lineDataSetSoilHum4)
-//        if (binding.fifthSoilHum.isChecked) lineDate.add(lineDataSetSoilHum5)
-//        if (binding.sixthSoilHum.isChecked) lineDate.add(lineDataSetSoilHum6)
-//        if (binding.zeroSoilHum.isChecked) lineDate.add(lineDataSetSoilHumAverage)
-
 
         binding.lcLineChart.data = LineData(lineDate.toList())
-        binding.lcLineChart.setBackgroundColor(resources.getColor(R.color.white))
-        binding.lcLineChart.isDragEnabled = true
-        binding.lcLineChart.xAxis.setDrawGridLines(false)
-        binding.lcLineChart.xAxis.granularity = 1f
 
-        binding.lcLineChart.xAxis.apply {
-            valueFormatter = IndexAxisValueFormatter(currentDateList)
-            position = XAxis.XAxisPosition.BOTTOM
-        }
+        styleChart()
+
         binding.lcLineChart.invalidate()
     }
 
-//    private fun add_suitable(lineDataSet: LineDataSet): LineDataSet {
-//    }
+    private fun styleChart() {
+        binding.lcLineChart.apply {
+            setBackgroundColor(ContextCompat.getColor(requireContext(), R.color.white))
+            isDragEnabled = true
+            xAxis.apply {
+                setDrawGridLines(false)
+                granularity = 1f
+                valueFormatter = IndexAxisValueFormatter(currentDateList)
+                position = XAxis.XAxisPosition.BOTTOM
+            }
+        }
+    }
+
+    private fun styleLineDataSet(lineDataSet: LineDataSet, colour: Int) = lineDataSet.apply {
+        color = ContextCompat.getColor(requireContext(), colour)
+        mode = LineDataSet.Mode.CUBIC_BEZIER
+        setDrawCircles(false)
+        valueTextSize = 17f
+        lineWidth = 3f
+
+    }
 
 
     private fun getCheckedHumList(): List<Boolean> {
@@ -188,7 +193,7 @@ class ChartFragment : Fragment() {
         styleLineDataSet(lineDataSetTempAverage, R.color.mindaro)
 
         return listOf(
-            lineDataSetTemp1, lineDataSetTemp2, lineDataSetTemp3, lineDataSetTemp4, lineDataSetTempAverage
+            lineDataSetTempAverage, lineDataSetTemp1, lineDataSetTemp2, lineDataSetTemp3, lineDataSetTemp4
         )
 
     }
@@ -210,7 +215,7 @@ class ChartFragment : Fragment() {
         styleLineDataSet(lineDataSetHumAverage, R.color.thistle)
 
         return listOf(
-            lineDataSetHum1, lineDataSetHum2, lineDataSetHum3, lineDataSetHum4, lineDataSetHumAverage
+            lineDataSetHumAverage, lineDataSetHum1, lineDataSetHum2, lineDataSetHum3, lineDataSetHum4
         )
     }
 
@@ -237,8 +242,8 @@ class ChartFragment : Fragment() {
         styleLineDataSet(lineDataSetSoilHumAverage, R.color.sienna)
 
         return listOf(
-            lineDataSetSoilHum1, lineDataSetSoilHum2, lineDataSetSoilHum3, lineDataSetSoilHum3,
-            lineDataSetSoilHum4, lineDataSetSoilHum5, lineDataSetSoilHum6, lineDataSetSoilHumAverage
+            lineDataSetSoilHumAverage, lineDataSetSoilHum1, lineDataSetSoilHum2, lineDataSetSoilHum3,
+            lineDataSetSoilHum4, lineDataSetSoilHum5, lineDataSetSoilHum6
         )
     }
 
@@ -310,15 +315,6 @@ class ChartFragment : Fragment() {
         humList3.clear()
         humList4.clear()
         humAverageList.clear()
-    }
-
-    private fun styleLineDataSet(lineDataSet: LineDataSet, colour: Int) = lineDataSet.apply {
-        color = ContextCompat.getColor(requireContext(), colour)
-        mode = LineDataSet.Mode.CUBIC_BEZIER
-        setDrawCircles(false)
-        valueTextSize = 17f
-        lineWidth = 3f
-
     }
 
     private fun replaceFragment(fragment: Fragment) {
