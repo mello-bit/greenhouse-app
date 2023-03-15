@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     tools:context=".fragments.ChartsFragment"
     android:id="@+id/charts_fragment"
-    android:background="@color/white">
+    android:background="#040926">
 
     <LinearLayout
         android:layout_width="match_parent"

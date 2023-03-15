@@ -13,12 +13,19 @@ import android.view.ViewGroup
 import androidx.fragment.app.FragmentTransaction
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.example.greenhouse_app.MyApplication
 import com.example.greenhouse_app.R
+import com.example.greenhouse_app.dataClasses.AllData
 import com.example.greenhouse_app.dataClasses.ListForData
 import com.example.greenhouse_app.databinding.FragmentChartsBinding
 import com.example.greenhouse_app.recyclerView.DataAdapter
+import com.example.greenhouse_app.utils.*
 import com.google.android.material.timepicker.MaterialTimePicker
 import com.google.android.material.timepicker.TimeFormat
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -29,6 +36,9 @@ class ChartsFragment : Fragment() {
     private lateinit var recyclerView: RecyclerView
     private lateinit var handler: Handler
     private val myAdapter by lazy { DataAdapter() }
+
+    private lateinit var db: AppDatabase
+    private lateinit var sensorDao: SensorDao
 
     private var hour: Int? = null
     private var date: String? = null
@@ -41,6 +51,7 @@ class ChartsFragment : Fragment() {
 
         binding = FragmentChartsBinding.inflate(inflater, container, false)
         handler = Handler(Looper.getMainLooper())
+
 
         binding.ibChartButton.setOnClickListener {
             val chartFragment = ChartFragment()
@@ -95,6 +106,7 @@ class ChartsFragment : Fragment() {
         }
     }
 
+    @SuppressLint("NotifyDataSetChanged")
     private fun showDatePickerDialog() {
         val myCalendar = Calendar.getInstance()
         val datePicker = DatePickerDialog.OnDateSetListener { _, year, month, day ->
@@ -102,6 +114,20 @@ class ChartsFragment : Fragment() {
             myCalendar.set(Calendar.MONTH, month)
             myCalendar.set(Calendar.DAY_OF_MONTH, day)
             formatterDate(myCalendar)
+
+            CoroutineScope(Dispatchers.IO).launch {
+                val application = requireActivity().applicationContext as MyApplication
+                db = AppDatabaseHelper.getDatabase(requireContext(), application.currentUID)
+                sensorDao = db.SensorDao()
+                val dataList = sensorDao.getSensorDataForDate(date ?: "2006.08.09")
+                handler.removeCallbacksAndMessages(null)
+                withContext(Dispatchers.Main) {
+                    myAdapter.setData(fromSensorDaoToAllData(dataList))
+                    myAdapter.notifyDataSetChanged()
+                }
+
+                Log.d("CheckDateTime", dataList.toString())
+            }
         }
 
         DatePickerDialog(requireContext(), datePicker,
@@ -109,14 +135,42 @@ class ChartsFragment : Fragment() {
             myCalendar.get(Calendar.MONTH),
             myCalendar.get(Calendar.DAY_OF_MONTH)
         ).show()
+
     }
 
     private fun formatterDate(calendar: Calendar) {
-        val myFormat = "yyyy-mm-dd"
+        val myFormat = "yyyy-MM-dd"
         val sdf = SimpleDateFormat(myFormat, Locale.UK)
         date = sdf.format(calendar.time)
+        Log.d("CheckDateTime", date!!)
+    }
 
-        Log.d("CheckDateTime", date ?: "0")
+    private fun fromSensorDaoToAllData(dataList: List<SensorData>): List<AllData> {
+        val result = mutableListOf<AllData>()
+
+        for (sd in dataList.indices) {
+            result.add(
+                AllData(
+                    dataList[sd].createdAt.split('T')[1].split('.')[0],
+                    dataList[sd].furrow1_humidity,
+                    dataList[sd].furrow2_humidity,
+                    dataList[sd].furrow3_humidity,
+                    dataList[sd].furrow4_humidity,
+                    dataList[sd].furrow5_humidity,
+                    dataList[sd].furrow6_humidity,
+                    dataList[sd].greenhouse_temperature,
+                    dataList[sd].greenhouse_temperature,
+                    dataList[sd].greenhouse_temperature,
+                    dataList[sd].greenhouse_temperature,
+                    dataList[sd].greenhouse_humidity,
+                    dataList[sd].greenhouse_humidity,
+                    dataList[sd].greenhouse_humidity,
+                    dataList[sd].greenhouse_humidity,
+                )
+            )
+        }
+
+        return result
     }
 
     private fun replaceFragment(fragment: Fragment) {
