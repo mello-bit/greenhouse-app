@@ -21,6 +21,8 @@ import kotlinx.coroutines.launch
 import java.text.DecimalFormat
 import java.text.DecimalFormatSymbols
 import java.time.Instant
+import java.time.LocalDate
+import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 import java.util.*
 import kotlin.math.round
@@ -55,16 +57,18 @@ class MyApplication : Application() {
 
             handler.post(object : Runnable {
                 override fun run() {
+
                     networkManager.getSoilHum()
                     networkManager.getTempAndHum()
                     handler.postDelayed(this, 10 * 1000)
+
                     if (ListForData.SoilHumList.size == 6 && ListForData.TempAndHumList.size == 4) {
                         ListForData.EverySoilHumDataList.add(
                             toAllSoilHumDataClass()
                         )
-                        Log.d("CheckTag", ListForData.EverySoilHumDataList.toString())
+//                        Log.d("CheckTag", ListForData.EverySoilHumDataList.toString())
                         myAdapter.setData(ListForData.EverySoilHumDataList)
-                        myAdapter.notifyDataSetChanged()
+                        myAdapter.notifyItemInserted(ListForData.EverySoilHumDataList.size - 1)
 
                         apiListener?.onApiResponseReceived(Pair(ListForData.SoilHumList, ListForData.TempAndHumList))
                         saveEntryToDB(ListForData)
@@ -144,7 +148,11 @@ class MyApplication : Application() {
         ListForData.TempAndHumList.sortBy {
             it.id
         }
+        val formatter = DateTimeFormatter.ofPattern("dd.mm.yyyy HH:mm:ss")
+        val current = LocalDateTime.now().format(formatter)
+
         return AllData(
+            current,
             ListForData.SoilHumList[0].humidity,
             ListForData.SoilHumList[1].humidity,
             ListForData.SoilHumList[2].humidity,

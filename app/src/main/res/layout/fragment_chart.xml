@@ -13,55 +13,245 @@
         android:layout_height="match_parent"
         android:orientation="vertical"
         android:layout_gravity="center"
+        android:layout_marginHorizontal="7dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
-
         <LinearLayout
-            android:id="@+id/linearLayout3"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:background="@drawable/table_chart_background"
-            android:orientation="horizontal">
+            android:orientation="vertical"
+            android:layout_marginTop="7dp"
+            android:layout_gravity="center">
 
-            <ImageButton
-                android:id="@+id/ibTableButton"
+            <LinearLayout
+                android:id="@+id/linearLayout3"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_gravity="center"
                 android:background="@drawable/table_chart_background"
-                android:src="@drawable/table_chart_image"
-                tools:ignore="ContentDescription" />
+                android:orientation="horizontal">
+
+                <ImageButton
+                    android:id="@+id/ibTableButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/table_chart_background"
+                    android:src="@drawable/table_chart_image"
+                    tools:ignore="ContentDescription" />
+
+                <androidx.appcompat.widget.AppCompatButton
+                    android:id="@+id/choose_the_time"
+                    android:layout_width="70pt"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/table_chart_background"
+                    android:paddingHorizontal="10dp"
+                    android:text="@string/choice_a_time" />
+
+                <ImageButton
+                    android:id="@+id/ibChartButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/table_chart_background"
+                    android:src="@drawable/ssid_chart_image" />
+            </LinearLayout>
 
             <androidx.appcompat.widget.AppCompatButton
-                android:layout_width="70pt"
+                android:id="@+id/choose_the_date"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@drawable/table_chart_background"
-                android:paddingHorizontal="10dp"
-                android:text="@string/choice_a_time" />
+                android:text="@string/choice_a_date"
+                android:background="@drawable/table_chart_background"/>
 
-            <ImageButton
-                android:id="@+id/ibChartButton"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:background="@drawable/table_chart_background"
-                android:src="@drawable/ssid_chart_image" />
         </LinearLayout>
+
+
 
         <com.github.mikephil.charting.charts.LineChart
             android:id="@+id/lcLineChart"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="180pt"
+            android:paddingHorizontal="15dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/linearLayout3" />
 
+        <TextView
+            android:id="@+id/textView4"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textAlignment="center"
+            android:textColor="@color/black"
+            android:textSize="15sp"
+            android:text="@string/choice_soil_hum" />
 
+        <LinearLayout
+            android:id="@+id/soilHumCheckboxes"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_gravity="center">
+
+            <CheckBox
+                android:id="@+id/zeroSoilHum"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Ср.зн"
+                android:paddingRight="7dp"
+                android:textColor="@color/black"/>
+
+            <CheckBox
+                android:id="@+id/firstSoilHum"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="1"
+                android:textColor="@color/black"/>
+            <CheckBox
+                android:id="@+id/secondSoilHum"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="2"
+                android:textColor="@color/black"/>
+            <CheckBox
+                android:id="@+id/thirdSoilHum"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="3"
+                android:textColor="@color/black"/>
+            <CheckBox
+                android:id="@+id/fourthSoilHum"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="4"
+                android:textColor="@color/black"/>
+            <CheckBox
+                android:id="@+id/fifthSoilHum"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="5"
+                android:textColor="@color/black"/>
+            <CheckBox
+                android:id="@+id/sixthSoilHum"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="6"
+                android:textColor="@color/black"/>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_gravity="center">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/choice_temp"
+                android:textSize="15sp"
+                android:textAlignment="center"
+                android:textColor="@color/black"/>
+
+            <LinearLayout
+                android:id="@+id/tempCheckboxes"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_gravity="center">
+
+                <CheckBox
+                    android:id="@+id/zeroTemp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Ср.зн"
+                    android:textColor="@color/black"
+                    android:paddingRight="7dp"/>
+
+                <CheckBox
+                    android:id="@+id/firstTemp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="1"
+                    android:textColor="@color/black"/>
+                <CheckBox
+                    android:id="@+id/secondTemp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="2"
+                    android:textColor="@color/black"/>
+                <CheckBox
+                    android:id="@+id/thirdTemp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="3"
+                    android:textColor="@color/black"/>
+                <CheckBox
+                    android:id="@+id/fourthTemp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="4"
+                    android:textColor="@color/black"/>
+            </LinearLayout>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_gravity="center">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/choice_hum"
+                android:textColor="@color/black"
+                android:textSize="15sp"/>
+
+            <LinearLayout
+                android:id="@+id/humCheckboxes"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_gravity="center">
+
+                <CheckBox
+                    android:id="@+id/zeroHum"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Ср.зн"
+                    android:paddingRight="7dp"
+                    android:textColor="@color/black"/>
+
+                <CheckBox
+                    android:id="@+id/firstHum"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="1"
+                    android:textColor="@color/black"/>
+                <CheckBox
+                    android:id="@+id/secondHum"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="2"
+                    android:textColor="@color/black"/>
+                <CheckBox
+                    android:id="@+id/thirdHum"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="3"
+                    android:textColor="@color/black"/>
+                <CheckBox
+                    android:id="@+id/fourthHum"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="4"
+                    android:textColor="@color/black"/>
+            </LinearLayout>
+        </LinearLayout>
     </LinearLayout>
-
-
 
 
 </FrameLayout>

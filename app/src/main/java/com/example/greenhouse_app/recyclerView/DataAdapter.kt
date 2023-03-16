@@ -27,6 +27,7 @@ class DataAdapter : RecyclerView.Adapter<DataAdapter.DataViewHolder>() {
     }
 
     override fun onBindViewHolder(holder: DataViewHolder, position: Int) {
+        holder.binding.currentDate.text = oldlist[position].currentData
         for (i in 0 until holder.binding.llFurrowData.childCount) {
             val view = holder.binding.llFurrowData.getChildAt(i) as TextView
             when (i) {
