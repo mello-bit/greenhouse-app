@@ -42,6 +42,7 @@ class MyApplication : Application() {
     private var decimalFormatter = DecimalFormat("#.##", DecimalFormatSymbols(Locale.US))
     private var apiListener: ApiListener? = null
     val myAdapter by lazy { DataAdapter() }
+    var userEmail: String = "test@mail.ru"
     var currentUID: String = "UNASSIGNED"
         set(uid) {
             field = uid
@@ -125,9 +126,6 @@ class MyApplication : Application() {
             AppSettingsManager.saveData("TempUnits", "C")
             AppSettingsManager.saveData("Interval", "60")
             AppSettingsManager.saveData("EmergencyMode", "false")
-            AppSettingsManager.saveData("GreenhouseThresholdTemp", "50")
-            AppSettingsManager.saveData("GreenhouseOverwettingPercent", "50")
-            AppSettingsManager.saveData("FurrowOverwettingPercent", "50")
             AppSettingsManager.saveData("WereSettingsLoadedOnce", "true")
         }
 

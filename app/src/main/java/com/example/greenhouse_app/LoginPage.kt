@@ -53,7 +53,9 @@ class LoginPage : AppCompatActivity() {
                 if (task.isSuccessful) {
                     Log.d("Auth", "User logged in successfully")
                     val intent = Intent(this, MainActivity::class.java)
-                    (application as MyApplication).currentUID = firebaseAuth.currentUser!!.uid
+                    val myApp = application as MyApplication
+                    myApp.currentUID = firebaseAuth.currentUser!!.uid
+                    myApp.userEmail = firebaseAuth.currentUser!!.email.toString()
                     val t = Toast.makeText(this, "Вход выполнен", Toast.LENGTH_SHORT)
                     t.show()
                     startActivity(intent)
@@ -77,17 +79,6 @@ class LoginPage : AppCompatActivity() {
                         }
                     }
 
-
-//                    if (task.exception is FirebaseAuthInvalidCredentialsException) {
-//                        Log.d("Auth", "User entered wrong password")
-//                    } else if(task.exception is FirebaseAuthInvalidUserException) {
-//                        Log.d("Auth", "User entry does not exist")
-//                    } else {
-//                        Log.d("Auth", "Couldn't log in user")
-//                        val t =
-//                            Toast.makeText(this, "Не удалось выполнить вход", Toast.LENGTH_SHORT)
-//                        t.show()
-//                    }
                 }
             }
         }

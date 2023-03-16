@@ -66,7 +66,9 @@ class SignUpPage : AppCompatActivity() {
                                     val t = Toast.makeText(this, "Все хорошо", Toast.LENGTH_SHORT)
                                     t.show()
                                     val intent = Intent(this, MainActivity::class.java)
-                                    (application as MyApplication).currentUID = firebaseAuth.currentUser!!.uid
+                                    val myApp = application as MyApplication
+                                    myApp.currentUID = firebaseAuth.currentUser!!.uid
+                                    myApp.userEmail = firebaseAuth.currentUser!!.email.toString()
                                     startActivity(intent)
                                 } else {
                                     Log.e(null, "External server error. Couldn't log in after sign up.")

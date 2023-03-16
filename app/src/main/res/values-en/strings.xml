@@ -56,4 +56,13 @@
     <string name="furrow_disabled_message">Very high humidity. Cannot open sprinkler</string>
     <string name="window_disabled_message">Low temperature. Cannot open window</string>
     <string name="humidifier_disabled_message">High humidity. Cannot turn on the humidifier</string>
+    <string name="automation_params">Automation params</string>
+    <string name="auto_open_window_message">Automatically open window if temperature reaches</string>
+    <string name="auto_close_sprinkler_message">Automatically close the sprinkler if humidity reaches</string>
+    <string name="auto_turnoff_humidifier_message">Automatically turn off the humidifier if humidity reaches</string>
+    <string name="automation_checkbox">Allow automatic system control</string>
+    <string name="user_data">User data</string>
+    <string name="logout">Log out</string>
+    <string name="protection_annotation">*Disables irrigation and humidification systems and closes the window if these values are exceeded</string>
+    <string name="current_user">Logged in user: %s</string>
 </resources>
