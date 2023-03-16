@@ -75,7 +75,6 @@ class AppNetworkManager(private val context: Context?) {
     }
 
     fun changeFurrowState(id: Byte, state: Byte) {
-        Log.d("important", "Sent PATCH for furrow: ($id) with state: $state")
         val queue = Volley.newRequestQueue(context)
         val request = StringRequest(
             Request.Method.PATCH,

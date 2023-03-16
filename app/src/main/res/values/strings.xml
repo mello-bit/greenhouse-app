@@ -47,9 +47,9 @@
     <string name="minute1">1 минута</string>
     <string name="minutes2">2 минуты</string>
     <string name="protection_params">Защитные показатели</string>
-    <string name="threshold_temperature">Пороговая температура</string>
-    <string name="greenhouse_overhumidification_protection">Защита от переувлажнения</string>
-    <string name="furrow_overhumidification_protection">Ограничение увлажения грядок</string>
+    <string name="threshold_temperature">Температура, начиная с которой, можно открыть окно</string>
+    <string name="greenhouse_overhumidification_protection">Влажность, при которой блокируется увлажнитель</string>
+    <string name="furrow_overhumidification_protection">Влажность, при которой отключается полив бороздки</string>
     <string name="extreme_mode_off">Режим экстренного управления\n(ВЫКЛ)</string>
     <string name="extreme_mode_on">Режим экстренного управления\n(ВКЛ)</string>
     <string name="apply_and_save">Применить и сохранить</string>
@@ -70,12 +70,12 @@
     <string name="humidifier_disabled_message">Слишком высокая влажность. Включить увлажнитель не получиться</string>
     <string name="automation_params">Параметры автоматизации</string>
     <string name="auto_open_window_message">Автоматически открывать окно при температуре</string>
-    <string name="auto_close_sprinkler_message">Автоматически выключать полив бороздки по достижению влажности</string>
-    <string name="auto_turnoff_humidifier_message">Автоматически выключать увлажнение теплицы при влажности</string>
+    <string name="auto_open_sprinkler_message">Автоматически включать полив бороздки по достижению влажности</string>
+    <string name="auto_turnon_humidifier_message">Автоматически включать увлажнение теплицы при влажности</string>
     <string name="automation_checkbox">Разрешить автоматическое включение систем</string>
     <string name="user_data">Данные пользователя</string>
     <string name="logout">Выйти</string>
-    <string name="protection_annotation">*Отключает системы полива, увлажения и закрывает окно в случае превышения этих значений</string>
+    <string name="protection_annotation">*Недоступные кнопки помечаются серым цветом. Серый цвет значит, что система отключена</string>
     <string name="current_user">Текущий пользователь:\n%s</string>
     <string name="invalid_email_format">Формат почты не соблюдён</string>
     <string name="invalid_password_format">Пароль меньше 8 символов</string>
@@ -83,4 +83,10 @@
     <string name="invalid_credentials">Пароль или почта не верны</string>
     <string name="email_not_found">Пользователя с данной почтой не существует или он отключен.</string>
     <string name="unexpected_error">Возникла непредвиденная ошибка. Свяжитесь с разработчиками</string>
+    <string name="settings_changed_after_restart_message">Изменения вступят в силу после перезагрузки приложения</string>
+    <string name="agreed">Понятно</string>
+    <string name="extreme_mode_warning_message">Во время экстренного режима автоматика и защита будут отключены, позволяя вам вручную задавать статус всех систем. Не рекомендуется включать этот режим при стабильной работе системы. Вы уверены что хотите продолжить?</string>
+    <string name="yes">Да</string>
+    <string name="cancel">Отмена</string>
+    <string name="temperature_hint_text"> *Независимо от того, используете ли вы Цельсий или Фаренгейт, приложение смотрит только на числовое значение температуры</string>
 </resources>

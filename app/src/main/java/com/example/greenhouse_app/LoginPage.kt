@@ -50,9 +50,6 @@ class LoginPage : AppCompatActivity() {
             }
 
             firebaseAuth.signInWithEmailAndPassword(email, password).addOnCompleteListener {task ->
-//                if (task.exception is Exception) {
-//                    Log.d("Auth", task.exception.toString())
-//                }
                 if (task.isSuccessful) {
                     Log.d("Auth", "User logged in successfully")
                     val intent = Intent(this, MainActivity::class.java)
