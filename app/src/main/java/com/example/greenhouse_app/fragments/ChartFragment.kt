@@ -1,6 +1,7 @@
 package com.example.greenhouse_app.fragments
 
 import android.app.DatePickerDialog
+import android.content.SharedPreferences
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
@@ -33,27 +34,20 @@ import com.example.greenhouse_app.dataClasses.ListForData.Companion.tempList1
 import com.example.greenhouse_app.dataClasses.ListForData.Companion.tempList2
 import com.example.greenhouse_app.dataClasses.ListForData.Companion.tempList3
 import com.example.greenhouse_app.dataClasses.ListForData.Companion.tempList4
-import com.example.greenhouse_app.dataClasses.SoilHum
-import com.example.greenhouse_app.dataClasses.TempAndHum
 import com.example.greenhouse_app.databinding.FragmentChartBinding
-import com.example.greenhouse_app.utils.AppDatabase
-import com.example.greenhouse_app.utils.AppDatabaseHelper
-import com.example.greenhouse_app.utils.SensorDao
-import com.example.greenhouse_app.utils.SensorData
+import com.example.greenhouse_app.utils.*
 import com.github.mikephil.charting.components.XAxis
 import com.github.mikephil.charting.data.Entry
 import com.github.mikephil.charting.data.LineData
 import com.github.mikephil.charting.data.LineDataSet
 import com.github.mikephil.charting.formatter.IndexAxisValueFormatter
-import com.google.android.gms.common.internal.FallbackServiceBroker
 import com.google.android.material.timepicker.MaterialTimePicker
 import com.google.android.material.timepicker.TimeFormat
 import kotlinx.coroutines.*
-import org.intellij.lang.annotations.JdkConstants.CalendarMonth
 import java.lang.Runnable
 import java.text.SimpleDateFormat
-import java.time.format.DateTimeFormatter
 import java.util.*
+import kotlin.properties.Delegates
 
 
 class ChartFragment : Fragment() {
@@ -63,7 +57,7 @@ class ChartFragment : Fragment() {
     private var list = EverySoilHumDataList
     private var hour: Int? = null
     private var date: String? = null
-    var useSpace = true
+    var interval by Delegates.notNull<Int>()
 
     private lateinit var db: AppDatabase
     private lateinit var sensorDao: SensorDao
@@ -74,7 +68,7 @@ class ChartFragment : Fragment() {
     ): View {
         binding = FragmentChartBinding.inflate(inflater, container, false)
         handler = Handler(Looper.getMainLooper())
-
+        interval = AppSettingsManager.loadData("Interval")!!.toInt()
 
         binding.ibTableButton.setOnClickListener {
             val tableFragment = ChartsFragment()
@@ -83,8 +77,8 @@ class ChartFragment : Fragment() {
 
         handler.post(object : Runnable {
             override fun run() {
-                fromAllDataToEntry(useSpace)
-                handler.postDelayed(this, 200)
+                fromAllDataToEntry()
+                handler.postDelayed(this, 200L)
             }
         })
 
@@ -128,11 +122,10 @@ class ChartFragment : Fragment() {
 //                handler.removeCallbacksAndMessages(null)
                 fromSensorDaoToAllData(dataList)
                 Log.d("CheckList", list.toString())
-                useSpace = false
-                fromAllDataToEntry(useSpace)
+                fromAllDataToEntry()
 
                 withContext(Dispatchers.Main) {
-                    fromAllDataToEntry(useSpace)
+                    fromAllDataToEntry()
                     delay(200L)
                 }
 
@@ -182,7 +175,7 @@ class ChartFragment : Fragment() {
         date = sdf.format(calendar.time)
     }
 
-    private fun fromAllDataToEntry(useSpace: Boolean) {
+    private fun fromAllDataToEntry() {
 
         clearSoilHumLists()
         clearTempAndHumLists()
@@ -288,19 +281,19 @@ class ChartFragment : Fragment() {
     }
 
     private fun getAllLineDataSetTemp(): List<LineDataSet> {
-        val lineDataSetTemp1 = LineDataSet(tempList1, "Температура \n с 1 датчика")
+        val lineDataSetTemp1 = LineDataSet(tempList1, "Температура с 1 датчика")
         styleLineDataSet(lineDataSetTemp1, R.color.apple_green)
 
-        val lineDataSetTemp2 = LineDataSet(tempList2, "Температура \n с 2 датчика")
+        val lineDataSetTemp2 = LineDataSet(tempList2, "Температура с 2 датчика")
         styleLineDataSet(lineDataSetTemp2, R.color.coral)
 
-        val lineDataSetTemp3 = LineDataSet(tempList3, "Температура \n с 3 датчика")
+        val lineDataSetTemp3 = LineDataSet(tempList3, "Температура с 3 датчика")
         styleLineDataSet(lineDataSetTemp3, R.color.peach)
 
-        val lineDataSetTemp4 = LineDataSet(tempList4, "Температура \n с 4 датчика")
+        val lineDataSetTemp4 = LineDataSet(tempList4, "Температура с 4 датчика")
         styleLineDataSet(lineDataSetTemp4, R.color.walnut_brown)
 
-        val lineDataSetTempAverage = LineDataSet(tempAverageList, "Средняя температура \n с датчиков")
+        val lineDataSetTempAverage = LineDataSet(tempAverageList, "Средняя температура с датчиков")
         styleLineDataSet(lineDataSetTempAverage, R.color.mindaro)
 
         return listOf(
@@ -310,19 +303,19 @@ class ChartFragment : Fragment() {
     }
 
     private fun getAllLineDataSetHum(): List<LineDataSet> {
-        val lineDataSetHum1 = LineDataSet(humList1, "Влажность \n с 1 датчика")
+        val lineDataSetHum1 = LineDataSet(humList1, "Влажность с 1 датчика")
         styleLineDataSet(lineDataSetHum1, R.color.gunmetal)
 
-        val lineDataSetHum2 = LineDataSet(humList2, "Влажность \n с 2 датчика")
+        val lineDataSetHum2 = LineDataSet(humList2, "Влажность с 2 датчика")
         styleLineDataSet(lineDataSetHum2, R.color.sage)
 
-        val lineDataSetHum3 = LineDataSet(humList3, "Влажность \n с 3 датчика")
+        val lineDataSetHum3 = LineDataSet(humList3, "Влажность с 3 датчика")
         styleLineDataSet(lineDataSetHum3, R.color.citrine)
 
-        val lineDataSetHum4 = LineDataSet(humList4, "Влажность \n с 4 датчика")
+        val lineDataSetHum4 = LineDataSet(humList4, "Влажность с 4 датчика")
         styleLineDataSet(lineDataSetHum4, R.color.red_crayola)
 
-        val lineDataSetHumAverage = LineDataSet(humAverageList, "Средняя влажность \n с датчиков")
+        val lineDataSetHumAverage = LineDataSet(humAverageList, "Средняя влажность с датчиков")
         styleLineDataSet(lineDataSetHumAverage, R.color.thistle)
 
         return listOf(

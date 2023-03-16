@@ -27,6 +27,7 @@ import java.time.format.DateTimeFormatter
 import java.util.*
 import kotlin.math.round
 import kotlin.math.roundToInt
+import kotlin.properties.Delegates
 
 fun getCurrentDateTimeISO8601(): String {
     val formatter = DateTimeFormatter.ISO_DATE_TIME
@@ -45,6 +46,8 @@ class MyApplication : Application() {
     private var apiListener: ApiListener? = null
     val myAdapter by lazy { DataAdapter() }
     var userEmail: String = "test@mail.ru"
+    var interval by Delegates.notNull<Int>()
+
     var currentUID: String = "UNASSIGNED"
         set(uid) {
             field = uid
@@ -58,16 +61,19 @@ class MyApplication : Application() {
 
             handler.post(object : Runnable {
                 override fun run() {
-
+                    interval = try {
+                        AppSettingsManager.loadData("Interval")!!.toInt()
+                    } catch (e: Exception) {
+                        60
+                    }
                     networkManager.getSoilHum()
                     networkManager.getTempAndHum()
-                    handler.postDelayed(this, 10 * 1000)
+                    handler.postDelayed(this, interval * 1000L)
 
                     if (ListForData.SoilHumList.size == 6 && ListForData.TempAndHumList.size == 4) {
                         ListForData.EverySoilHumDataList.add(
                             toAllSoilHumDataClass()
                         )
-//                        Log.d("CheckTag", ListForData.EverySoilHumDataList.toString())
                         myAdapter.setData(ListForData.EverySoilHumDataList)
                         myAdapter.notifyItemInserted(ListForData.EverySoilHumDataList.size - 1)
 
