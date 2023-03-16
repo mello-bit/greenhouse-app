@@ -1,10 +1,7 @@
 package com.example.greenhouse_app.fragments
 
-import android.content.Context
 import android.content.Intent
-import android.content.res.Configuration
 import android.graphics.Color
-import android.os.Build
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
@@ -15,7 +12,6 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.EditText
 import androidx.appcompat.app.AlertDialog
-import androidx.core.os.ConfigurationCompat
 import com.example.greenhouse_app.IntroPage
 import com.example.greenhouse_app.MyApplication
 import com.example.greenhouse_app.R
@@ -73,8 +69,8 @@ open class SettingsFragment : Fragment() {
         binding.cbEnableAutomationControl.setOnCheckedChangeListener { _, isChecked ->
             setOf(
                 binding.etAutomaticWindowOpen,
-                binding.etAutomaticHumidifierDisabler,
-                binding.etAutomaticSprinkleDisabler
+                binding.etAutomaticHumidifierEnabler,
+                binding.etAutomaticSprinkleEnabler
             ).forEach { setEditTextEnabled(it, isChecked) }
         }
 
@@ -89,14 +85,14 @@ open class SettingsFragment : Fragment() {
 
         setOf(
             binding.etFurrowOverwetting, binding.etThresholdTemp,
-            binding.etGreenhouseOverwetting, binding.etAutomaticSprinkleDisabler,
-            binding.etAutomaticWindowOpen, binding.etAutomaticHumidifierDisabler
+            binding.etGreenhouseOverwetting, binding.etAutomaticSprinkleEnabler,
+            binding.etAutomaticWindowOpen, binding.etAutomaticHumidifierEnabler
         ).forEach {it.addTextChangedListener(SettingFilter)}
 
         return binding.root
     }
 
-    fun setEditTextEnabled(editText: EditText, state: Boolean) {
+    private fun setEditTextEnabled(editText: EditText, state: Boolean) {
         editText.isEnabled = state
         editText.setTextColor(if (state) Color.BLACK else Color.WHITE)
         val bg = if (state)
@@ -110,17 +106,7 @@ open class SettingsFragment : Fragment() {
         loadSettings()
     }
 
-    fun setLocale(languageCode: String) {
-        Log.d("important", "Accessed with: $languageCode")
-        val locale = Locale("en")
-        val configuration = resources.configuration
-        configuration.setLocale(locale)
-        val context = requireContext().createConfigurationContext(configuration)
-        requireActivity().applicationContext.resources.updateConfiguration(configuration, requireActivity().resources.displayMetrics)
-        requireActivity().recreate()
-    }
-
-    fun loadSettings() {
+    private fun loadSettings() {
         CoroutineScope(Dispatchers.IO).launch {
             val SavedLanguage = AppSettingsManager.loadData("Language") // "RU", "EN"
             val SavedUnits = AppSettingsManager.loadData("TempUnits")  // "C", "F"
@@ -132,18 +118,18 @@ open class SettingsFragment : Fragment() {
 
             // Protection params
             val GreenhouseThresholdTemp =
-                AppSettingsManager.loadData("GreenhouseThresholdTemp") // 0..100
+                AppSettingsManager.loadData("GreenhouseThresholdTemp") ?: "0" // 0..100
             val GreenhouseOverwetting =
-                AppSettingsManager.loadData("GreenhouseOverwettingPercent") // 0..100
-            val FurrowOverwetting = AppSettingsManager.loadData("FurrowOverwettingPercent") // 0.100
+                AppSettingsManager.loadData("GreenhouseOverwettingPercent") ?: "100" // 0..100
+            val FurrowOverwetting = AppSettingsManager.loadData("FurrowOverwettingPercent") ?: "100" // 0.100
 
             // Automation params
             val automaticallyOpenWindow =
-                AppSettingsManager.loadData("automaticallyOpenWindow") ?: "50" // 0..100
-            val automaticallyCloseSprinkler =
-                AppSettingsManager.loadData("automaticallyCloseSprinkler") ?: "50" // 0..100
-            val automaticallyTurnOffHumidifier =
-                AppSettingsManager.loadData("automaticallyTurnOffHumidifier") ?: "50" // 0..100
+                AppSettingsManager.loadData("automaticallyOpenWindow") ?: "100" // 0..100
+            val automaticallyOpenSprinkler =
+                AppSettingsManager.loadData("automaticallyOpenSprinkler") ?: "100" // 0..100
+            val automaticallyTurnOnHumidifier =
+                AppSettingsManager.loadData("automaticallyTurnOnHumidifier") ?: "100" // 0..100
 
 
             withContext(Dispatchers.Main) {
@@ -154,13 +140,13 @@ open class SettingsFragment : Fragment() {
                 binding.etFurrowOverwetting.setText(FurrowOverwetting)
                 binding.etGreenhouseOverwetting.setText(GreenhouseOverwetting)
                 binding.etAutomaticWindowOpen.setText(automaticallyOpenWindow)
-                binding.etAutomaticHumidifierDisabler.setText(automaticallyTurnOffHumidifier)
-                binding.etAutomaticSprinkleDisabler.setText(automaticallyCloseSprinkler)
+                binding.etAutomaticHumidifierEnabler.setText(automaticallyTurnOnHumidifier)
+                binding.etAutomaticSprinkleEnabler.setText(automaticallyOpenSprinkler)
 
                 setOf(
                     binding.etAutomaticWindowOpen,
-                    binding.etAutomaticHumidifierDisabler,
-                    binding.etAutomaticSprinkleDisabler
+                    binding.etAutomaticHumidifierEnabler,
+                    binding.etAutomaticSprinkleEnabler
                 ).forEach { setEditTextEnabled(it, isAutomationControlActive) }
 
                 when (SavedInterval) {
@@ -186,14 +172,14 @@ open class SettingsFragment : Fragment() {
         val dataKeys = listOf(
             "GreenhouseThresholdTemp", "GreenhouseOverwettingPercent",
             "FurrowOverwettingPercent", "automaticallyOpenWindow",
-            "automaticallyCloseSprinkler", "automaticallyTurnOffHumidifier",
+            "automaticallyOpenSprinkler", "automaticallyTurnOnHumidifier",
             "Language", "TempUnits", "Interval", "AutomationControl"
         )
 
         val dataValues = listOf(
             binding.etThresholdTemp.text.toString(), binding.etGreenhouseOverwetting.text.toString(),
             binding.etFurrowOverwetting.text.toString(), binding.etAutomaticWindowOpen.text.toString(),
-            binding.etAutomaticSprinkleDisabler.text.toString(), binding.etAutomaticHumidifierDisabler.text.toString(),
+            binding.etAutomaticSprinkleEnabler.text.toString(), binding.etAutomaticHumidifierEnabler.text.toString(),
             language, tempUnits, interval, binding.cbEnableAutomationControl.isChecked.toString()
         )
 

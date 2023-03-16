@@ -156,9 +156,9 @@ class HomeFragment : Fragment(), ApiListener {
     private lateinit var application: MyApplication
     private lateinit var networkManager: AppNetworkManager
     private var TemperatureUnits = R.string.temperature_celsius
-    private var ThresholdTemperature: Byte = 30
+    private var ThresholdTemperature: Byte = 0
     private var FurrowOverhydration: Byte = 100
-    private var GreenhouseOverhydration: Byte = 70
+    private var GreenhouseOverhydration: Byte = 100
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -171,9 +171,9 @@ class HomeFragment : Fragment(), ApiListener {
 
     fun updateSettings() {
         TemperatureUnits = if (AppSettingsManager.loadData("TempUnits") == "C") R.string.temperature_celsius else R.string.fahrenheit
-        ThresholdTemperature = AppSettingsManager.loadData("GreenhouseThresholdTemp")!!.toByte()
-        GreenhouseOverhydration = AppSettingsManager.loadData("GreenhouseOverwettingPercent")!!.toByte()
-        FurrowOverhydration = AppSettingsManager.loadData("FurrowOverwettingPercent")!!.toByte()
+        ThresholdTemperature = AppSettingsManager.loadData("GreenhouseThresholdTemp")?.toByte() ?: ThresholdTemperature
+        GreenhouseOverhydration = AppSettingsManager.loadData("GreenhouseOverwettingPercent")?.toByte() ?: GreenhouseOverhydration
+        FurrowOverhydration = AppSettingsManager.loadData("FurrowOverwettingPercent")?.toByte() ?: FurrowOverhydration
     }
 
     override fun onAttach(context: Context) {

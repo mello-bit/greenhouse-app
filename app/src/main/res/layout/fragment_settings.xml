@@ -368,7 +368,7 @@
                 app:layout_constraintTop_toBottomOf="@+id/clProtectionSettings">
 
                 <EditText
-                    android:id="@+id/etAutomaticSprinkleDisabler"
+                    android:id="@+id/etAutomaticSprinkleEnabler"
                     android:layout_width="60dp"
                     android:layout_height="40dp"
                     android:layout_marginTop="4dp"
@@ -398,7 +398,7 @@
                     app:layout_constraintTop_toBottomOf="@+id/tvAutomationLabel" />
 
                 <EditText
-                    android:id="@+id/etAutomaticHumidifierDisabler"
+                    android:id="@+id/etAutomaticHumidifierEnabler"
                     android:layout_width="60dp"
                     android:layout_height="40dp"
                     android:layout_marginTop="4dp"
@@ -410,7 +410,7 @@
                     android:textAlignment="center"
                     android:textColor="@color/black"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/etAutomaticSprinkleDisabler" />
+                    app:layout_constraintTop_toBottomOf="@+id/etAutomaticSprinkleEnabler" />
 
                 <TextView
                     android:id="@+id/tvAutomationLabel"
@@ -437,7 +437,7 @@
                     android:textSize="20sp"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/etAutomaticHumidifierDisabler" />
+                    app:layout_constraintTop_toBottomOf="@+id/etAutomaticHumidifierEnabler" />
 
                 <TextView
                     android:id="@+id/tvWindowOpenLabel"
@@ -466,10 +466,10 @@
                     android:textAlignment="viewEnd"
                     android:textColor="@color/white"
                     android:textSize="16sp"
-                    app:layout_constraintBottom_toBottomOf="@+id/etAutomaticSprinkleDisabler"
-                    app:layout_constraintEnd_toStartOf="@+id/etAutomaticSprinkleDisabler"
+                    app:layout_constraintBottom_toBottomOf="@+id/etAutomaticSprinkleEnabler"
+                    app:layout_constraintEnd_toStartOf="@+id/etAutomaticSprinkleEnabler"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="@+id/etAutomaticSprinkleDisabler" />
+                    app:layout_constraintTop_toTopOf="@+id/etAutomaticSprinkleEnabler" />
 
                 <TextView
                     android:id="@+id/tvHumidifierLabel"
@@ -482,10 +482,10 @@
                     android:textAlignment="viewEnd"
                     android:textColor="@color/white"
                     android:textSize="16sp"
-                    app:layout_constraintBottom_toBottomOf="@+id/etAutomaticHumidifierDisabler"
-                    app:layout_constraintEnd_toStartOf="@+id/etAutomaticHumidifierDisabler"
+                    app:layout_constraintBottom_toBottomOf="@+id/etAutomaticHumidifierEnabler"
+                    app:layout_constraintEnd_toStartOf="@+id/etAutomaticHumidifierEnabler"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="@+id/etAutomaticHumidifierDisabler" />
+                    app:layout_constraintTop_toTopOf="@+id/etAutomaticHumidifierEnabler" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 
