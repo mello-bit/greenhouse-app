@@ -70,8 +70,8 @@
     <string name="humidifier_disabled_message">Слишком высокая влажность. Включить увлажнитель не получиться</string>
     <string name="automation_params">Параметры автоматизации</string>
     <string name="auto_open_window_message">Автоматически открывать окно при температуре</string>
-    <string name="auto_close_sprinkler_message">Автоматически выключать полив бороздки по достижению влажности</string>
-    <string name="auto_turnoff_humidifier_message">Автоматически выключать увлажнение теплицы при влажности</string>
+    <string name="auto_open_sprinkler_message">Автоматически включать полив бороздки по достижению влажности</string>
+    <string name="auto_turnon_humidifier_message">Автоматически включать увлажнение теплицы при влажности</string>
     <string name="automation_checkbox">Разрешить автоматическое включение систем</string>
     <string name="user_data">Данные пользователя</string>
     <string name="logout">Выйти</string>
@@ -83,4 +83,10 @@
     <string name="invalid_credentials">Пароль или почта не верны</string>
     <string name="email_not_found">Пользователя с данной почтой не существует или он отключен.</string>
     <string name="unexpected_error">Возникла непредвиденная ошибка. Свяжитесь с разработчиками</string>
+    <string name="settings_changed_after_restart_message">Изменения вступят в силу после перезагрузки приложения</string>
+    <string name="agreed">Понятно</string>
+    <string name="extreme_mode_warning_message">Во время экстренного режима автоматика и защита будут отключены, позволяя вам вручную задавать статус всех систем. Не рекомендуется включать этот режим при стабильной работе системы. Вы уверены что хотите продолжить?</string>
+    <string name="yes">Да</string>
+    <string name="cancel">Отмена</string>
+    <string name="temperature_hint_text"> *Независимо от того, используете ли вы Цельсий или Фаренгейт, приложение смотрит только на числовое значение температуры</string>
 </resources>

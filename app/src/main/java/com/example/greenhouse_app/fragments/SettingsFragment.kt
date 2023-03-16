@@ -12,6 +12,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.EditText
 import androidx.appcompat.app.AlertDialog
+import androidx.appcompat.widget.AppCompatButton
 import com.example.greenhouse_app.IntroPage
 import com.example.greenhouse_app.MyApplication
 import com.example.greenhouse_app.R
@@ -61,9 +62,27 @@ open class SettingsFragment : Fragment() {
 
         binding.scLanguage.setOnClickListener {
             val builder = AlertDialog.Builder(requireContext())
-            builder.setMessage("Изменения вступят в силу после перезагрузки приложения")
-            builder.setPositiveButton("Понятно") {_, _ ->}
+            builder.setMessage(R.string.settings_changed_after_restart_message)
+            builder.setPositiveButton(R.string.agreed) {_, _ ->}
             builder.create().show()
+        }
+
+        binding.btnEmergency.setOnClickListener{
+            if (binding.btnEmergency.text.toString() == getString(R.string.extreme_mode_off)) {
+                val builder = AlertDialog.Builder(requireContext())
+                builder.setMessage(R.string.extreme_mode_warning_message)
+                builder.setPositiveButton(R.string.yes) { _, _ ->
+                    AppSettingsManager.saveData("EmergencyMode", "true")
+                    it.setBackgroundResource(R.drawable.red_status_round_button)
+                    (it as AppCompatButton).setText(R.string.extreme_mode_on)
+                }
+                builder.setNegativeButton(R.string.cancel) { _, _ -> }
+                builder.create().show()
+            } else {
+                AppSettingsManager.saveData("EmergencyMode", "false")
+                it.setBackgroundResource(R.drawable.green_status_round_button)
+                (it as AppCompatButton).setText(R.string.extreme_mode_off)
+            }
         }
 
         binding.cbEnableAutomationControl.setOnCheckedChangeListener { _, isChecked ->
@@ -148,6 +167,11 @@ open class SettingsFragment : Fragment() {
                     binding.etAutomaticHumidifierEnabler,
                     binding.etAutomaticSprinkleEnabler
                 ).forEach { setEditTextEnabled(it, isAutomationControlActive) }
+
+                if (IsEmergencyModeActive) {
+                    binding.btnEmergency.setBackgroundResource(R.drawable.red_status_round_button)
+                    binding.btnEmergency.setText(R.string.extreme_mode_on)
+                }
 
                 when (SavedInterval) {
                     "10" -> binding.rb10Seconds.isChecked = true

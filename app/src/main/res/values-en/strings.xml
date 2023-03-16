@@ -58,8 +58,8 @@
     <string name="humidifier_disabled_message">High humidity. Cannot turn on the humidifier</string>
     <string name="automation_params">Automation params</string>
     <string name="auto_open_window_message">Automatically open window if temperature reaches</string>
-    <string name="auto_close_sprinkler_message">Automatically close the sprinkler if humidity reaches</string>
-    <string name="auto_turnoff_humidifier_message">Automatically turn off the humidifier if humidity reaches</string>
+    <string name="auto_open_sprinkler_message">Automatically open the sprinkler if humidity reaches</string>
+    <string name="auto_turnon_humidifier_message">Automatically turn on the humidifier if humidity reaches</string>
     <string name="automation_checkbox">Allow automatic system control</string>
     <string name="user_data">User data</string>
     <string name="logout">Log out</string>
@@ -71,4 +71,10 @@
     <string name="invalid_credentials">Email or password is wrong</string>
     <string name="email_not_found">User with this email does not exist or is disabled</string>
     <string name="unexpected_error">An unexpected error has occurred. Contact the developers</string>
+    <string name="settings_changed_after_restart_message">The changes will take effect after the application is restarted</string>
+    <string name="agreed">I understand</string>
+    <string name="extreme_mode_warning_message">During emergency mode, automation and protection will be disabled, allowing you to manually set the status of all systems. It is not recommended to enable this mode when the system is stable. Are you sure you want to continue?</string>
+    <string name="yes">Yes</string>
+    <string name="cancel">Cancel</string>
+    <string name="temperature_hint_text"> *Regardless of whether you use Celsius or Fahrenheit, the app only looks at the numerical value of the temperature</string>
 </resources>

@@ -51,10 +51,6 @@ class FurrowButton(val Id: Byte, val linearLayout: LinearLayout, private val net
     private var textView: TextView
     private var patchFunction = networkManager::changeFurrowState
     var protectionValue: Byte = 65
-        set(value) {
-            field = value
-            Log.d("important", "set $value for furrow protection")
-        }
     var autoSprinkleValue: Byte = 101
     var autoSprinkleEnabled: Boolean = false
     var emergencyMode: Boolean = false
@@ -92,7 +88,7 @@ class FurrowButton(val Id: Byte, val linearLayout: LinearLayout, private val net
         this.textView.text = "$value%"
 
         if (emergencyMode) {
-            if (status == STATE.DISABLED) { changeStatus(STATE.OFF, false) }
+            if (status == STATE.DISABLED) { return changeStatus(STATE.OFF, false) }
             else return
         }
 
@@ -267,11 +263,10 @@ class HomeFragment : Fragment(), ApiListener {
     }
 
     fun processHumidity(humidity: Float) {
-        Log.d("Important", "called processHumidity() with protection: $GreenhouseOverhydration")
         val humidifierButton = bottomButtons["Humidifier"]!!
 
         if (EmergencyMode) {
-            if (humidifierButton.status == STATE.DISABLED) {humidifierButton.changeStatus(STATE.OFF, false)}
+            if (humidifierButton.status == STATE.DISABLED) {return humidifierButton.changeStatus(STATE.OFF, false)}
             else return
         }
 
@@ -288,14 +283,11 @@ class HomeFragment : Fragment(), ApiListener {
     fun processTemperature(temperature: Float) {
         val windowButton = bottomButtons["Window"]!!
 
-        Log.d("important", "emergency mode is: $EmergencyMode")
         if (EmergencyMode) {
-            if (windowButton.status == STATE.DISABLED) {windowButton.changeStatus(STATE.OFF, false)}
+            if (windowButton.status == STATE.DISABLED) {return windowButton.changeStatus(STATE.OFF, false)}
             else return
         }
 
-        Log.d("important", "Automation control: $AutomationControl")
-        Log.d("important", "Current temp: $temperature, set to open window: $AutoWindowOpen")
         if (AutomationControl && temperature > AutoWindowOpen) {
             windowButton.changeStatus(STATE.ON, true)
         }
