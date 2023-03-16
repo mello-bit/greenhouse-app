@@ -50,7 +50,14 @@ class FurrowButton(val Id: Byte, val linearLayout: LinearLayout, private val net
     private var button: AppCompatButton
     private var textView: TextView
     private var patchFunction = networkManager::changeFurrowState
-    private var protectionValue: Byte = 65
+    var protectionValue: Byte = 65
+        set(value) {
+            field = value
+            Log.d("important", "set $value for furrow protection")
+        }
+    var autoSprinkleValue: Byte = 101
+    var autoSprinkleEnabled: Boolean = false
+    var emergencyMode: Boolean = false
 
     fun changeStatus(status: STATE, send_patch: Boolean = false) {
         this.status = status
@@ -83,6 +90,15 @@ class FurrowButton(val Id: Byte, val linearLayout: LinearLayout, private val net
 
     fun changeDisplayValue(value: Byte) {
         this.textView.text = "$value%"
+
+        if (emergencyMode) {
+            if (status == STATE.DISABLED) { changeStatus(STATE.OFF, false) }
+            else return
+        }
+
+        if (autoSprinkleEnabled && value > autoSprinkleValue) {
+            this.changeStatus(STATE.ON, true)
+        }
 
         if (value >= protectionValue) {
             this.changeStatus(STATE.DISABLED, this.status == STATE.ON)
@@ -159,6 +175,11 @@ class HomeFragment : Fragment(), ApiListener {
     private var ThresholdTemperature: Byte = 0
     private var FurrowOverhydration: Byte = 100
     private var GreenhouseOverhydration: Byte = 100
+    private var AutomationControl: Boolean = false
+    private var EmergencyMode: Boolean = false
+    private var AutoSprinkleOpen: Byte = 101
+    private var AutoWindowOpen: Byte = 101
+    private var AutoHumidifierOpen: Byte = 101
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -170,10 +191,25 @@ class HomeFragment : Fragment(), ApiListener {
     }
 
     fun updateSettings() {
-        TemperatureUnits = if (AppSettingsManager.loadData("TempUnits") == "C") R.string.temperature_celsius else R.string.fahrenheit
+        TemperatureUnits = if (AppSettingsManager.loadData("TempUnits") == "C") R.string.temperature_celsius else R.string.temperature_fahrenheit
         ThresholdTemperature = AppSettingsManager.loadData("GreenhouseThresholdTemp")?.toByte() ?: ThresholdTemperature
         GreenhouseOverhydration = AppSettingsManager.loadData("GreenhouseOverwettingPercent")?.toByte() ?: GreenhouseOverhydration
         FurrowOverhydration = AppSettingsManager.loadData("FurrowOverwettingPercent")?.toByte() ?: FurrowOverhydration
+        AutomationControl = AppSettingsManager.loadData("AutomationControl") == "true"
+        EmergencyMode = AppSettingsManager.loadData("EmergencyMode") == "true"
+
+        if (AutomationControl) {
+            AutoSprinkleOpen = AppSettingsManager.loadData("automaticallyOpenSprinkler")?.toByte() ?: 101
+            AutoWindowOpen = AppSettingsManager.loadData("automaticallyOpenWindow")?.toByte() ?: 101
+            AutoHumidifierOpen = AppSettingsManager.loadData("automaticallyTurnOnHumidifier")?.toByte() ?: 101
+        }
+
+        buttonClasses.forEach {
+            it.value.protectionValue = FurrowOverhydration
+            it.value.autoSprinkleEnabled = AutomationControl
+            it.value.emergencyMode = EmergencyMode
+            if (AutomationControl) { it.value.autoSprinkleValue = AutoSprinkleOpen }
+        }
     }
 
     override fun onAttach(context: Context) {
@@ -233,6 +269,16 @@ class HomeFragment : Fragment(), ApiListener {
     fun processHumidity(humidity: Float) {
         Log.d("Important", "called processHumidity() with protection: $GreenhouseOverhydration")
         val humidifierButton = bottomButtons["Humidifier"]!!
+
+        if (EmergencyMode) {
+            if (humidifierButton.status == STATE.DISABLED) {humidifierButton.changeStatus(STATE.OFF, false)}
+            else return
+        }
+
+        if (AutomationControl && humidity > AutoHumidifierOpen) {
+            humidifierButton.changeStatus(STATE.ON, true)
+        }
+
         if (humidity > GreenhouseOverhydration) {
             humidifierButton.changeStatus(STATE.DISABLED, humidifierButton.status == STATE.ON)
         } else if (humidifierButton.status == STATE.DISABLED && humidity <= GreenhouseOverhydration) {
@@ -240,8 +286,20 @@ class HomeFragment : Fragment(), ApiListener {
         }
     }
     fun processTemperature(temperature: Float) {
-        Log.d("Important", "called processTemperature() with protection: $ThresholdTemperature")
         val windowButton = bottomButtons["Window"]!!
+
+        Log.d("important", "emergency mode is: $EmergencyMode")
+        if (EmergencyMode) {
+            if (windowButton.status == STATE.DISABLED) {windowButton.changeStatus(STATE.OFF, false)}
+            else return
+        }
+
+        Log.d("important", "Automation control: $AutomationControl")
+        Log.d("important", "Current temp: $temperature, set to open window: $AutoWindowOpen")
+        if (AutomationControl && temperature > AutoWindowOpen) {
+            windowButton.changeStatus(STATE.ON, true)
+        }
+
         if (temperature < ThresholdTemperature) {
             windowButton.changeStatus(STATE.DISABLED, windowButton.status == STATE.ON)
         } else if (windowButton.status == STATE.DISABLED && temperature >= ThresholdTemperature) {

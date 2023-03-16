@@ -47,9 +47,9 @@
     <string name="minute1">1 минута</string>
     <string name="minutes2">2 минуты</string>
     <string name="protection_params">Защитные показатели</string>
-    <string name="threshold_temperature">Пороговая температура</string>
-    <string name="greenhouse_overhumidification_protection">Защита от переувлажнения</string>
-    <string name="furrow_overhumidification_protection">Ограничение увлажения грядок</string>
+    <string name="threshold_temperature">Температура, начиная с которой, можно открыть окно</string>
+    <string name="greenhouse_overhumidification_protection">Влажность, при которой блокируется увлажнитель</string>
+    <string name="furrow_overhumidification_protection">Влажность, при которой отключается полив бороздки</string>
     <string name="extreme_mode_off">Режим экстренного управления\n(ВЫКЛ)</string>
     <string name="extreme_mode_on">Режим экстренного управления\n(ВКЛ)</string>
     <string name="apply_and_save">Применить и сохранить</string>
@@ -75,7 +75,7 @@
     <string name="automation_checkbox">Разрешить автоматическое включение систем</string>
     <string name="user_data">Данные пользователя</string>
     <string name="logout">Выйти</string>
-    <string name="protection_annotation">*Отключает системы полива, увлажения и закрывает окно в случае превышения этих значений</string>
+    <string name="protection_annotation">*Недоступные кнопки помечаются серым цветом. Серый цвет значит, что система отключена</string>
     <string name="current_user">Текущий пользователь:\n%s</string>
     <string name="invalid_email_format">Формат почты не соблюдён</string>
     <string name="invalid_password_format">Пароль меньше 8 символов</string>

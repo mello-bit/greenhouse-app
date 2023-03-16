@@ -36,9 +36,9 @@
     <string name="minute1">1 minute</string>
     <string name="minutes2">2 minutes</string>
     <string name="protection_params">Protection parameters</string>
-    <string name="threshold_temperature">Threshold temperature</string>
-    <string name="greenhouse_overhumidification_protection">Greenhouse over-humidification percent</string>
-    <string name="furrow_overhumidification_protection">Furrow over-humidification percent</string>
+    <string name="threshold_temperature">The temperature starting from which the window can be opened</string>
+    <string name="greenhouse_overhumidification_protection">Humidity at which the humidifier is blocked</string>
+    <string name="furrow_overhumidification_protection">The humidity at which the irrigation of the furrow is turned off</string>
     <string name="extreme_mode_off">Emergency mode\n(OFF)</string>
     <string name="extreme_mode_on">Emergency mode\n(ON)</string>
     <string name="apply_and_save">Apply and save</string>
@@ -63,7 +63,7 @@
     <string name="automation_checkbox">Allow automatic system control</string>
     <string name="user_data">User data</string>
     <string name="logout">Log out</string>
-    <string name="protection_annotation">*Disables irrigation and humidification systems and closes the window if these values are exceeded</string>
+    <string name="protection_annotation">*Inaccessible buttons are marked in gray. Gray color means that the system is disabled</string>
     <string name="current_user">Logged in user:\n%s</string>
     <string name="invalid_email_format">Invalid email format</string>
     <string name="invalid_password_format">Password is less than 8 characters</string>
