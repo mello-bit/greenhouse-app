@@ -6,7 +6,11 @@ import android.os.Bundle
 import android.util.Log
 import android.widget.Toast
 import com.example.greenhouse_app.databinding.ActivitySignUpPageBinding
+import com.example.greenhouse_app.utils.AppSettingsManager
 import com.google.firebase.auth.FirebaseAuth
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
 class SignUpPage : AppCompatActivity() {
     private lateinit var binding: ActivitySignUpPageBinding
@@ -68,7 +72,24 @@ class SignUpPage : AppCompatActivity() {
                                     val intent = Intent(this, MainActivity::class.java)
                                     val myApp = application as MyApplication
                                     myApp.currentUID = firebaseAuth.currentUser!!.uid
-                                    myApp.userEmail = firebaseAuth.currentUser!!.email.toString()
+                                    myApp.userEmail = textEmail.toString()
+
+                                    CoroutineScope(Dispatchers.IO).launch {
+                                        if (binding.cbRememberMe2.isChecked) {
+                                            AppSettingsManager.saveData(
+                                                "cachedUserEmail",
+                                                textEmail.toString()
+                                            )
+                                            AppSettingsManager.saveData(
+                                                "cachedUserPassword",
+                                                password.toString()
+                                            )
+                                        } else {
+                                            AppSettingsManager.saveData("cachedUserEmail", "")
+                                            AppSettingsManager.saveData("cachedUserPassword", "")
+                                        }
+                                    }
+
                                     startActivity(intent)
                                 } else {
                                     Log.e(null, "External server error. Couldn't log in after sign up.")

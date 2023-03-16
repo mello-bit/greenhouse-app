@@ -20,7 +20,6 @@ class AppSettingsManager {
             Log.d("TempTag", "Initialized AppSettings")
         }
 
-
         fun saveData(key: String, value: String) {
             val editor = sharedPreferences.edit()
             editor.putString(key, value)

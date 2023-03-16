@@ -1,6 +1,7 @@
 package com.example.greenhouse_app.fragments
 
 import android.content.Context
+import android.content.Intent
 import android.content.res.Configuration
 import android.graphics.Color
 import android.os.Build
@@ -13,7 +14,9 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.EditText
+import androidx.appcompat.app.AlertDialog
 import androidx.core.os.ConfigurationCompat
+import com.example.greenhouse_app.IntroPage
 import com.example.greenhouse_app.MyApplication
 import com.example.greenhouse_app.R
 import com.example.greenhouse_app.databinding.FragmentSettingsBinding
@@ -60,12 +63,28 @@ open class SettingsFragment : Fragment() {
             saveSettings()
         }
 
+        binding.scLanguage.setOnClickListener {
+            val builder = AlertDialog.Builder(requireContext())
+            builder.setMessage("Изменения вступят в силу после перезагрузки приложения")
+            builder.setPositiveButton("Понятно") {_, _ ->}
+            builder.create().show()
+        }
+
         binding.cbEnableAutomationControl.setOnCheckedChangeListener { _, isChecked ->
             setOf(
                 binding.etAutomaticWindowOpen,
                 binding.etAutomaticHumidifierDisabler,
                 binding.etAutomaticSprinkleDisabler
             ).forEach { setEditTextEnabled(it, isChecked) }
+        }
+
+        binding.btnLogout.setOnClickListener {
+            AppSettingsManager.saveData("cachedUserEmail", "")
+            AppSettingsManager.saveData("cachedUserPassword", "")
+
+            val intent = Intent(context, IntroPage::class.java)
+            intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
+            startActivity(intent)
         }
 
         setOf(

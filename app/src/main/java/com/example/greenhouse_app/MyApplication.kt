@@ -32,7 +32,7 @@ fun getCurrentDateTimeISO8601(): String {
 }
 
 class MyApplication : Application() {
-    val DEBUGMODE = true
+    val DEBUGMODE = false
     var loggedIn = DEBUGMODE
 
     private lateinit var networkManager: AppNetworkManager
@@ -116,6 +116,7 @@ class MyApplication : Application() {
 
     override fun onCreate() {
         super.onCreate()
+
         AppSettingsManager.initContext(applicationContext)
         AppNotificationManager.initContext(applicationContext)
 

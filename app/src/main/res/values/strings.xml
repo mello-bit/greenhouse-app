@@ -76,5 +76,11 @@
     <string name="user_data">Данные пользователя</string>
     <string name="logout">Выйти</string>
     <string name="protection_annotation">*Отключает системы полива, увлажения и закрывает окно в случае превышения этих значений</string>
-    <string name="current_user">Текущий пользователь: %s</string>
+    <string name="current_user">Текущий пользователь:\n%s</string>
+    <string name="invalid_email_format">Формат почты не соблюдён</string>
+    <string name="invalid_password_format">Пароль меньше 8 символов</string>
+    <string name="login_success">Вход выполнен</string>
+    <string name="invalid_credentials">Пароль или почта не верны</string>
+    <string name="email_not_found">Пользователя с данной почтой не существует или он отключен.</string>
+    <string name="unexpected_error">Возникла непредвиденная ошибка. Свяжитесь с разработчиками</string>
 </resources>

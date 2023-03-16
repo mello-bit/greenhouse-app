@@ -64,5 +64,11 @@
     <string name="user_data">User data</string>
     <string name="logout">Log out</string>
     <string name="protection_annotation">*Disables irrigation and humidification systems and closes the window if these values are exceeded</string>
-    <string name="current_user">Logged in user: %s</string>
+    <string name="current_user">Logged in user:\n%s</string>
+    <string name="invalid_email_format">Invalid email format</string>
+    <string name="invalid_password_format">Password is less than 8 characters</string>
+    <string name="login_success">Logged in successfuly</string>
+    <string name="invalid_credentials">Email or password is wrong</string>
+    <string name="email_not_found">User with this email does not exist or is disabled</string>
+    <string name="unexpected_error">An unexpected error has occurred. Contact the developers</string>
 </resources>
