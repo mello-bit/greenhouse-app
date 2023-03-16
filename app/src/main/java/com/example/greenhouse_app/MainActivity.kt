@@ -1,7 +1,9 @@
 package com.example.greenhouse_app
 
+import android.content.Context
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import com.example.greenhouse_app.databinding.ActivityMainBinding
@@ -43,4 +45,18 @@ class MainActivity : AppCompatActivity() {
         fragmentTransaction.commit()
     }
 
+    companion object {
+        private var lastToast: Toast? = null // static variable to store the last shown toast
+
+        fun showToast(context: Context, message: String, replace_last: Boolean = false) {
+            if (replace_last) cancelLastToast()
+            lastToast = Toast.makeText(context, message, Toast.LENGTH_SHORT)
+            lastToast?.show()
+        }
+
+        fun cancelLastToast() { // pass the context as a parameter
+            lastToast?.cancel()
+            lastToast = null
+        }
+    }
 }

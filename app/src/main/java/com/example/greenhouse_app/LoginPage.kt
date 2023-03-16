@@ -4,13 +4,16 @@ import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
-import android.widget.Toast
 import com.example.greenhouse_app.databinding.ActivityLoginPageBinding
+import com.example.greenhouse_app.utils.AppSettingsManager
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException
 import com.google.firebase.auth.FirebaseAuthInvalidUserException
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
 class LoginPage : AppCompatActivity() {
     private lateinit var binding: ActivityLoginPageBinding
@@ -37,12 +40,12 @@ class LoginPage : AppCompatActivity() {
             ) {
                 Log.d("Auth", "Email filter error")
                 binding.etEmailField.setBackgroundResource(R.drawable.background_error)
-                Toast.makeText(this, "Формат почты не соблюдён", Toast.LENGTH_SHORT).show()
+                MainActivity.showToast(this, this.getString(R.string.invalid_email_format))
                 return@setOnClickListener
             } else if(password.length < 8) {
                 Log.d("Auth", "Password filter error")
                 binding.etPasswordField.setBackgroundResource(R.drawable.background_error)
-                Toast.makeText(this, "Пароль меньше 8 символов", Toast.LENGTH_SHORT).show()
+                MainActivity.showToast(this, this.getString(R.string.invalid_password_format))
                 return@setOnClickListener
             }
 
@@ -53,41 +56,42 @@ class LoginPage : AppCompatActivity() {
                 if (task.isSuccessful) {
                     Log.d("Auth", "User logged in successfully")
                     val intent = Intent(this, MainActivity::class.java)
-                    (application as MyApplication).currentUID = firebaseAuth.currentUser!!.uid
-                    val t = Toast.makeText(this, "Вход выполнен", Toast.LENGTH_SHORT)
-                    t.show()
+                    val myApp = application as MyApplication
+                    myApp.currentUID = firebaseAuth.currentUser!!.uid
+                    myApp.userEmail = email
+
+                    CoroutineScope(Dispatchers.IO).launch {
+                        if (binding.cbRememberMe.isChecked) {
+                            AppSettingsManager.saveData("cachedUserEmail", email)
+                            AppSettingsManager.saveData("cachedUserPassword", password)
+                        } else {
+                            AppSettingsManager.saveData("cachedUserEmail", "")
+                            AppSettingsManager.saveData("cachedUserPassword", "")
+                        }
+                    }
+
+                    MainActivity.showToast(this, this.getString(R.string.login_success))
                     startActivity(intent)
                 } else {
                     when (task.exception) {
                         is FirebaseAuthInvalidCredentialsException -> {
                             binding.etPasswordField.setBackgroundResource(R.drawable.background_error)
                             binding.etEmailField.setBackgroundResource(R.drawable.background_error)
-                            Toast.makeText(this, "Пароль или почта не верны", Toast.LENGTH_SHORT).show()
+                            MainActivity.showToast(this, this.getString(R.string.invalid_credentials))
                             Log.d("Auth", "User entered wrong credentials")
 
                         }
                         is FirebaseAuthInvalidUserException -> {
                             binding.etEmailField.setBackgroundResource(R.drawable.background_error)
-                            Toast.makeText(this, "Пользователя с данной почтой не существует или он отключен.", Toast.LENGTH_SHORT).show()
+                            MainActivity.showToast(this, this.getString(R.string.email_not_found))
                             Log.d("Auth", "User entry does not exist")
                         }
                         else -> {
-                            Toast.makeText(this, "Возникла непредвиденная ошибка", Toast.LENGTH_SHORT).show()
+                            MainActivity.showToast(this, this.getString(R.string.unexpected_error))
                             Log.d("Auth", "Unresolved exception: ${task.exception}")
                         }
                     }
 
-
-//                    if (task.exception is FirebaseAuthInvalidCredentialsException) {
-//                        Log.d("Auth", "User entered wrong password")
-//                    } else if(task.exception is FirebaseAuthInvalidUserException) {
-//                        Log.d("Auth", "User entry does not exist")
-//                    } else {
-//                        Log.d("Auth", "Couldn't log in user")
-//                        val t =
-//                            Toast.makeText(this, "Не удалось выполнить вход", Toast.LENGTH_SHORT)
-//                        t.show()
-//                    }
                 }
             }
         }
@@ -96,9 +100,5 @@ class LoginPage : AppCompatActivity() {
             val intent = Intent(this, RestorePage::class.java)
             startActivity(intent)
         }
-    }
-
-    override fun onStart() {
-        super.onStart()
     }
 }

@@ -34,7 +34,7 @@ fun getCurrentDateTimeISO8601(): String {
 }
 
 class MyApplication : Application() {
-    val DEBUGMODE = true
+    val DEBUGMODE = false
     var loggedIn = DEBUGMODE
 
     private lateinit var networkManager: AppNetworkManager
@@ -44,6 +44,7 @@ class MyApplication : Application() {
     private var decimalFormatter = DecimalFormat("#.##", DecimalFormatSymbols(Locale.US))
     private var apiListener: ApiListener? = null
     val myAdapter by lazy { DataAdapter() }
+    var userEmail: String = "test@mail.ru"
     var currentUID: String = "UNASSIGNED"
         set(uid) {
             field = uid
@@ -119,6 +120,7 @@ class MyApplication : Application() {
 
     override fun onCreate() {
         super.onCreate()
+
         AppSettingsManager.initContext(applicationContext)
         AppNotificationManager.initContext(applicationContext)
 
@@ -129,9 +131,6 @@ class MyApplication : Application() {
             AppSettingsManager.saveData("TempUnits", "C")
             AppSettingsManager.saveData("Interval", "60")
             AppSettingsManager.saveData("EmergencyMode", "false")
-            AppSettingsManager.saveData("GreenhouseThresholdTemp", "50")
-            AppSettingsManager.saveData("GreenhouseOverwettingPercent", "50")
-            AppSettingsManager.saveData("FurrowOverwettingPercent", "50")
             AppSettingsManager.saveData("WereSettingsLoadedOnce", "true")
         }
 

@@ -65,4 +65,22 @@
     <string name="choice">Выберите грядку</string>
     <string name="choice_temp">Показатель температуры теплицы с номером</string>
     <string name="choice_hum">Показатель влажности теплицы с номером</string>
+    <string name="furrow_disabled_message">Слишком высокая влажность. Невозможно включить полив</string>
+    <string name="window_disabled_message">Слишком низкая температура. Окно открыть невозможно</string>
+    <string name="humidifier_disabled_message">Слишком высокая влажность. Включить увлажнитель не получиться</string>
+    <string name="automation_params">Параметры автоматизации</string>
+    <string name="auto_open_window_message">Автоматически открывать окно при температуре</string>
+    <string name="auto_close_sprinkler_message">Автоматически выключать полив бороздки по достижению влажности</string>
+    <string name="auto_turnoff_humidifier_message">Автоматически выключать увлажнение теплицы при влажности</string>
+    <string name="automation_checkbox">Разрешить автоматическое включение систем</string>
+    <string name="user_data">Данные пользователя</string>
+    <string name="logout">Выйти</string>
+    <string name="protection_annotation">*Отключает системы полива, увлажения и закрывает окно в случае превышения этих значений</string>
+    <string name="current_user">Текущий пользователь:\n%s</string>
+    <string name="invalid_email_format">Формат почты не соблюдён</string>
+    <string name="invalid_password_format">Пароль меньше 8 символов</string>
+    <string name="login_success">Вход выполнен</string>
+    <string name="invalid_credentials">Пароль или почта не верны</string>
+    <string name="email_not_found">Пользователя с данной почтой не существует или он отключен.</string>
+    <string name="unexpected_error">Возникла непредвиденная ошибка. Свяжитесь с разработчиками</string>
 </resources>

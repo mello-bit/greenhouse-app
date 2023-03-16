@@ -20,7 +20,6 @@ class AppSettingsManager {
             Log.d("TempTag", "Initialized AppSettings")
         }
 
-
         fun saveData(key: String, value: String) {
             val editor = sharedPreferences.edit()
             editor.putString(key, value)
@@ -28,7 +27,7 @@ class AppSettingsManager {
         }
 
         fun loadData(key: String): String? {
-            return sharedPreferences.getString(key, "")
+            return sharedPreferences.getString(key, null)
         }
 
         fun checkThatDataExists(key: String): Boolean {

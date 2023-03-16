@@ -53,4 +53,22 @@
     <string name="choice">Choose the furrow</string>
     <string name="choice_temp">Ne ponyal kak perevesti bez demonstracii</string>
     <string name="choice_hum">Ne ponyal kak perevesti bez demonstracii</string>
+    <string name="furrow_disabled_message">Very high humidity. Cannot open sprinkler</string>
+    <string name="window_disabled_message">Low temperature. Cannot open window</string>
+    <string name="humidifier_disabled_message">High humidity. Cannot turn on the humidifier</string>
+    <string name="automation_params">Automation params</string>
+    <string name="auto_open_window_message">Automatically open window if temperature reaches</string>
+    <string name="auto_close_sprinkler_message">Automatically close the sprinkler if humidity reaches</string>
+    <string name="auto_turnoff_humidifier_message">Automatically turn off the humidifier if humidity reaches</string>
+    <string name="automation_checkbox">Allow automatic system control</string>
+    <string name="user_data">User data</string>
+    <string name="logout">Log out</string>
+    <string name="protection_annotation">*Disables irrigation and humidification systems and closes the window if these values are exceeded</string>
+    <string name="current_user">Logged in user:\n%s</string>
+    <string name="invalid_email_format">Invalid email format</string>
+    <string name="invalid_password_format">Password is less than 8 characters</string>
+    <string name="login_success">Logged in successfuly</string>
+    <string name="invalid_credentials">Email or password is wrong</string>
+    <string name="email_not_found">User with this email does not exist or is disabled</string>
+    <string name="unexpected_error">An unexpected error has occurred. Contact the developers</string>
 </resources>

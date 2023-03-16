@@ -25,323 +25,527 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
 
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/constraintLayout2"
+    <ScrollView
+        android:id="@+id/scrollView3"
         android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="24dp"
-        android:layout_marginEnd="16dp"
-        android:background="@drawable/blue_gradient_round_corners"
-        android:padding="3pt"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/constraintLayout">
-
-        <EditText
-            android:id="@+id/etThresholdTemp"
-            android:layout_width="60dp"
-            android:layout_height="40dp"
-            android:layout_marginTop="4dp"
-            android:layout_marginEnd="8dp"
-            android:background="@drawable/background_shape_for_boundary"
-            android:ems="10"
-            android:inputType="number"
-            android:maxLength="3"
-            android:textAlignment="center"
-            android:textColor="@color/black"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/tvProtectionLabel" />
-
-        <TextView
-            android:id="@+id/tvProtectionLabel"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/protection_params"
-            android:textAllCaps="true"
-            android:textColor="@color/white"
-            android:textSize="20sp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <TextView
-            android:id="@+id/tvThresholdTempLabel"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="16dp"
-            android:autoSizeTextType="uniform"
-            android:text="@string/threshold_temperature"
-            android:textAlignment="viewEnd"
-            android:textColor="@color/white"
-            android:textSize="20sp"
-            app:layout_constraintBottom_toBottomOf="@+id/etThresholdTemp"
-            app:layout_constraintEnd_toStartOf="@+id/etThresholdTemp"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/etThresholdTemp" />
-
-        <TextView
-            android:id="@+id/tvOverwettingLabel"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="16dp"
-            android:autoSizeTextType="uniform"
-            android:maxLines="1"
-            android:text="@string/greenhouse_overhumidification_protection"
-            android:textAlignment="viewEnd"
-            android:textColor="@color/white"
-            android:textSize="20sp"
-            app:layout_constraintBottom_toBottomOf="@+id/etGreenhouseOverwetting"
-            app:layout_constraintEnd_toStartOf="@+id/etGreenhouseOverwetting"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/etGreenhouseOverwetting" />
-
-        <TextView
-            android:id="@+id/tvFurrowOverwettingLabel"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="16dp"
-            android:autoSizeTextType="uniform"
-            android:maxLines="1"
-            android:text="@string/furrow_overhumidification_protection"
-            android:textAlignment="viewEnd"
-            android:textColor="@color/white"
-            android:textSize="20sp"
-            app:layout_constraintBottom_toBottomOf="@+id/etFurrowOverwetting"
-            app:layout_constraintEnd_toStartOf="@+id/etFurrowOverwetting"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/etFurrowOverwetting" />
-
-        <EditText
-            android:id="@+id/etGreenhouseOverwetting"
-            android:layout_width="60dp"
-            android:layout_height="40dp"
-            android:layout_marginTop="4dp"
-            android:layout_marginEnd="8dp"
-            android:background="@drawable/background_shape_for_boundary"
-            android:ems="10"
-            android:inputType="number"
-            android:maxLength="3"
-            android:textAlignment="center"
-            android:textColor="@color/black"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/etThresholdTemp" />
-
-        <EditText
-            android:id="@+id/etFurrowOverwetting"
-            android:layout_width="60dp"
-            android:layout_height="40dp"
-            android:layout_marginTop="4dp"
-            android:layout_marginEnd="8dp"
-            android:background="@drawable/background_shape_for_boundary"
-            android:ems="10"
-            android:inputType="number"
-            android:maxLength="3"
-            android:textAlignment="center"
-            android:textColor="@color/black"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/etGreenhouseOverwetting" />
-
-    </androidx.constraintlayout.widget.ConstraintLayout>
-
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/constraintLayout"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="24dp"
-        android:layout_marginEnd="16dp"
-        android:background="@drawable/blue_gradient_round_corners"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/constraintLayout3">
-
-        <TextView
-            android:id="@+id/tvInterval"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:text="@string/interval"
-            android:textAllCaps="true"
-            android:textColor="@color/white"
-            android:textSize="20sp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <RadioGroup
-            android:id="@+id/rgIntervalButtons"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:clipToPadding="false"
-            android:orientation="horizontal"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/tvInterval">
-
-            <RadioButton
-                android:id="@+id/rb10Seconds"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                android:text="@string/seconds10"
-                android:textColor="@color/white" />
-
-            <RadioButton
-                android:id="@+id/rb1Minute"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                android:checked="true"
-                android:text="@string/minute1"
-                android:textColor="@color/white" />
-
-            <RadioButton
-                android:id="@+id/rb2Minutes"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                android:text="@string/minutes2"
-                android:textColor="@color/white" />
-        </RadioGroup>
-    </androidx.constraintlayout.widget.ConstraintLayout>
-
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/constraintLayout3"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
+        android:layout_height="0dp"
         android:layout_marginStart="16dp"
         android:layout_marginTop="16dp"
         android:layout_marginEnd="16dp"
-        android:background="@drawable/blue_gradient_round_corners"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
-
-        <TextView
-            android:id="@+id/tvLanguageLabel"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="4dp"
-            android:autoSizeTextType="uniform"
-            android:text="@string/app_language"
-            android:textAlignment="viewEnd"
-            android:textColor="@color/white"
-            android:textSize="20sp"
-            app:layout_constraintBottom_toTopOf="@+id/scTemperatureUnits"
-            app:layout_constraintEnd_toStartOf="@+id/tvRU"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/scLanguage" />
-
-        <androidx.appcompat.widget.SwitchCompat
-
-            android:id="@+id/scTemperatureUnits"
-            android:layout_width="wrap_content"
-            android:layout_height="0dp"
-            android:layout_marginEnd="24dp"
-            android:thumb="@drawable/thumb"
-            android:track="@drawable/track"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:trackTint="@color/white" />
-
-        <TextView
-            android:id="@+id/tvC"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/celcius"
-            android:textColor="@color/white"
-            app:layout_constraintBottom_toBottomOf="@+id/scTemperatureUnits"
-            app:layout_constraintEnd_toStartOf="@+id/scTemperatureUnits"
-            app:layout_constraintTop_toTopOf="@+id/scTemperatureUnits" />
-
-        <TextView
-            android:id="@+id/tvF"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/fahrenheit"
-            android:textColor="@color/white"
-            app:layout_constraintBottom_toBottomOf="@+id/scTemperatureUnits"
-            app:layout_constraintStart_toEndOf="@+id/scTemperatureUnits"
-            app:layout_constraintTop_toTopOf="@+id/scTemperatureUnits" />
-
-        <androidx.appcompat.widget.SwitchCompat
-
-            android:id="@+id/scLanguage"
-            android:layout_width="wrap_content"
-            android:layout_height="0dp"
-            android:layout_marginEnd="24dp"
-            android:thumb="@drawable/thumb"
-            app:layout_constraintBottom_toTopOf="@+id/scTemperatureUnits"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:trackTint="@color/white" />
-
-        <TextView
-            android:id="@+id/tvRU"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/ru"
-            android:textAllCaps="true"
-            android:textColor="@color/white"
-            app:layout_constraintBottom_toTopOf="@+id/scTemperatureUnits"
-            app:layout_constraintEnd_toStartOf="@+id/scLanguage"
-            app:layout_constraintTop_toTopOf="@+id/scLanguage" />
-
-        <TextView
-            android:id="@+id/tvEN"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/en"
-            android:textColor="@color/white"
-            app:layout_constraintBottom_toTopOf="@+id/scTemperatureUnits"
-            app:layout_constraintStart_toEndOf="@+id/scLanguage"
-            app:layout_constraintTop_toTopOf="@+id/scLanguage" />
-
-        <TextView
-            android:id="@+id/tvTemperatureUnits"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="4dp"
-            android:autoSizeTextType="uniform"
-            android:text="@string/temperature_units"
-            android:textAlignment="viewEnd"
-            android:textColor="@color/white"
-            android:textSize="20sp"
-            app:layout_constraintBottom_toBottomOf="@+id/scTemperatureUnits"
-            app:layout_constraintEnd_toStartOf="@+id/tvRU"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/scTemperatureUnits" />
-
-        <TextView
-            android:id="@+id/textView4"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:autoSizeTextType="uniform"
-            android:text="@string/general"
-            android:textAllCaps="true"
-            android:textColor="@color/white"
-            android:textSize="20sp"
-            app:layout_constraintBottom_toTopOf="@+id/scLanguage"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent" />
-    </androidx.constraintlayout.widget.ConstraintLayout>
-
-    <androidx.appcompat.widget.AppCompatButton
-        android:id="@+id/button"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginEnd="16dp"
-        android:autoSizeTextType="uniform"
-        android:background="@drawable/green_status_round_button"
-        android:paddingHorizontal="4pt"
-        android:text="@string/extreme_mode_off"
-        android:textAllCaps="false"
-        android:textColor="@color/white"
+        android:layout_marginBottom="16dp"
         app:layout_constraintBottom_toTopOf="@+id/btnSubmit"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/constraintLayout2"
-        app:layout_constraintVertical_bias="0.15" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.0">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/clSettingContainer"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/clIntervalSettings"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="24dp"
+                android:background="@drawable/blue_gradient_round_corners"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/clGeneralSettings">
+
+                <TextView
+                    android:id="@+id/tvInterval"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:autoSizeTextType="uniform"
+                    android:text="@string/interval"
+                    android:textAllCaps="true"
+                    android:textColor="@color/white"
+                    android:textSize="20sp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <RadioGroup
+                    android:id="@+id/rgIntervalButtons"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:clipToPadding="false"
+                    android:orientation="horizontal"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/tvInterval">
+
+                    <RadioButton
+                        android:id="@+id/rb10Seconds"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:text="@string/seconds10"
+                        android:textColor="@color/white" />
+
+                    <RadioButton
+                        android:id="@+id/rb1Minute"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:checked="true"
+                        android:text="@string/minute1"
+                        android:textColor="@color/white" />
+
+                    <RadioButton
+                        android:id="@+id/rb2Minutes"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:text="@string/minutes2"
+                        android:textColor="@color/white" />
+                </RadioGroup>
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/clGeneralSettings"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:background="@drawable/blue_gradient_round_corners"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
+
+                <TextView
+                    android:id="@+id/tvLanguageLabel"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="4dp"
+                    android:autoSizeTextType="uniform"
+                    android:text="@string/app_language"
+                    android:textAlignment="viewEnd"
+                    android:textColor="@color/white"
+                    android:textSize="20sp"
+                    app:layout_constraintBottom_toTopOf="@+id/scTemperatureUnits"
+                    app:layout_constraintEnd_toStartOf="@+id/tvRU"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="@+id/scLanguage" />
+
+                <androidx.appcompat.widget.SwitchCompat
+
+                    android:id="@+id/scTemperatureUnits"
+                    android:layout_width="wrap_content"
+                    android:layout_height="0dp"
+                    android:layout_marginEnd="24dp"
+                    android:thumb="@drawable/thumb"
+                    android:track="@drawable/track"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:trackTint="@color/white" />
+
+                <TextView
+                    android:id="@+id/tvC"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/celcius"
+                    android:textColor="@color/white"
+                    app:layout_constraintBottom_toBottomOf="@+id/scTemperatureUnits"
+                    app:layout_constraintEnd_toStartOf="@+id/scTemperatureUnits"
+                    app:layout_constraintTop_toTopOf="@+id/scTemperatureUnits" />
+
+                <TextView
+                    android:id="@+id/tvF"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/fahrenheit"
+                    android:textColor="@color/white"
+                    app:layout_constraintBottom_toBottomOf="@+id/scTemperatureUnits"
+                    app:layout_constraintStart_toEndOf="@+id/scTemperatureUnits"
+                    app:layout_constraintTop_toTopOf="@+id/scTemperatureUnits" />
+
+                <androidx.appcompat.widget.SwitchCompat
+
+                    android:id="@+id/scLanguage"
+                    android:layout_width="wrap_content"
+                    android:layout_height="0dp"
+                    android:layout_marginEnd="24dp"
+                    android:thumb="@drawable/thumb"
+                    app:layout_constraintBottom_toTopOf="@+id/scTemperatureUnits"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:trackTint="@color/white" />
+
+                <TextView
+                    android:id="@+id/tvRU"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/ru"
+                    android:textAllCaps="true"
+                    android:textColor="@color/white"
+                    app:layout_constraintBottom_toTopOf="@+id/scTemperatureUnits"
+                    app:layout_constraintEnd_toStartOf="@+id/scLanguage"
+                    app:layout_constraintTop_toTopOf="@+id/scLanguage" />
+
+                <TextView
+                    android:id="@+id/tvEN"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/en"
+                    android:textColor="@color/white"
+                    app:layout_constraintBottom_toTopOf="@+id/scTemperatureUnits"
+                    app:layout_constraintStart_toEndOf="@+id/scLanguage"
+                    app:layout_constraintTop_toTopOf="@+id/scLanguage" />
+
+                <TextView
+                    android:id="@+id/tvTemperatureUnits"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="4dp"
+                    android:autoSizeTextType="uniform"
+                    android:text="@string/temperature_units"
+                    android:textAlignment="viewEnd"
+                    android:textColor="@color/white"
+                    android:textSize="20sp"
+                    app:layout_constraintBottom_toBottomOf="@+id/scTemperatureUnits"
+                    app:layout_constraintEnd_toStartOf="@+id/tvRU"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="@+id/scTemperatureUnits" />
+
+                <TextView
+                    android:id="@+id/textView4"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:autoSizeTextType="uniform"
+                    android:text="@string/general"
+                    android:textAllCaps="true"
+                    android:textColor="@color/white"
+                    android:textSize="20sp"
+                    app:layout_constraintBottom_toTopOf="@+id/scLanguage"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/clProtectionSettings"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="24dp"
+                android:background="@drawable/blue_gradient_round_corners"
+                android:padding="3pt"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/clUserData">
+
+                <EditText
+                    android:id="@+id/etThresholdTemp"
+                    android:layout_width="60dp"
+                    android:layout_height="40dp"
+                    android:layout_marginTop="4dp"
+                    android:layout_marginEnd="8dp"
+                    android:background="@drawable/background_shape_for_boundary"
+                    android:ems="10"
+                    android:inputType="number"
+                    android:maxLength="3"
+                    android:textAlignment="center"
+                    android:textColor="@color/black"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/tvProtectionLabel" />
+
+                <TextView
+                    android:id="@+id/tvProtectionLabel"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:autoSizeTextType="uniform"
+                    android:text="@string/protection_params"
+                    android:textAllCaps="true"
+                    android:textColor="@color/white"
+                    android:textSize="20sp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:id="@+id/tvThresholdTempLabel"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="16dp"
+                    android:autoSizeTextType="uniform"
+                    android:text="@string/threshold_temperature"
+                    android:textAlignment="viewEnd"
+                    android:textColor="@color/white"
+                    android:textSize="20sp"
+                    app:layout_constraintBottom_toBottomOf="@+id/etThresholdTemp"
+                    app:layout_constraintEnd_toStartOf="@+id/etThresholdTemp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="@+id/etThresholdTemp" />
+
+                <TextView
+                    android:id="@+id/tvOverwettingLabel"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="16dp"
+                    android:autoSizeTextType="uniform"
+                    android:maxLines="1"
+                    android:text="@string/greenhouse_overhumidification_protection"
+                    android:textAlignment="viewEnd"
+                    android:textColor="@color/white"
+                    android:textSize="20sp"
+                    app:layout_constraintBottom_toBottomOf="@+id/etGreenhouseOverwetting"
+                    app:layout_constraintEnd_toStartOf="@+id/etGreenhouseOverwetting"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="@+id/etGreenhouseOverwetting" />
+
+                <TextView
+                    android:id="@+id/tvFurrowOverwettingLabel"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="16dp"
+                    android:autoSizeTextType="uniform"
+                    android:maxLines="1"
+                    android:text="@string/furrow_overhumidification_protection"
+                    android:textAlignment="viewEnd"
+                    android:textColor="@color/white"
+                    android:textSize="20sp"
+                    app:layout_constraintBottom_toBottomOf="@+id/etFurrowOverwetting"
+                    app:layout_constraintEnd_toStartOf="@+id/etFurrowOverwetting"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="@+id/etFurrowOverwetting" />
+
+                <EditText
+                    android:id="@+id/etGreenhouseOverwetting"
+                    android:layout_width="60dp"
+                    android:layout_height="40dp"
+                    android:layout_marginTop="4dp"
+                    android:layout_marginEnd="8dp"
+                    android:background="@drawable/background_shape_for_boundary"
+                    android:ems="10"
+                    android:inputType="number"
+                    android:maxLength="3"
+                    android:textAlignment="center"
+                    android:textColor="@color/black"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/etThresholdTemp" />
+
+                <EditText
+                    android:id="@+id/etFurrowOverwetting"
+                    android:layout_width="60dp"
+                    android:layout_height="40dp"
+                    android:layout_marginTop="4dp"
+                    android:layout_marginEnd="8dp"
+                    android:background="@drawable/background_shape_for_boundary"
+                    android:ems="10"
+                    android:inputType="number"
+                    android:maxLength="3"
+                    android:textAlignment="center"
+                    android:textColor="@color/black"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/etGreenhouseOverwetting" />
+
+                <TextView
+                    android:id="@+id/textView6"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="4dp"
+                    android:text="@string/protection_annotation"
+                    android:textColor="@color/teal_200"
+                    android:textSize="15sp"
+                    android:textStyle="italic"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/etFurrowOverwetting" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/clAutomatizationParams"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="24dp"
+                android:background="@drawable/blue_gradient_round_corners"
+                android:padding="3pt"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/clProtectionSettings">
+
+                <EditText
+                    android:id="@+id/etAutomaticSprinkleEnabler"
+                    android:layout_width="60dp"
+                    android:layout_height="40dp"
+                    android:layout_marginTop="4dp"
+                    android:layout_marginEnd="8dp"
+                    android:background="@drawable/background_shape_for_boundary"
+                    android:ems="10"
+                    android:inputType="number"
+                    android:maxLength="3"
+                    android:textAlignment="center"
+                    android:textColor="@color/black"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/etAutomaticWindowOpen" />
+
+                <EditText
+                    android:id="@+id/etAutomaticWindowOpen"
+                    android:layout_width="60dp"
+                    android:layout_height="40dp"
+                    android:layout_marginTop="4dp"
+                    android:layout_marginEnd="8dp"
+                    android:background="@drawable/background_shape_for_boundary"
+                    android:ems="10"
+                    android:inputType="number"
+                    android:maxLength="3"
+                    android:textAlignment="center"
+                    android:textColor="@color/black"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/tvAutomationLabel" />
+
+                <EditText
+                    android:id="@+id/etAutomaticHumidifierEnabler"
+                    android:layout_width="60dp"
+                    android:layout_height="40dp"
+                    android:layout_marginTop="4dp"
+                    android:layout_marginEnd="8dp"
+                    android:background="@drawable/background_shape_for_boundary"
+                    android:ems="10"
+                    android:inputType="number"
+                    android:maxLength="3"
+                    android:textAlignment="center"
+                    android:textColor="@color/black"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/etAutomaticSprinkleEnabler" />
+
+                <TextView
+                    android:id="@+id/tvAutomationLabel"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:autoSizeTextType="uniform"
+                    android:text="@string/automation_params"
+                    android:textAllCaps="true"
+                    android:textColor="@color/white"
+                    android:textSize="20sp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <CheckBox
+                    android:id="@+id/cbEnableAutomationControl"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="4dp"
+                    android:autoSizeTextType="uniform"
+                    android:maxLines="1"
+                    android:text="@string/automation_checkbox"
+                    android:textColor="@color/white"
+                    android:textSize="20sp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/etAutomaticHumidifierEnabler" />
+
+                <TextView
+                    android:id="@+id/tvWindowOpenLabel"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="16dp"
+                    android:autoSizeTextType="uniform"
+                    android:maxLines="2"
+                    android:text="@string/auto_open_window_message"
+                    android:textAlignment="viewEnd"
+                    android:textColor="@color/white"
+                    android:textSize="16sp"
+                    app:layout_constraintBottom_toBottomOf="@+id/etAutomaticWindowOpen"
+                    app:layout_constraintEnd_toStartOf="@+id/etAutomaticWindowOpen"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="@+id/etAutomaticWindowOpen" />
+
+                <TextView
+                    android:id="@+id/tvSprinkleOffLabel"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="16dp"
+                    android:autoSizeTextType="uniform"
+                    android:maxLines="2"
+                    android:text="@string/auto_close_sprinkler_message"
+                    android:textAlignment="viewEnd"
+                    android:textColor="@color/white"
+                    android:textSize="16sp"
+                    app:layout_constraintBottom_toBottomOf="@+id/etAutomaticSprinkleEnabler"
+                    app:layout_constraintEnd_toStartOf="@+id/etAutomaticSprinkleEnabler"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="@+id/etAutomaticSprinkleEnabler" />
+
+                <TextView
+                    android:id="@+id/tvHumidifierLabel"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="16dp"
+                    android:autoSizeTextType="uniform"
+                    android:maxLines="2"
+                    android:text="@string/auto_turnoff_humidifier_message"
+                    android:textAlignment="viewEnd"
+                    android:textColor="@color/white"
+                    android:textSize="16sp"
+                    app:layout_constraintBottom_toBottomOf="@+id/etAutomaticHumidifierEnabler"
+                    app:layout_constraintEnd_toStartOf="@+id/etAutomaticHumidifierEnabler"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="@+id/etAutomaticHumidifierEnabler" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/clUserData"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="24dp"
+                android:background="@drawable/blue_gradient_round_corners"
+                android:padding="3pt"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/clIntervalSettings">
+
+                <TextView
+                    android:id="@+id/tvUserData"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:autoSizeTextType="uniform"
+                    android:text="@string/user_data"
+                    android:textAllCaps="true"
+                    android:textColor="@color/white"
+                    android:textSize="20sp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.5"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:id="@+id/tvCurrentUser"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="4dp"
+                    android:text="@string/current_user"
+                    android:textAlignment="viewStart"
+                    android:textColor="@color/white"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.5"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/tvUserData" />
+
+                <androidx.appcompat.widget.AppCompatButton
+                    android:id="@+id/btnLogout"
+                    android:layout_width="0dp"
+                    android:layout_height="30dp"
+                    android:layout_marginStart="32dp"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginEnd="32dp"
+                    android:background="@drawable/background_button_shape"
+                    android:includeFontPadding="false"
+                    android:text="@string/logout"
+                    android:textColor="@color/white"
+                    android:textSize="15sp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.5"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/tvCurrentUser" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </ScrollView>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -9,7 +9,9 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.LinearLayout
 import android.widget.TextView
+import android.widget.Toast
 import androidx.appcompat.widget.AppCompatButton
+import com.example.greenhouse_app.MainActivity
 import com.example.greenhouse_app.MyApplication
 import com.example.greenhouse_app.R
 import com.example.greenhouse_app.dataClasses.SoilHum
@@ -33,21 +35,46 @@ interface ApiListener {
     fun onApiResponseReceived(response: Pair<MutableList<SoilHum>, MutableList<TempAndHum>>)
 }
 
-class FurrowButton(val Id: Byte, val linearLayout: LinearLayout, private val networkManager: AppNetworkManager) {
-    var status: Boolean
+enum class STATE { OFF, ON, DISABLED;
+    fun toggle(): STATE {
+        return when(this) {
+            ON -> OFF
+            OFF -> ON
+            DISABLED -> this
+        }
+    }
+}
+
+class FurrowButton(val Id: Byte, val linearLayout: LinearLayout, private val networkManager: AppNetworkManager, private val context: Context) {
+    var status: STATE
     private var button: AppCompatButton
     private var textView: TextView
     private var patchFunction = networkManager::changeFurrowState
+    private var protectionValue: Byte = 65
 
-    fun changeStatus(status: Boolean, send_patch: Boolean = false) {
+    fun changeStatus(status: STATE, send_patch: Boolean = false) {
         this.status = status
 
-        val btnBackground = if (status) R.drawable.green_status_round_button else R.drawable.red_status_round_button
-        val llBackground = if (status) R.drawable.furrow_hydration_on else R.drawable.furrow_hydration_off
-        val text = if (status) R.string.watering_on else R.string.watering_off
+        val btnBackground = when(status) {
+            STATE.ON -> R.drawable.green_status_round_button
+            STATE.OFF -> R.drawable.red_status_round_button
+            STATE.DISABLED -> R.drawable.gray_status_round_button
+        }
+
+        val llBackground = when(status) {
+            STATE.ON -> R.drawable.furrow_hydration_on
+            STATE.OFF -> R.drawable.furrow_hydration_off
+            STATE.DISABLED -> R.drawable.furrow_hydration_disabled
+        }
+
+        val text = when(status) {
+            STATE.ON -> R.string.watering_on
+            else -> R.string.watering_off
+        }
 
         if (send_patch) {
-            patchFunction(Id, status.compareTo(false).toByte())
+            val patchStatus = if (status == STATE.DISABLED) 0 else status.ordinal.toByte()
+            patchFunction(Id, patchStatus)
         }
         this.linearLayout.setBackgroundResource(llBackground)
         this.button.setBackgroundResource(btnBackground)
@@ -56,53 +83,65 @@ class FurrowButton(val Id: Byte, val linearLayout: LinearLayout, private val net
 
     fun changeDisplayValue(value: Byte) {
         this.textView.text = "$value%"
-    }
 
-    init {
-        this.status = AppSettingsManager.loadData("Furrow${this.Id}Status").toBoolean()
-        this.button = linearLayout.findViewWithTag<AppCompatButton>("btnFurrow$Id")
-        this.button.setOnClickListener{ changeStatus(!this.status, true) }
-        this.textView = linearLayout.findViewWithTag<TextView>("tvFurrow${Id}Status")
-
-        Log.d(null, this.button.tag.toString())
-        Log.d(null, this.textView.tag.toString())
-    }
-
-    init {
-        val status = AppSettingsManager.loadData("Furrow${this.Id}Status")
-
-        if (status != null && status.isNotEmpty()) {
-            changeStatus(status.toBoolean())
-        } else {
-            Log.d(null,"THE RECEIVED STATUS IS $status")
+        if (value >= protectionValue) {
+            this.changeStatus(STATE.DISABLED, this.status == STATE.ON)
+        } else if(value < protectionValue && this.status == STATE.DISABLED) {
+            this.changeStatus(STATE.OFF, false)
         }
+    }
+
+    init {
+        this.status = STATE.valueOf(AppSettingsManager.loadData("Furrow${this.Id}Status") ?: "OFF")
+        this.button = linearLayout.findViewWithTag<AppCompatButton>("btnFurrow$Id")
+        this.textView = linearLayout.findViewWithTag<TextView>("tvFurrow${Id}Status")
+        this.button.setOnClickListener{
+            if (this.status != STATE.DISABLED) {
+                changeStatus(this.status.toggle(), true)
+            } else {
+                MainActivity.showToast(context, context.getString(R.string.furrow_disabled_message), true)
+            }
+        }
+    }
+
+    init {
+        val status = STATE.valueOf(AppSettingsManager.loadData("Furrow${this.Id}Status") ?: "OFF")
+        changeStatus(status, false)
     }
 }
 
 // Names: <Window, Humidifier>
 class BottomHomeButton(val name: String, val linearLayout: LinearLayout, val textView: TextView, private val networkManager: AppNetworkManager) {
-    var status: Boolean = false
+    var status: STATE = STATE.OFF
     private val turnOnText: Int = if (name == "Humidifier") R.string.humidifier_on else R.string.window_open
     private val turnOffText: Int = if (name == "Humidifier") R.string.humidifier_off else R.string.window_closed
-    private lateinit var patchFunction: (Byte) -> Unit
-
-    init {
-        patchFunction = if (name == "Window") {
-            networkManager::changeWindowState
-        } else {
-            networkManager::changeGlobalWateringState
-        }
-        changeStatus(AppSettingsManager.loadData("BottomButton$name").toBoolean(), false)
+    private var patchFunction = if (name == "Window") {
+        networkManager::changeWindowState
+    } else {
+        networkManager::changeGlobalWateringState
     }
 
-    fun changeStatus(status: Boolean, send_patch: Boolean) {
+    init {
+        changeStatus(STATE.valueOf(AppSettingsManager.loadData("BottomButton$name") ?: "OFF"), false)
+    }
+
+    fun changeStatus(status: STATE, send_patch: Boolean) {
         this.status = status
 
-        val bgResource = if (status) R.drawable.green_status_round_button else R.drawable.red_status_round_button
-        val newText = if (status) turnOnText else turnOffText
+        val bgResource = when(status) {
+            STATE.ON -> R.drawable.green_status_round_button
+            STATE.OFF -> R.drawable.red_status_round_button
+            STATE.DISABLED -> R.drawable.gray_status_round_button
+        }
+
+        val newText = when(status) {
+            STATE.ON -> turnOnText
+            else -> turnOffText
+        }
 
         if (send_patch) {
-            patchFunction(status.compareTo(false).toByte())
+            val patchStatus = if (status == STATE.DISABLED) 0 else status.ordinal.toByte()
+            patchFunction(patchStatus)
         }
         linearLayout.setBackgroundResource(bgResource)
         textView.setText(newText)
@@ -117,18 +156,24 @@ class HomeFragment : Fragment(), ApiListener {
     private lateinit var application: MyApplication
     private lateinit var networkManager: AppNetworkManager
     private var TemperatureUnits = R.string.temperature_celsius
-    private var ThresholdTemperature = 100
-    private var FurrowOverhydration = 100
-    private var GreenhouseOverhydration = 100
+    private var ThresholdTemperature: Byte = 0
+    private var FurrowOverhydration: Byte = 100
+    private var GreenhouseOverhydration: Byte = 100
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        TemperatureUnits =
-            if (AppSettingsManager.loadData("TempUnits") == "C") R.string.temperature_celsius else R.string.fahrenheit
+        updateSettings()
 
         val applicationContext = requireActivity().applicationContext
         application = applicationContext as MyApplication
         db = AppDatabaseHelper.getDatabase(applicationContext, application.currentUID)
+    }
+
+    fun updateSettings() {
+        TemperatureUnits = if (AppSettingsManager.loadData("TempUnits") == "C") R.string.temperature_celsius else R.string.fahrenheit
+        ThresholdTemperature = AppSettingsManager.loadData("GreenhouseThresholdTemp")?.toByte() ?: ThresholdTemperature
+        GreenhouseOverhydration = AppSettingsManager.loadData("GreenhouseOverwettingPercent")?.toByte() ?: GreenhouseOverhydration
+        FurrowOverhydration = AppSettingsManager.loadData("FurrowOverwettingPercent")?.toByte() ?: FurrowOverhydration
     }
 
     override fun onAttach(context: Context) {
@@ -146,6 +191,8 @@ class HomeFragment : Fragment(), ApiListener {
 
     override fun onApiResponseReceived(response: Pair<MutableList<SoilHum>, MutableList<TempAndHum>>) {
         if (isAdded and buttonClasses.isNotEmpty()) {
+            val windowButton = bottomButtons["Window"]!!
+            val humidifierButton = bottomButtons["Humidifier"]!!
 
             for (soilHumidity in response.first) {
                 buttonClasses[soilHumidity.id]?.changeDisplayValue(soilHumidity.humidity.toByte())
@@ -158,25 +205,51 @@ class HomeFragment : Fragment(), ApiListener {
                 generalGreenhouseTemperature += tempHumidity.temp.toFloat()
             }
 
+            val humidity = generalGreenhouseHumidity / 4
+            var temperature = generalGreenhouseTemperature / 4
+
+            // Меняем на градусы фаренгейта, если они установлены в настройках
+            if (TemperatureUnits == R.string.temperature_fahrenheit) {
+                temperature = (temperature * 1.8 + 32).toFloat()
+            }
+
+            // Изменяем состояние кнопок, в зависимости от защитных параметров
+            processHumidity(humidity)
+            processTemperature(temperature)
+
+            // Обновляем UI
             binding.tvGreenhouseHumidity.text = getString(
                 R.string.percent_adder,
-                "%.1f".format(generalGreenhouseHumidity / 4)
+                "%.1f".format(humidity)
             )
-
-            var temp = generalGreenhouseTemperature / 4
-            if (TemperatureUnits == R.string.temperature_fahrenheit) {
-                temp = (temp * 1.8 + 32).toFloat()
-            }
 
             binding.tvGreenhouseTemp.text = getString(
                 TemperatureUnits,
-                "%.1f".format(temp)
+                "%.1f".format(temperature)
             )
         }
     }
 
+    fun processHumidity(humidity: Float) {
+        Log.d("Important", "called processHumidity() with protection: $GreenhouseOverhydration")
+        val humidifierButton = bottomButtons["Humidifier"]!!
+        if (humidity > GreenhouseOverhydration) {
+            humidifierButton.changeStatus(STATE.DISABLED, humidifierButton.status == STATE.ON)
+        } else if (humidifierButton.status == STATE.DISABLED && humidity <= GreenhouseOverhydration) {
+            humidifierButton.changeStatus(STATE.OFF, false)
+        }
+    }
+    fun processTemperature(temperature: Float) {
+        Log.d("Important", "called processTemperature() with protection: $ThresholdTemperature")
+        val windowButton = bottomButtons["Window"]!!
+        if (temperature < ThresholdTemperature) {
+            windowButton.changeStatus(STATE.DISABLED, windowButton.status == STATE.ON)
+        } else if (windowButton.status == STATE.DISABLED && temperature >= ThresholdTemperature) {
+            windowButton.changeStatus(STATE.OFF, false)
+        }
+    }
+
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        // Inflate the layout for this fragment
         binding = FragmentHomeBinding.inflate(inflater, container, false)
 
         val layouts = listOf<LinearLayout>(
@@ -190,9 +263,19 @@ class HomeFragment : Fragment(), ApiListener {
             "Humidifier" to Pair(binding.llHumidifierContainer, binding.tvDisplayState2)
         ).forEach {
             val newInstance = BottomHomeButton(it.key, it.value.first, it.value.second, networkManager)
+            val disabledMessage =
+                if (it.key == "Window") R.string.window_disabled_message else R.string.humidifier_disabled_message
 
             newInstance.linearLayout.setOnClickListener {
-                newInstance.changeStatus(!newInstance.status, true)
+                if (newInstance.status != STATE.DISABLED) {
+                    newInstance.changeStatus(newInstance.status.toggle(), true)
+                } else {
+                    MainActivity.showToast(
+                        context=requireContext(),
+                        message=requireContext().getString(disabledMessage),
+                        replace_last=true
+                    )
+                }
             }
 
             this.bottomButtons[it.key] = newInstance
@@ -200,9 +283,13 @@ class HomeFragment : Fragment(), ApiListener {
 
         for (i in 1..6) {
             val layout = layouts[i - 1]
-            val furrowClass = FurrowButton(i.toByte(), layout, networkManager)
+            val furrowClass = FurrowButton(i.toByte(), layout, networkManager, this.requireContext())
             layout.setOnClickListener {
-                furrowClass.changeStatus(!furrowClass.status, true)
+                if (furrowClass.status != STATE.DISABLED) {
+                    furrowClass.changeStatus(furrowClass.status.toggle(), true)
+                } else {
+                    MainActivity.showToast(requireContext(), requireContext().getString(R.string.furrow_disabled_message), true)
+                }
             }
             this.buttonClasses[i.toByte()] = furrowClass
         }
@@ -213,23 +300,23 @@ class HomeFragment : Fragment(), ApiListener {
 
     override fun onResume() {
         super.onResume()
-        TemperatureUnits =
-            if (AppSettingsManager.loadData("TempUnits") == "C") R.string.temperature_celsius else R.string.temperature_fahrenheit
-
-
+        updateSettings()
 
         // Восстановление отображаемых данных после выхода/захода на фрагмент
         CoroutineScope(Dispatchers.IO).launch {
             val latestData = db.SensorDao().getLatestSensorData()
             if (latestData != null) {
-                var temp = latestData.greenhouse_temperature
+                var temperature = latestData.greenhouse_temperature
                 if (TemperatureUnits == R.string.temperature_fahrenheit) {
-                    temp = (temp * 1.8 + 32).toFloat()
+                    temperature = (temperature * 1.8 + 32).toFloat()
                 }
+
+                processTemperature(temperature)
+                processHumidity(latestData.greenhouse_humidity)
 
                 binding.tvGreenhouseTemp.text = getString(
                     TemperatureUnits,
-                    String.format("%.1f", temp)
+                    String.format("%.1f", temperature)
                 )
                 binding.tvGreenhouseHumidity.text = getString(
                     R.string.percent_adder,
