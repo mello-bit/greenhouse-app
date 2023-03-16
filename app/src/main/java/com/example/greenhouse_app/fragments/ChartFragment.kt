@@ -153,7 +153,8 @@ class ChartFragment : Fragment() {
         for (sd in dataList.indices) {
             result.add(
                 AllData(
-                    dataList[sd].createdAt.split('T')[1].split('.')[0],
+//                    dataList[sd].createdAt.split('T')[1].split('.')[0],
+                    dataList[sd].createdAt.replace('T', ' '),
                     dataList[sd].furrow1_humidity,
                     dataList[sd].furrow2_humidity,
                     dataList[sd].furrow3_humidity,
@@ -188,8 +189,8 @@ class ChartFragment : Fragment() {
 
         Log.d("CheckList", list.toString())
         for (dt in 0 until list.size) {
-            if (useSpace) currentDateList.add(list[dt].currentData.split(' ')[0])
-            else currentDateList.add(list[dt].currentData)
+
+            currentDateList.add(list[dt].currentData.split(' ')[1])
 
             fillInAllSoilHumLists(dt)
             fillInAllTempAndHumLists(dt)
