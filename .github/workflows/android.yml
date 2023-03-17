@@ -10,23 +10,33 @@ jobs:
   build:
     runs-on: macos-latest
 
+    strategy:
+      matrix:
+        api-level: [28, 29, 30]
+        emulator-type: [pixel, nexus]
+
     steps:
     - uses: actions/checkout@v2
-    - name: Change wrapper permissions
-      run: chmod +x ./gradlew
-    - name: Restore cache
+      with:
+        submodules: 'recursive'
+        ref: 'main'
+        gradle-version: '7.4.0'
+
+    - name: Cache Gradle dependencies
       uses: actions/cache@v2
       with:
-        path:
-          ~/.gradle/caches
-          ~/.gradle/wrapper
-        key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*') }}
-        restore-keys: |
-          ${{ runner.os }}-gradle-
+        path: ~/.gradle/caches/modules-2
+        key: ${{ runner.os }}-gradle-deps-${{ hashFiles('**/*.gradle*') }}
+        restore-keys: ${{ runner.os }}-gradle-deps-
+
+    - name: Change wrapper permissions
+      run: chmod +x ./gradlew
+
     - name: Instrumentation Tests
       uses: reactivecircus/android-emulator-runner@v2
       with:
-        api-level: 29
+        api-level: ${{ matrix.api-level }}
+        emulator-type: ${{ matrix.emulator-type }}
         script: ./gradlew connectedAndroidTest
         
     - name: Upload Android Test Reports
