@@ -26,6 +26,12 @@ class AppSettingsManager {
             editor.apply()
         }
 
+        fun resetData(key: String) {
+            val editor = sharedPreferences.edit()
+            editor.remove(key)
+            editor.apply()
+        }
+
         fun loadData(key: String): String? {
             return sharedPreferences.getString(key, null)
         }

@@ -223,8 +223,6 @@ class HomeFragment : Fragment(), ApiListener {
 
     override fun onApiResponseReceived(response: Pair<MutableList<SoilHum>, MutableList<TempAndHum>>) {
         if (isAdded and buttonClasses.isNotEmpty()) {
-            val windowButton = bottomButtons["Window"]!!
-            val humidifierButton = bottomButtons["Humidifier"]!!
 
             for (soilHumidity in response.first) {
                 buttonClasses[soilHumidity.id]?.changeDisplayValue(soilHumidity.humidity.toByte())

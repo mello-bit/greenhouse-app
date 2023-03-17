@@ -41,6 +41,9 @@ interface SensorDao {
     @Insert
     fun insertData(sensorData: SensorData)
 
+    @Query("SELECT COUNT(*) FROM sensor_snapshots")
+    fun getCount(): Int
+
     @Query("SELECT * FROM sensor_snapshots WHERE date(snapshot_date) = date(:date)")
     fun getSensorDataForDate(date: String): List<SensorData>
 
