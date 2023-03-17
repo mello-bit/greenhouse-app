@@ -8,34 +8,33 @@ on:
 
 jobs:
   build:
-    runs-on: ubuntu-latest
+    runs-on: macos-latest
 
     steps:
     - uses: actions/checkout@v2
-    - uses: actions/setup-java@v2
+    - name: Change wrapper permissions
+      run: chmod +x ./gradlew
+    - name: Restore cache
+      uses: actions/cache@v2
       with:
-        java-version: '11'
-    - name: Set up Android SDK
-      uses: google-github-actions/setup-android@master
+        path:
+          ~/.gradle/caches
+          ~/.gradle/wrapper
+        key: ${{ runner.os }}-gradle-${{ hashFiles("**/*.gradle*") }}
+        restore-keys: |
+          ${{ runner.os }}-gradle-
+    - name: Instrumentation Tests
+      uses: reactivecircus/android-emulator-runner@v2
       with:
-        sdk-version: '31'
-    - name: Install system image
-      uses: google-github-actions/setup-android-emulator@master
+        api-level: 29
+        script: ./gradlew connectedAndroidTest
+        
+    - name: Upload Android Test Reports
+      if: ${{ always() }}
+      uses: actions/upload-artifact@v2
       with:
-        api-level: 31
-        target: google_apis
-        arch: x86_64
-    - name: Create emulator
-      run: |
-        echo no | $ANDROID_HOME/cmdline-tools/latest/bin/avdmanager create avd --force --name emulator --device 'pixel' --package 'system-images;android-31;google_apis;x86_64' --tag 'google_apis'
-    - name: Start emulator
-      uses: google-github-actions/start-android-emulator@master
-      with:
-        emulator-options: "-no-audio -no-window"
-        api-level: 31
-        target: google_apis
-        arch: x86_64
-    - name: Grant execute permission for gradlew
-      run: chmod +x gradlew
-    - name: Build and test
-      run: ./gradlew clean assembleDebug androidTest --no-build-cache --no-configure-on-demand
+        name: android-test-reports
+        path: "**/build/reports/androidTests/"
+    
+          
+    
