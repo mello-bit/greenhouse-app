@@ -1,6 +1,5 @@
 package com.example.greenhouse_app
 
-import android.annotation.SuppressLint
 import android.app.Application
 import android.app.NotificationChannel
 import android.app.NotificationManager
@@ -8,8 +7,6 @@ import android.content.Context
 import android.os.Build
 import android.os.Handler
 import android.os.Looper
-import android.util.Log
-import androidx.room.Room
 import com.example.greenhouse_app.dataClasses.AllData
 import com.example.greenhouse_app.dataClasses.ListForData
 import com.example.greenhouse_app.recyclerView.DataAdapter
@@ -21,12 +18,9 @@ import kotlinx.coroutines.launch
 import java.text.DecimalFormat
 import java.text.DecimalFormatSymbols
 import java.time.Instant
-import java.time.LocalDate
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 import java.util.*
-import kotlin.math.round
-import kotlin.math.roundToInt
 import kotlin.properties.Delegates
 
 fun getCurrentDateTimeISO8601(): String {

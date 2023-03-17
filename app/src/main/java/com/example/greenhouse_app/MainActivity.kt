@@ -22,7 +22,6 @@ class MainActivity : AppCompatActivity() {
         setContentView(binding.root)
         val homeFragment = HomeFragment()
         val settingsFragment = SettingsFragment()
-        val notificationFragment = NotificationFragment()
         val chartsFragment = ChartsFragment()
         replaceFragment(homeFragment)
 
@@ -30,7 +29,6 @@ class MainActivity : AppCompatActivity() {
             when (it.itemId) {
                 R.id.nav_home -> replaceFragment(homeFragment)
                 R.id.nav_settings -> replaceFragment(settingsFragment)
-                R.id.nav_notification -> replaceFragment(notificationFragment)
                 R.id.nav_chart -> replaceFragment(chartsFragment)
             }
             true
