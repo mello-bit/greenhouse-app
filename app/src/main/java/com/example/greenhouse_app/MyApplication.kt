@@ -47,6 +47,7 @@ class MyApplication : Application() {
     val myAdapter by lazy { DataAdapter() }
     var userEmail: String = "test@mail.ru"
     var interval by Delegates.notNull<Int>()
+    var dataflowThread: Thread? = null
 
     var currentUID: String = "UNASSIGNED"
         set(uid) {
@@ -59,35 +60,38 @@ class MyApplication : Application() {
             networkManager = AppNetworkManager(applicationContext)
             handler = Handler(Looper.getMainLooper())
 
-            handler.post(object : Runnable {
-                override fun run() {
-                    interval = try {
-                        AppSettingsManager.loadData("Interval")!!.toInt()
-                    } catch (e: Exception) {
-                        60
-                    }
-                    networkManager.getSoilHum()
-                    networkManager.getTempAndHum()
-                    handler.postDelayed(this, interval * 1000L)
+            interval = AppSettingsManager.loadData("Interval")!!.toInt()
+            createNewDataflow(interval.toByte())
 
-                    if (ListForData.SoilHumList.size == 6 && ListForData.TempAndHumList.size == 4) {
-                        ListForData.EverySoilHumDataList.add(
-                            toAllSoilHumDataClass()
-                        )
-                        myAdapter.setData(ListForData.EverySoilHumDataList)
-                        myAdapter.notifyItemInserted(ListForData.EverySoilHumDataList.size - 1)
+        }
 
-                        apiListener?.onApiResponseReceived(Pair(ListForData.SoilHumList, ListForData.TempAndHumList))
-                        saveEntryToDB(ListForData)
 
-                        ListForData.SoilHumList.clear()
-                        ListForData.TempAndHumList.clear()
+    fun createNewDataflow(interval: Byte) {
+        handler.removeCallbacksAndMessages(null)
+        handler.post(object : Runnable {
+            override fun run() {
+                networkManager.getSoilHum()
+                networkManager.getTempAndHum()
+                handler.postDelayed(this, interval * 1000L)
 
-                    }
+                if (ListForData.SoilHumList.size == 6 && ListForData.TempAndHumList.size == 4) {
+                    ListForData.EverySoilHumDataList.add(
+                        toAllSoilHumDataClass()
+                    )
+                    myAdapter.setData(ListForData.EverySoilHumDataList)
+                    myAdapter.notifyItemInserted(ListForData.EverySoilHumDataList.size - 1)
+
+                    apiListener?.onApiResponseReceived(Pair(ListForData.SoilHumList, ListForData.TempAndHumList))
+                    saveEntryToDB(ListForData)
+
+                    ListForData.SoilHumList.clear()
+                    ListForData.TempAndHumList.clear()
 
                 }
-            })
-        }
+
+            }
+        })
+    }
 
     fun setApiListener(listener: ApiListener) {
         this.apiListener = listener
