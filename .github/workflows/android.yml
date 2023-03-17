@@ -24,14 +24,20 @@ jobs:
     - name: Grant execute permission for Gradle wrapper
       run: chmod +x gradlew
 
-    - name: Build with Gradle
-      run: ./gradlew assembleDebug
-
-    - name: Run Android tests
-      uses: reactivecircus/android-emulator-runner@v2
+    - name: Set up Android environment
+      uses: actions/setup-android@v2
       with:
-        api-level: 29
-        script: ./gradlew connectedAndroidTest
+        sdk-version: '31'
+        ndk-version: '23.0.7599858'
+        java-version: '1.8'
+        emulator-version: '30.7.5'
+        arch: x86_64
+
+    - name: Build and test
+      run: |
+        ./gradlew assembleDebug
+        ./gradlew testDebug
+        ./gradlew connectedAndroidTest
 
     - name: Upload test results
       uses: actions/upload-artifact@v2
