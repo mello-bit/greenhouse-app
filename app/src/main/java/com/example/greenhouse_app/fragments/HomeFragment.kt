@@ -176,6 +176,7 @@ class HomeFragment : Fragment(), ApiListener {
     private var AutoSprinkleOpen: Byte = 101
     private var AutoWindowOpen: Byte = 101
     private var AutoHumidifierOpen: Byte = 101
+    private var Interval: Int = AppSettingsManager.loadData("Interval")?.toInt() ?: 60
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

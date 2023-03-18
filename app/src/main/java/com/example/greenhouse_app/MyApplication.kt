@@ -133,7 +133,7 @@ class MyApplication : Application() {
         } else {
             AppSettingsManager.saveData("Language", "RU")
             AppSettingsManager.saveData("TempUnits", "C")
-            AppSettingsManager.saveData("Interval", "60")
+            AppSettingsManager.saveData("Interval", "10")
             AppSettingsManager.saveData("EmergencyMode", "false")
             AppSettingsManager.saveData("WereSettingsLoadedOnce", "true")
         }

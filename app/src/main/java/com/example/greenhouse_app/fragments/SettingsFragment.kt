@@ -45,6 +45,13 @@ val SettingFilter = object : TextWatcher {
 
 open class SettingsFragment : Fragment() {
     private lateinit var binding: FragmentSettingsBinding
+    private lateinit var application: MyApplication
+    private var interval = AppSettingsManager.loadData("Interval")?.toInt() ?: 60
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        application = requireActivity().applicationContext as MyApplication
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -186,12 +193,19 @@ open class SettingsFragment : Fragment() {
     fun saveSettings() {
         val language = if (binding.scLanguage.isChecked) "EN" else "RU"
         val tempUnits = if (binding.scTemperatureUnits.isChecked) "F" else "C"
-        val interval = when(binding.rgIntervalButtons.checkedRadioButtonId) {
+        val newInterval = when(binding.rgIntervalButtons.checkedRadioButtonId) {
             binding.rb10Seconds.id -> "10"
             binding.rb1Minute.id -> "60"
             binding.rb2Minutes.id -> "120"
             else -> "60"
         }
+
+        if (newInterval.toInt() != interval) {
+            interval = newInterval.toInt()
+            application.createNewDataflow(newInterval.toByte())
+            application.interval = newInterval.toInt()
+        }
+
 
         val dataKeys = listOf(
             "GreenhouseThresholdTemp", "GreenhouseOverwettingPercent",
@@ -204,7 +218,7 @@ open class SettingsFragment : Fragment() {
             binding.etThresholdTemp.text.toString(), binding.etGreenhouseOverwetting.text.toString(),
             binding.etFurrowOverwetting.text.toString(), binding.etAutomaticWindowOpen.text.toString(),
             binding.etAutomaticSprinkleEnabler.text.toString(), binding.etAutomaticHumidifierEnabler.text.toString(),
-            language, tempUnits, interval, binding.cbEnableAutomationControl.isChecked.toString()
+            language, tempUnits, newInterval, binding.cbEnableAutomationControl.isChecked.toString()
         )
 
         dataKeys.zip(dataValues).forEach {
