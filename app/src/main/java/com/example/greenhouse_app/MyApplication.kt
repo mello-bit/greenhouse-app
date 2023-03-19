@@ -151,7 +151,7 @@ class MyApplication : Application() {
         ListForData.TempAndHumList.sortBy {
             it.id
         }
-        val formatter = DateTimeFormatter.ofPattern("dd.mm.yyyy HH:mm:ss")
+        val formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy HH:mm:ss")
         val current = LocalDateTime.now().format(formatter)
 
         return AllData(
